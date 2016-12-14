@@ -18,8 +18,8 @@
 <body>
 
 <div class="container">
-    <h1>Report Generator</h1>
-
+    <h1>Report Generator Setup</h1>
+    <!-- todo: provide user interface for setting up config file -->
 </div>
 
 </body>
