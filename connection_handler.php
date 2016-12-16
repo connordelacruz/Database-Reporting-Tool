@@ -3,9 +3,6 @@
  * Processes the information from config.php and handles connecting to the database
  */
 
-// Variables are set in config.php
-include "config.php";
-
 class ConnectionHandler {
 
     // variables with connection settings from config.ini

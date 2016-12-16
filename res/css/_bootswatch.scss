@@ -90,7 +90,7 @@ $web-font-path: "https://fonts.googleapis.com/css?family=Roboto:300,400,500,700"
 @include btn(link,#fff,$btn-default-color);
 
 .btn {
-  text-transform: uppercase;
+  //text-transform: uppercase;
   border: none;
   @include box-shadow(1px 1px 4px rgba(0,0,0,.4));
   @include transition(all 0.4s);
