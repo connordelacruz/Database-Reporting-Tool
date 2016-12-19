@@ -1,8 +1,3 @@
-<?php
-
-
-
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,8 +13,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <!-- Bootstrap.js -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <!-- bootstrap-select plugin -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/js/bootstrap-select.min.js"></script>
+
+    <!-- Contains js for this page and functions to get data from the database -->
+    <script src="res/js/index.js"></script>
 
 </head>
 <body>
@@ -29,38 +25,33 @@
 
     <!-- TODO: show which database is currently being used for clarity -->
 
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <b>Table</b>
-        </div>
-        <div class="panel-body">
-        <form class="form-horizontal" id="table-select">
-            <select class="selectpicker show-tick" name="table" title="Select a Table" required>
-                <!-- TODO: dynamically populate with table names -->
-                <option>placeholder</option>
-                <option>placeholder</option>
-                <option>placeholder</option>
-            </select>
+    <div class="well">
+    <form class="form-vertical">
+        <fieldset>
+            <legend>Table</legend>
+            <div class="form-group">
+                <label class="control-label sr-only" for="table-select">Table:</label>
+                <!-- TODO: disable this until populated with results (and give some indication that it's loading -->
+                <select class="form-control" id="table-select" name="table-select" required>
+                    <option id="placeholder" value="" disabled selected>Select a Table</option>
+                </select>
+            </div>
             <button class="btn btn-primary" type="submit" name="submit">Continue</button>
-        </form>
-        </div>
+        </fieldset>
+    </form>
     </div>
 
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <b>Columns</b>
-        </div>
-        <div class="panel-body">
-            Select which columns to display:
-        </div>
-        <div class="panel-body no-pad-top-bottom">
-            <div class="btn-group">
-                <button class="btn btn-sm btn-success" id="column-selectall">Select All</button>
-                <button class="btn btn-sm btn-danger" id="column-deselectall">Deselect All</button>
-            </div>
-        </div>
-        <div class="panel-body">
-            <form class="form-horizontal" id="column-select">
+    <div class="well">
+        <form class="form-horizontal" id="column-select">
+            <fieldset>
+                <legend>Columns</legend>
+                <label class="control-label">Select which columns to display:</label>
+                <div class="well well-sm">
+                    <div class="btn-group">
+                        <button class="btn btn-sm btn-success" id="column-selectall">Select All</button>
+                        <button class="btn btn-sm btn-danger" id="column-deselectall">Deselect All</button>
+                    </div>
+                </div>
                 <div class="btn-group" data-toggle="buttons">
                     <label class="btn btn-primary">
                         <input type="checkbox" autocomplete="off" name="columns" value="">placeholder
@@ -81,8 +72,8 @@
                         <input type="checkbox" autocomplete="off" name="columns" value="">placeholder
                     </label>
                 </div>
-            </form>
-        </div>
+            </fieldset>
+        </form>
     </div>
 </div>
 

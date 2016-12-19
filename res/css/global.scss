@@ -1,12 +1,6 @@
-// Import Bootstrap/Bootswatch components
+// Bootstrap/Bootswatch components
 @import "variables";
 @import "bootstrap";
 @import "bootswatch";
-// Import styling for Bootstrap-select plugin
-@import "bootstrap-select/bootstrap-select";
-
-// Used for reducing top/bottom padding
-.no-pad-top-bottom {
-  padding-top: 0;
-  padding-bottom: 0;
-}
+// Custom styling
+@import "custom";
