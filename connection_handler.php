@@ -22,6 +22,16 @@ switch ($function) {
         $data['text'] = $tables;
         break;
 
+    case ('getColumns'):
+        $table = $_POST['table'];
+        // Check validity of table name
+        $whitelisted_table = $conn->validateTable($table);
+        if (!$whitelisted_table) {
+            // TODO: coordinate this with JS code when table name isn't valid
+        } else {
+            // TODO: call $conn->getColumns($whitelisted_table)
+        }
+        break;
 }
 
 // ensure that database connection is closed

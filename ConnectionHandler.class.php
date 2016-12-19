@@ -111,4 +111,10 @@ class ConnectionHandler {
     public function getTables() {
         return $this->table_whitelist;
     }
+
+
+    public function getColumns($whitelisted_table) {
+        $stmt = $this->db->query("SHOW COLUMNS FROM $whitelisted_table");
+        // TODO: do something with $stmt results
+    }
 }
