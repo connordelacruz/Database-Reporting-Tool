@@ -1,5 +1,8 @@
 # IDE workspace
 .idea
 
+# test files
+test
+
 # config file
 config.*
