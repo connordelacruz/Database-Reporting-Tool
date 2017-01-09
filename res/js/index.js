@@ -71,13 +71,16 @@ function getColumns(table) {
 
 function populateColumnSelect() {
     // For each column, add an option to #column-select
-    var columnSelect = $('#column-select');
+    var columnSelect = $('#column-select'); // TODO: display issues, wrap in a clearfix div?
     for(var i = 0; i < columns.length; i++) {
-        var option = "<option name='column' value='" + columns[i] + "'>" + columns[i] + "</option>";
+        //var option = "<option name='column' value='" + columns[i] + "'>" + columns[i] + "</option>";
+        var option = '<div class="checkbox"><label><input type="checkbox" value="' + columns[i] + '">' + columns[i] + '</label></div>';
         columnSelect.append(option);
     }
+    // To fix issues with the content extending outside the div
+    columnSelect.append('<div class="clearfix"></div>');
     // columnSelect is disabled until populated with column names
-    columnSelect.prop('disabled', false);
+    // columnSelect.prop('disabled', false); TODO: no longer an input object, remove disable/enable stuff
     // expand column select div
     $('#column-select-div').collapse('show');
 }

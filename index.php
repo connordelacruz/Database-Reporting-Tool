@@ -31,7 +31,7 @@
             <fieldset>
                 <legend>Table</legend>
                 <div class="form-group">
-                    <label class="control-label sr-only" for="table-select">Table:</label>
+                    <label class="control-label" for="table-select">Table:</label>
                     <!-- TODO: give some indication that it's loading -->
                     <select class="form-control" id="table-select" name="table-select" required disabled>
                         <option id="placeholder" value="" disabled selected>Select a table</option>
@@ -50,11 +50,14 @@
             <fieldset>
                 <legend>Columns</legend>
                 <div class="form-group">
-                    <label class="control-label sr-only" for="column-select">Columns to display:</label>
-                    <select multiple class="form-control" id="column-select" name="column-select" required disabled>
-                        <option id="placeholder" value="" disabled selected>Select columns to display</option>
-                    </select>
+                    <label class="control-label" for="column-select">Columns to display:</label>
+                    <div class="form-control" id="column-select">
+                    </div>
+                    <div id="generate-report-div">
+                        <button class="btn btn-primary" type="submit" name="generate-report" id="generate-report">Generate Report</button>
+                    </div>
                 </div>
+
             </fieldset>
         </form>
     </div>
