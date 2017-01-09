@@ -2,7 +2,7 @@
 .idea
 
 # test files
-test
+*_test.php
 
 # config file
 config.*
