@@ -6,6 +6,11 @@
 
 // Array of table names from the database
 var tables;
+// Currently selected table
+var currentTable;
+// Columns in currently selected table
+var columns;
+// TODO: store array of columns by table for quicker access in same session?
 
 
 /* Functions */
@@ -18,17 +23,20 @@ function getTables() {
         dataType: "json",
         success: function (data) {
             tables = data.text;
+            // Display these tables on the page
+            populateTableSelect();
         }
     });
 }
 
 
 function populateTableSelect() {
+    // TODO: remove commented code. populateTableSelect() is called when getTables() finishes
     // If the ajax query in getTables() hasn't received the data yet, try again in 1000ms
-    if (tables === undefined) {
+    /*if (tables === undefined) {
         setTimeout(populateTableSelect, 1000);
         return;
-    }
+    }*/
 
     // For each table, add an option to #table-select
     var tableSelect = $('#table-select');
@@ -36,21 +44,42 @@ function populateTableSelect() {
         var option = "<option name='table' value='" + tables[i] + "'>" + tables[i] + "</option>";
         tableSelect.append(option);
     }
+    // tableSelect is disabled until populated with tables
+    tableSelect.prop('disabled', false);
 }
 
 
 function getColumns(table) {
     // TODO: expand #column-select-div and show loading spinner?
 
-    $.post("connection_handler.php", 
-        {
-            table: table,
-            function: 'getColumns'
+    $.ajax({
+        type: "POST",
+        url: "connection_handler.php",
+        data: {
+            'table': table,
+            'function': 'getColumns'
         },
-        function (data) {
-            // TODO: columns should be returned in data
+        dataType: "json",
+        success: function (data) {
+            columns = data.text;
+            // display columns on the page
+            populateColumnSelect();
+        }
+    });
+}
 
-        });
+
+function populateColumnSelect() {
+    // For each column, add an option to #column-select
+    var columnSelect = $('#column-select');
+    for(var i = 0; i < columns.length; i++) {
+        var option = "<option name='column' value='" + columns[i] + "'>" + columns[i] + "</option>";
+        columnSelect.append(option);
+    }
+    // columnSelect is disabled until populated with column names
+    columnSelect.prop('disabled', false);
+    // expand column select div
+    $('#column-select-div').collapse('show');
 }
 
 /* Executed on page load */
@@ -58,7 +87,6 @@ function getColumns(table) {
 $(function () {
     // retrieve the table names and add them to #table-select
     getTables();
-    populateTableSelect();
 
     // Add onsubmit listener to table select form
     var tableSelectForm = $('#table-select-form');
@@ -73,10 +101,10 @@ $(function () {
         tableSelect.prop('disabled', true);
 
         // get the selected table name
-        var table = tableSelect.find(':selected').text();
+        currentTable = tableSelect.find(':selected').text();
 
         // get the columns for this table
-        getColumns(table);
+        getColumns(currentTable);
 
     });
 });

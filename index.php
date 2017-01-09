@@ -24,7 +24,6 @@
 <div class="container">
     <h1>Report Generator</h1>
 
-    <!-- TODO: show which database is currently being used for clarity -->
     <div class="well-sm text-muted">Database: <?php echo parse_ini_file('config.ini')['SQL_DATABASE']; ?></div>
 
     <div class="well" id="table-select-div">
@@ -33,9 +32,9 @@
                 <legend>Table</legend>
                 <div class="form-group">
                     <label class="control-label sr-only" for="table-select">Table:</label>
-                    <!-- TODO: disable this until populated with results (and give some indication that it's loading -->
-                    <select class="form-control" id="table-select" name="table-select" required>
-                        <option id="placeholder" value="" disabled selected>Select a Table</option>
+                    <!-- TODO: give some indication that it's loading -->
+                    <select class="form-control" id="table-select" name="table-select" required disabled>
+                        <option id="placeholder" value="" disabled selected>Select a table</option>
                     </select>
                 </div>
                 <div class="collapse in" id="table-submit-div">
@@ -50,35 +49,11 @@
         <form class="form-vertical" id="column-select-form">
             <fieldset>
                 <legend>Columns</legend>
-                <label class="control-label">Select which columns to display:</label>
                 <div class="form-group">
-                    <div class="btn-group">
-                        <button class="btn btn-sm btn-success" id="column-selectall">Select All</button>
-                        <button class="btn btn-sm btn-danger" id="column-deselectall">Deselect All</button>
-                    </div>
-                </div>
-                <div class="form-group btn-group" data-toggle="buttons">
-                    <label class="btn btn-primary">
-                        <input type="checkbox" autocomplete="off" name="columns" value="">placeholder
-                    </label>
-                    <label class="btn btn-primary">
-                        <input type="checkbox" autocomplete="off" name="columns" value="">placeholder
-                    </label>
-                    <label class="btn btn-primary">
-                        <input type="checkbox" autocomplete="off" name="columns" value="">placeholder
-                    </label>
-                    <label class="btn btn-primary">
-                        <input type="checkbox" autocomplete="off" name="columns" value="">placeholder
-                    </label>
-                    <label class="btn btn-primary">
-                        <input type="checkbox" autocomplete="off" name="columns" value="">placeholder
-                    </label>
-                    <label class="btn btn-primary">
-                        <input type="checkbox" autocomplete="off" name="columns" value="">placeholder
-                    </label>
-                </div>
-                <div class="form-group">
-                    <button class="btn btn-primary" type="submit" name="column-submit" id="column-submit">Generate Report</button>
+                    <label class="control-label sr-only" for="column-select">Columns to display:</label>
+                    <select multiple class="form-control" id="column-select" name="column-select" required disabled>
+                        <option id="placeholder" value="" disabled selected>Select columns to display</option>
+                    </select>
                 </div>
             </fieldset>
         </form>

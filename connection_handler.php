@@ -28,9 +28,16 @@ switch ($function) {
         $whitelisted_table = $conn->validateTable($table);
         if (!$whitelisted_table) {
             // TODO: coordinate this with JS code when table name isn't valid
-        } else {
-            // TODO: call $conn->getColumns($whitelisted_table)
+            break;
         }
+        $columnData = $conn->getColumns($whitelisted_table);
+        // return column names
+        $columnNames = [];
+        foreach ($columnData as $column) {
+            $columnNames[] = $column['Field'];
+        }
+        $data['text'] = $columnNames;
+
         break;
 }
 

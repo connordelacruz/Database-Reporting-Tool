@@ -21,14 +21,6 @@ class ConnectionHandler {
         if (file_exists('config.ini')) {
             $ini = parse_ini_file('config.ini');
 
-            /*
-            // Iterate through each key in the ini file and assign it to a PHP variable of the same name
-            foreach ($ini as $key => $value) {
-                // Config property names match their corresponding private vars in this class
-                $this->{$key} = $value;
-            }
-            */
-
             // For clarity, using static variable assignment instead of dynamic
             $this->SQL_SERVER = $ini['SQL_SERVER'];
             $this->SQL_DATABASE = $ini['SQL_DATABASE'];
@@ -88,9 +80,8 @@ class ConnectionHandler {
      * is whitelisted.
      */
     public function validateTable($table) {
-        global $table_whitelist;
         // Check if the table is in the whitelist
-        $whitelist_key = array_search($table, $table_whitelist);
+        $whitelist_key = array_search($table, $this->table_whitelist);
         // If the search returns false, then return false
         if ($whitelist_key === false)
             return false;
@@ -98,7 +89,7 @@ class ConnectionHandler {
         else {
             // strings in the table aren't surrounded by `s, so we can add them here without issues
             // (http://php.net/manual/en/pdo.quote.php#112169)
-            $to_return = $table_whitelist[$whitelist_key];
+            $to_return = $this->table_whitelist[$whitelist_key];
             $to_return = "`" . str_replace("`", "``", $to_return) . "`";
             return $to_return;
         }
@@ -113,8 +104,11 @@ class ConnectionHandler {
     }
 
 
+    // TODO: should have check her rather than externally?
     public function getColumns($whitelisted_table) {
         $stmt = $this->db->query("SHOW COLUMNS FROM $whitelisted_table");
-        // TODO: do something with $stmt results
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
     }
 }
