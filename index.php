@@ -27,7 +27,7 @@
     <div class="well-sm text-muted">Database: <?php echo parse_ini_file('config.ini')['SQL_DATABASE']; ?></div>
 
     <div class="well" id="table-select-div">
-        <form class="form-vertical" id="report-options" action="generate.php" method="post">
+        <form class="form-vertical" id="report-options" action="generate.php" method="post" target="_blank">
             <fieldset>
                 <legend>Table</legend>
                 <div class="form-group">
