@@ -37,7 +37,10 @@ switch ($function) {
             $columnNames[] = $column['Field'];
         }
         $data['text'] = $columnNames;
+        break;
 
+    case ('generateReport'):
+        // TODO: create db report
         break;
 }
 

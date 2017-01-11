@@ -64,7 +64,7 @@ function populateColumnSelect() {
     // For each column, add an option to #column-select
     var columnSelect = $('#column-select');
     for(var i = 0; i < columns.length; i++) {
-        var option = '<div class="checkbox"><label><input type="checkbox" name="column-option" class="column-option" value="' + columns[i] + '">' + columns[i] + '</label></div>';
+        var option = '<div class="checkbox"><label><input type="checkbox" name="column-option[]" class="column-option" value="' + columns[i] + '">' + columns[i] + '</label></div>';
         columnSelect.append(option);
     }
     // Add listener to column-select-all
@@ -115,7 +115,7 @@ $(function () {
     // Add onsubmit listener to column select form
     var columnSelectForm = $('#column-select-form');
 
-    columnSelectForm.submit(function (event) {
+    /*columnSelectForm.submit(function (event) {
         event.preventDefault();
 
         // get the checked fields
@@ -125,5 +125,5 @@ $(function () {
         });
 
         // TODO: generate report
-    });
+    });*/
 });

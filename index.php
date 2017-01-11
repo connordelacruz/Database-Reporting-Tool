@@ -45,7 +45,7 @@
     </div>
 
     <div class="well collapse" id="column-select-div">
-        <form class="form-vertical" id="column-select-form">
+        <form class="form-vertical" id="column-select-form" action="generate.php" method="post">
             <fieldset>
                 <legend>Columns</legend>
                 <div class="form-group">
