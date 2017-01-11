@@ -43,9 +43,7 @@
                     <legend>Columns</legend>
                     <div class="form-group">
                         <label class="control-label" for="column-select">Columns to display:</label>
-                        <div id="column-select">
-
-                        </div>
+                        <div id="column-select"></div>
                         <div id="generate-report-div">
                             <button class="btn btn-primary" type="submit" name="generate-report" id="generate-report">Generate Report</button>
                         </div>

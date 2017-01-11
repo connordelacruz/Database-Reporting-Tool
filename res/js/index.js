@@ -15,6 +15,9 @@ var columns;
 
 /* Functions */
 
+/**
+ * Gets a list of accessible tables from database and calls populateTableSelect() on success
+ */
 function getTables() {
     $.ajax({
         type: "POST",
@@ -30,6 +33,9 @@ function getTables() {
 }
 
 
+/**
+ * Populates #table-select with options containing table names. This function is called on success of getTables()
+ */
 function populateTableSelect() {
     // For each table, add an option to #table-select
     var tableSelect = $('#table-select');
@@ -42,6 +48,10 @@ function populateTableSelect() {
 }
 
 
+/**
+ * Gets a list of columns from the table and calls populateColumnSelect() on success
+ * @param table The table to get columns from
+ */
 function getColumns(table) {
     $.ajax({
         type: "POST",
@@ -60,6 +70,9 @@ function getColumns(table) {
 }
 
 
+/**
+ * Populates #column-select with checkboxes containing column names. This function is called on success of getColumns()
+ */
 function populateColumnSelect() {
     // For each column, add an option to #column-select
     var columnSelect = $('#column-select');

@@ -38,10 +38,6 @@ switch ($function) {
         }
         $data['text'] = $columnNames;
         break;
-
-    case ('generateReport'):
-        // TODO: create db report
-        break;
 }
 
 // ensure that database connection is closed
