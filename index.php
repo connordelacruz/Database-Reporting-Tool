@@ -51,6 +51,9 @@
                 <div class="form-group">
                     <label class="control-label" for="column-select">Columns to display:</label>
                     <div id="column-select">
+                        <div class="checkbox">
+                            <label><input type="checkbox" id="column-select-all">Select All</label>
+                        </div>
                     </div>
                     <div id="generate-report-div">
                         <button class="btn btn-primary" type="submit" name="generate-report" id="generate-report">Generate Report</button>

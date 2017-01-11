@@ -31,13 +31,6 @@ function getTables() {
 
 
 function populateTableSelect() {
-    // TODO: remove commented code. populateTableSelect() is called when getTables() finishes
-    // If the ajax query in getTables() hasn't received the data yet, try again in 1000ms
-    /*if (tables === undefined) {
-        setTimeout(populateTableSelect, 1000);
-        return;
-    }*/
-
     // For each table, add an option to #table-select
     var tableSelect = $('#table-select');
     for (var i = 0; i < tables.length; i++) {
@@ -50,8 +43,6 @@ function populateTableSelect() {
 
 
 function getColumns(table) {
-    // TODO: expand #column-select-div and show loading spinner?
-
     $.ajax({
         type: "POST",
         url: "connection_handler.php",
@@ -73,10 +64,24 @@ function populateColumnSelect() {
     // For each column, add an option to #column-select
     var columnSelect = $('#column-select');
     for(var i = 0; i < columns.length; i++) {
-        //var option = "<option name='column' value='" + columns[i] + "'>" + columns[i] + "</option>";
-        var option = '<div class="checkbox"><label><input type="checkbox" value="' + columns[i] + '">' + columns[i] + '</label></div>';
+        var option = '<div class="checkbox"><label><input type="checkbox" name="column-option" class="column-option" value="' + columns[i] + '">' + columns[i] + '</label></div>';
         columnSelect.append(option);
     }
+    // Add listener to column-select-all
+    $('#column-select-all').change(function () {
+        $('.column-option').prop('checked', $(this).prop('checked'));
+    });
+    // Add listeners to all .column-option checkboxes to uncheck #column-select-all if one of them is changed
+    $('.column-option').change(function () {
+       if ($(this).prop('checked') == false) {
+           $('#column-select-all').prop('checked', false);
+       }
+       if ($('.column-option:checked').length == $('.column-option').length) {
+           $('#column-select-all').prop('checked', true);
+       }
+    });
+
+
     // expand column select div
     $('#column-select-div').collapse('show');
 }
@@ -105,6 +110,20 @@ $(function () {
 
         // get the columns for this table
         getColumns(currentTable);
+    });
 
+    // Add onsubmit listener to column select form
+    var columnSelectForm = $('#column-select-form');
+
+    columnSelectForm.submit(function (event) {
+        event.preventDefault();
+
+        // get the checked fields
+        var checked = [];
+        $('.column-option:checked').each(function () {
+            checked.push($(this).val());
+        });
+
+        // TODO: generate report
     });
 });
