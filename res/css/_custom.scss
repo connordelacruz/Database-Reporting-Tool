@@ -7,3 +7,8 @@
   padding-top: 0;
   padding-bottom: 0;
 }
+
+// For placeholder text in select
+option[value=""]:disabled {
+  display: none;
+}

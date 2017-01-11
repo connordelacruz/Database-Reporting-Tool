@@ -44,14 +44,13 @@
         </form>
     </div>
 
-    <!-- TODO: un-collapse this when columns are loaded -->
     <div class="well collapse" id="column-select-div">
         <form class="form-vertical" id="column-select-form">
             <fieldset>
                 <legend>Columns</legend>
                 <div class="form-group">
                     <label class="control-label" for="column-select">Columns to display:</label>
-                    <div class="form-control" id="column-select">
+                    <div id="column-select">
                     </div>
                     <div id="generate-report-div">
                         <button class="btn btn-primary" type="submit" name="generate-report" id="generate-report">Generate Report</button>

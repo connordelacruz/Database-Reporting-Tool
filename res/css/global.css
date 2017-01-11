@@ -6616,4 +6616,7 @@ input[type="checkbox"],
   padding-top: 0;
   padding-bottom: 0; }
 
+option[value=""]:disabled {
+  display: none; }
+
 /*# sourceMappingURL=global.css.map */
