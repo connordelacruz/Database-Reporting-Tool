@@ -27,42 +27,34 @@
     <div class="well-sm text-muted">Database: <?php echo parse_ini_file('config.ini')['SQL_DATABASE']; ?></div>
 
     <div class="well" id="table-select-div">
-        <form class="form-vertical" id="table-select-form">
+        <form class="form-vertical" id="report-options" action="generate.php" method="post">
             <fieldset>
                 <legend>Table</legend>
                 <div class="form-group">
                     <label class="control-label" for="table-select">Table:</label>
-                    <!-- TODO: give some indication that it's loading -->
                     <select class="form-control" id="table-select" name="table-select" required disabled>
                         <option id="placeholder" value="" disabled selected>Select a table</option>
                     </select>
                 </div>
-                <div class="collapse in" id="table-submit-div">
-                    <button class="btn btn-primary" type="submit" name="table-submit" id="table-submit">Continue</button>
-                </div>
             </fieldset>
-        </form>
-    </div>
 
-    <div class="well collapse" id="column-select-div">
-        <form class="form-vertical" id="column-select-form" action="generate.php" method="post">
-            <fieldset>
-                <legend>Columns</legend>
-                <div class="form-group">
-                    <label class="control-label" for="column-select">Columns to display:</label>
-                    <div id="column-select">
-                        <div class="checkbox">
-                            <label><input type="checkbox" id="column-select-all">Select All</label>
+            <div class="collapse" id="column-select-div">
+                <fieldset>
+                    <legend>Columns</legend>
+                    <div class="form-group">
+                        <label class="control-label" for="column-select">Columns to display:</label>
+                        <div id="column-select">
+
+                        </div>
+                        <div id="generate-report-div">
+                            <button class="btn btn-primary" type="submit" name="generate-report" id="generate-report">Generate Report</button>
                         </div>
                     </div>
-                    <div id="generate-report-div">
-                        <button class="btn btn-primary" type="submit" name="generate-report" id="generate-report">Generate Report</button>
-                    </div>
-                </div>
-
-            </fieldset>
+                </fieldset>
+            </div>
         </form>
     </div>
+
 </div>
 
 </body>

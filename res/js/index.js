@@ -63,6 +63,8 @@ function getColumns(table) {
 function populateColumnSelect() {
     // For each column, add an option to #column-select
     var columnSelect = $('#column-select');
+    // Add select all button and clear out column names from previous table
+    columnSelect.html('<div class="checkbox"><label><input type="checkbox" id="column-select-all">Select All</label></div>');
     for(var i = 0; i < columns.length; i++) {
         var option = '<div class="checkbox"><label><input type="checkbox" name="column-option[]" class="column-option" value="' + columns[i] + '">' + columns[i] + '</label></div>';
         columnSelect.append(option);
@@ -81,7 +83,6 @@ function populateColumnSelect() {
        }
     });
 
-
     // expand column select div
     $('#column-select-div').collapse('show');
 }
@@ -93,37 +94,10 @@ $(function () {
     // retrieve the table names and add them to #table-select
     getTables();
 
-    // Add onsubmit listener to table select form
-    var tableSelectForm = $('#table-select-form');
-
-    tableSelectForm.submit(function (event) {
-        event.preventDefault();
-
-        var tableSelect = $('#table-select');
-
-        // hide submit button and disable the select field
-        $('#table-submit-div').collapse('hide');
-        tableSelect.prop('disabled', true);
-
-        // get the selected table name
-        currentTable = tableSelect.find(':selected').text();
-
-        // get the columns for this table
+    // Add listener to #table-select
+    var tableSelect = $('#table-select');
+    tableSelect.change(function () {
+        currentTable = $(this).find(':selected').val();
         getColumns(currentTable);
     });
-
-    // Add onsubmit listener to column select form
-    var columnSelectForm = $('#column-select-form');
-
-    /*columnSelectForm.submit(function (event) {
-        event.preventDefault();
-
-        // get the checked fields
-        var checked = [];
-        $('.column-option:checked').each(function () {
-            checked.push($(this).val());
-        });
-
-        // TODO: generate report
-    });*/
 });
