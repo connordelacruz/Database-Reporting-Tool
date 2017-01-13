@@ -3,7 +3,7 @@
  * Handles ajax queries for database connection
  */
 
-include_once 'ConnectionHandler.class.php';
+include_once 'autoloader.php';
 
 
 // Get the function requested by ajax query
@@ -25,12 +25,11 @@ switch ($function) {
     case ('getColumns'):
         $table = $_POST['table'];
         // Check validity of table name
-        $whitelisted_table = $conn->validateTable($table);
-        if (!$whitelisted_table) {
+        if (!$conn->validateTable($table)) {
             // TODO: coordinate this with JS code when table name isn't valid
             break;
         }
-        $columnData = $conn->getColumns($whitelisted_table);
+        $columnData = $conn->getColumns($table);
         // return column names
         $columnNames = [];
         foreach ($columnData as $column) {

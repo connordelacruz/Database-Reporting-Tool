@@ -79,7 +79,7 @@ function populateColumnSelect() {
     // Add select all button and clear out column names from previous table
     columnSelect.html('<div class="checkbox"><label><input type="checkbox" id="column-select-all">Select All</label></div>');
     for(var i = 0; i < columns.length; i++) {
-        var option = '<div class="checkbox"><label><input type="checkbox" name="column-option[]" class="column-option" value="' + columns[i] + '">' + columns[i] + '</label></div>';
+        var option = '<div class="checkbox"><label><input type="checkbox" name="columns[]" class="column-option" value="' + columns[i] + '">' + columns[i] + '</label></div>';
         columnSelect.append(option);
     }
     // Add listener to column-select-all

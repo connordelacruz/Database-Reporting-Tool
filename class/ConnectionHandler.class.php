@@ -104,11 +104,23 @@ class ConnectionHandler {
     }
 
 
-    // TODO: should have check her rather than externally?
-    public function getColumns($whitelisted_table) {
-        $stmt = $this->db->query("SHOW COLUMNS FROM $whitelisted_table");
-        $stmt->execute();
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    /**
+     * Get the column names for the specified table after ensuring it's whitelisted
+     * @param string $table The table to check for in the whitelist and retrieve column names
+     * @return array The names of the columns for the specified table
+     */
+    public function getColumns($table) {
+        // ensure that this table is valid
+        $whitelisted_table = $this->validateTable($table);
+        // $result is declared here so an empty array is returned if validateTable($table) returns false
+        $result = [];
+        // if the table is in the whitelist
+        if ($whitelisted_table) {
+            $stmt = $this->db->query("SHOW COLUMNS FROM $whitelisted_table");
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+
         return $result;
     }
 }
