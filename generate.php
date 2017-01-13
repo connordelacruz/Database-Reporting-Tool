@@ -12,6 +12,26 @@ $columns = $_POST['columns'];
 $conn = new ConnectionHandler();
 
 $selection = $conn->getRows($table, $columns);
+
+// create string with <table> element for report generation
+$tableString = "<thead><tr>";
+// handle the column headers first
+foreach ($selection[0] as $item) {
+    $tableString .= "<th>$item</th>";
+}
+$tableString .= "</tr></thead><tbody>";
+// Table body
+for($i = 1; $i < count($selection); $i++) {
+    $tableString .= "<tr>";
+    // Iterate through elements in row
+    $row = $selection[$i];
+    foreach ($row as $item) {
+        $tableString .= "<td>$item</td>";
+    }
+    $tableString .= "</tr>";
+}
+$tableString .= "</tbody>";
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -31,6 +51,11 @@ $selection = $conn->getRows($table, $columns);
 
 </head>
 <body>
-
-
+<div class="container">
+    <div class="table-responsive">
+        <table class="table">
+            <?php echo $tableString ?>
+        </table>
+    </div>
+</div>
 </body>
