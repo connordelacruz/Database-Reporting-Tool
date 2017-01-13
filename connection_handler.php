@@ -29,12 +29,8 @@ switch ($function) {
             // TODO: coordinate this with JS code when table name isn't valid
             break;
         }
-        $columnData = $conn->getColumns($table);
+        $columnNames = $conn->getColumns($table);
         // return column names
-        $columnNames = [];
-        foreach ($columnData as $column) {
-            $columnNames[] = $column['Field'];
-        }
         $data['text'] = $columnNames;
         break;
 }

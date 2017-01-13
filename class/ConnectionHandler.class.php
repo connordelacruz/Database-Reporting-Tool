@@ -15,6 +15,8 @@ class ConnectionHandler {
 
     // When dbConnect is called to initialize the database, it sets this variable to an array of table names in
     private $table_whitelist = array();
+    // an array where $column_whitelist[$table] = an array of valid columns in $table
+    //private $column_whitelist = array(); TODO: implement or remove
 
     public function __construct() {
         // Parse config.ini and retrieve configuration settings
@@ -105,22 +107,84 @@ class ConnectionHandler {
 
 
     /**
+     * Validates selected columns and returns array with all valid column names
+     * @param string $table The table to check
+     * @param array $columns Column selection to validate
+     * @return array Valid column names
+     */
+    public function validateColumns($table, $columns) {
+        // Get all valid column names (table is validated in getColumns)
+        $valid_columns = $this->getColumns($table);
+        // intersection b/w $valid_columns and $columns are all selected columns that are legitimate
+        $whitelisted_columns = array_intersect($valid_columns, $columns);
+        return $whitelisted_columns;
+    }
+
+
+    /**
+     * Takes an array of column names and puts quotation marks around them
+     * @param array $columns Whitelisted column names
+     * @return array The contents of $columns surrounded by quotes
+     */
+    public function quoteColumns($columns) {
+        foreach ($columns as $index => $column) {
+            $columns[$index] = "`" . str_replace("`", "``", $column) . "`";
+        }
+        return $columns;
+    }
+
+
+    /**
      * Get the column names for the specified table after ensuring it's whitelisted
      * @param string $table The table to check for in the whitelist and retrieve column names
      * @return array The names of the columns for the specified table
      */
     public function getColumns($table) {
-        // ensure that this table is valid
+        // check whitelist for $table
         $whitelisted_table = $this->validateTable($table);
-        // $result is declared here so an empty array is returned if validateTable($table) returns false
-        $result = [];
+        // $columnNames is declared here so an empty array is returned if validateTable($table) returns false
+        $columnNames = [];
         // if the table is in the whitelist
         if ($whitelisted_table) {
             $stmt = $this->db->query("SHOW COLUMNS FROM $whitelisted_table");
             $stmt->execute();
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        }
 
-        return $result;
+            // Get just the field names for the columns
+            foreach ($result as $column) {
+                $columnNames[] = $column['Field'];
+            }
+        }
+        return $columnNames;
+    }
+
+
+    /**
+     * Given a table name and an array of columns, returns all selected rows from table
+     * @param string $table Table name (will be validated)
+     * @param array $columns Columns (will be validated)
+     * @return array The resulting table selection
+     */
+    function getRows($table, $columns) {
+        // validate table
+        $whitelisted_table = $this->validateTable($table);
+        // Validate column names
+        $whitelisted_columns = $this->validateColumns($table, $columns);
+
+        // array of rows where $rows[0] contains an array of column headers
+        $rows = [];
+        // field headers
+        $rows[0] = $whitelisted_columns;
+        // Handle quotation marks
+        $whitelisted_columns = $this->quoteColumns($whitelisted_columns);
+        // String of column names to select separated by commas
+        $to_select = implode(',', $whitelisted_columns);
+        $stmt = $this->db->prepare("SELECT $to_select FROM $whitelisted_table");
+        $stmt->execute();
+        // Push each row to $rows
+        while($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $rows[] = $row;
+        }
+        return $rows;
     }
 }

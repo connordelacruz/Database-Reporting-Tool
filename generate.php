@@ -11,7 +11,7 @@ $columns = $_POST['columns'];
 
 $conn = new ConnectionHandler();
 
-
+$selection = $conn->getRows($table, $columns);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -32,8 +32,5 @@ $conn = new ConnectionHandler();
 </head>
 <body>
 
-<?php
-
-?>
 
 </body>
