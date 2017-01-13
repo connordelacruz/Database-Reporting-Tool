@@ -52,8 +52,9 @@ $tableString .= "</tbody>";
 </head>
 <body>
 <div class="container">
+    <h1><?php echo $table ?></h1>
     <div class="table-responsive">
-        <table class="table">
+        <table class="table table-striped">
             <?php echo $tableString ?>
         </table>
     </div>
