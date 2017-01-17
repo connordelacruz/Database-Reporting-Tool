@@ -45,7 +45,7 @@
                         <label class="control-label" for="column-select">Columns to display:</label>
                         <div id="column-select"></div>
                         <div id="generate-report-div">
-                            <button class="btn btn-primary" type="submit" name="generate-report" id="generate-report">Generate Report</button>
+                            <button class="btn btn-primary" type="submit" name="generate-report" id="generate-report" disabled>Generate Report</button>
                         </div>
                     </div>
                 </fieldset>

@@ -12,6 +12,8 @@ var currentTable;
 var columns;
 // TODO: store array of columns by table for quicker access in same session?
 
+// Spinning icon to display while loading
+var loader = '<div class="loader"><svg class="circular" viewBox="25 25 50 50"><circle id="loader-circle" class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="10"/></svg></div>';
 
 /* Functions */
 
@@ -96,8 +98,19 @@ function populateColumnSelect() {
        }
     });
 
-    // expand column select div
-    $('#column-select-div').collapse('show');
+    // re-enable #generate-report
+    $('#generate-report').prop('disabled', false);
+}
+
+
+/**
+ * Removed column select options, display loader, and disables #generate-report. Used when a new table is selected
+ */
+function clearColumnSelect() {
+    // disable report generator button
+    $('#generate-report').prop('disabled', true);
+    // clear column options and display loading icon
+    $('#column-select').html(loader);
 }
 
 
@@ -110,6 +123,10 @@ $(function () {
     // Add listener to #table-select
     var tableSelect = $('#table-select');
     tableSelect.change(function () {
+        // expand column select div
+        $('#column-select-div').collapse('show');
+        // clear any existing options and show loader
+        clearColumnSelect();
         currentTable = $(this).find(':selected').val();
         getColumns(currentTable);
     });
