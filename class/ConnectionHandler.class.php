@@ -6,9 +6,7 @@
 class ConnectionHandler {
 
     // variables with connection settings from config.ini
-    private $SQL_SERVER, $SQL_DATABASE, $SQL_PORT, $SQL_USER, $SQL_PASSWORD,
-        $SAVED_REPORTS_SQL_SERVER, $SAVED_REPORTS_SQL_USER, $SAVED_REPORTS_SQL_PASSWORD,
-        $SAVED_REPORTS_SQL_DATABASE, $SAVED_REPORTS_SQL_PORT;
+    private $SQL_SERVER, $SQL_DATABASE, $SQL_PORT, $SQL_USER, $SQL_PASSWORD;
 
     // PDO object used to connect to the database. Assigned at construction
     private $db;
@@ -29,12 +27,6 @@ class ConnectionHandler {
             $this->SQL_PORT = $ini['SQL_PORT'];
             $this->SQL_USER = $ini['SQL_USER'];
             $this->SQL_PASSWORD = $ini['SQL_PASSWORD'];
-
-            $this->SAVED_REPORTS_SQL_SERVER = $ini['SAVED_REPORTS_SQL_SERVER'];
-            $this->SAVED_REPORTS_SQL_DATABASE = $ini['SAVED_REPORTS_SQL_DATABASE'];
-            $this->SAVED_REPORTS_SQL_PORT = $ini['SAVED_REPORTS_SQL_PORT'];
-            $this->SAVED_REPORTS_SQL_USER = $ini['SAVED_REPORTS_SQL_USER'];
-            $this->SAVED_REPORTS_SQL_PASSWORD = $ini['SAVED_REPORTS_SQL_PASSWORD'];
         }
         // If config.ini doesn't exist, then the connection will fail because the connection info wasn't specified
         else {
