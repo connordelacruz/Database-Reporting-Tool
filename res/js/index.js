@@ -17,6 +17,12 @@ var loader = '<div class="loader"><svg class="circular" viewBox="25 25 50 50"><c
 
 /* Functions */
 
+
+function loadTableSelect() {
+    $('#table-select-div').html(loader);
+}
+
+
 /**
  * Gets a list of accessible tables from database and calls populateTableSelect() on success
  */
@@ -39,14 +45,36 @@ function getTables() {
  * Populates #table-select with options containing table names. This function is called on success of getTables()
  */
 function populateTableSelect() {
-    // For each table, add an option to #table-select
-    var tableSelect = $('#table-select');
+    // The div where all of these will be inserted
+    var tableSelectDiv = $('#table-select-div');
+    // the label for #table-select
+    var tableSelectLabel = '<label class="control-label" for="table-select">Table:</label>';
+    // The table select element
+    // var tableSelect = $('#table-select');
+    var tableSelect = $('<select class="form-control" id="table-select" name="table-select" required></select>');
+
+    // add placeholder text
+    tableSelect.append('<option id="placeholder" value="" disabled selected>Select a table</option>');
+
     for (var i = 0; i < tables.length; i++) {
         var option = "<option name='table' value='" + tables[i] + "'>" + tables[i] + "</option>";
         tableSelect.append(option);
     }
+    // Add listener to table select
+    tableSelect.change(function () {
+        // expand column select div
+        $('#column-select-div').collapse('show');
+        // clear any existing options and show loader
+        clearColumnSelect();
+        currentTable = $(this).find(':selected').val();
+        getColumns(currentTable);
+    });
+
     // tableSelect is disabled until populated with tables
-    tableSelect.prop('disabled', false);
+    // tableSelect.prop('disabled', false);
+    // Add the elements to the page
+    tableSelectDiv.html(tableSelectLabel);
+    tableSelectDiv.append(tableSelect);
 }
 
 
@@ -117,17 +145,19 @@ function clearColumnSelect() {
 /* Executed on page load */
 
 $(function () {
+    // display loading icon while table select is populated
+    loadTableSelect();
     // retrieve the table names and add them to #table-select
     getTables();
 
     // Add listener to #table-select
-    var tableSelect = $('#table-select');
-    tableSelect.change(function () {
-        // expand column select div
-        $('#column-select-div').collapse('show');
-        // clear any existing options and show loader
-        clearColumnSelect();
-        currentTable = $(this).find(':selected').val();
-        getColumns(currentTable);
-    });
+    /*var tableSelect = $('#table-select');
+     tableSelect.change(function () {
+     // expand column select div
+     $('#column-select-div').collapse('show');
+     // clear any existing options and show loader
+     clearColumnSelect();
+     currentTable = $(this).find(':selected').val();
+     getColumns(currentTable);
+     });*/
 });
