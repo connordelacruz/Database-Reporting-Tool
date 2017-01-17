@@ -18,6 +18,9 @@ var loader = '<div class="loader"><svg class="circular" viewBox="25 25 50 50"><c
 /* Functions */
 
 
+/**
+ * clears #table-select-div contents and displays loader. Called on page load before retrieving tables.
+ */
 function loadTableSelect() {
     $('#table-select-div').html(loader);
 }
@@ -27,6 +30,8 @@ function loadTableSelect() {
  * Gets a list of accessible tables from database and calls populateTableSelect() on success
  */
 function getTables() {
+    // display loading icon while table select is populated
+    loadTableSelect();
     $.ajax({
         type: "POST",
         url: "connection_handler.php",
@@ -50,7 +55,6 @@ function populateTableSelect() {
     // the label for #table-select
     var tableSelectLabel = '<label class="control-label" for="table-select">Table:</label>';
     // The table select element
-    // var tableSelect = $('#table-select');
     var tableSelect = $('<select class="form-control" id="table-select" name="table-select" required></select>');
 
     // add placeholder text
@@ -70,8 +74,6 @@ function populateTableSelect() {
         getColumns(currentTable);
     });
 
-    // tableSelect is disabled until populated with tables
-    // tableSelect.prop('disabled', false);
     // Add the elements to the page
     tableSelectDiv.html(tableSelectLabel);
     tableSelectDiv.append(tableSelect);
@@ -145,19 +147,6 @@ function clearColumnSelect() {
 /* Executed on page load */
 
 $(function () {
-    // display loading icon while table select is populated
-    loadTableSelect();
     // retrieve the table names and add them to #table-select
     getTables();
-
-    // Add listener to #table-select
-    /*var tableSelect = $('#table-select');
-     tableSelect.change(function () {
-     // expand column select div
-     $('#column-select-div').collapse('show');
-     // clear any existing options and show loader
-     clearColumnSelect();
-     currentTable = $(this).find(':selected').val();
-     getColumns(currentTable);
-     });*/
 });

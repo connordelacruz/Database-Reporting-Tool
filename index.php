@@ -30,12 +30,7 @@
         <form class="form-vertical" id="report-options" action="generate.php" method="post" target="_blank">
             <fieldset>
                 <legend>Table</legend>
-                <div class="form-group" id="table-select-div">
-                    <label class="control-label" for="table-select">Table:</label>
-                    <select class="form-control" id="table-select" name="table-select" required disabled>
-                        <option id="placeholder" value="" disabled selected>Select a table</option>
-                    </select>
-                </div>
+                <div class="form-group" id="table-select-div"></div>
             </fieldset>
 
             <div class="collapse" id="column-select-div">
