@@ -54,7 +54,7 @@ $tableString .= "</tbody>";
 <div class="container">
     <h1><?php echo $table ?></h1>
     <div class="table-responsive">
-        <table class="table table-striped">
+        <table class="table table-striped table-bordered">
             <?php echo $tableString ?>
         </table>
     </div>

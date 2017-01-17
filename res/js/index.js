@@ -10,7 +10,6 @@ var tables;
 var currentTable;
 // Columns in currently selected table
 var columns;
-// TODO: store array of columns by table for quicker access in same session?
 
 // Spinning icon to display while loading
 var loader = '<div class="loader"><svg class="circular" viewBox="25 25 50 50"><circle id="loader-circle" class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="10"/></svg></div>';
@@ -109,9 +108,9 @@ function populateColumnSelect() {
     // For each column, add an option to #column-select
     var columnSelect = $('#column-select');
     // Add select all button and clear out column names from previous table
-    columnSelect.html('<div class="checkbox"><label><input type="checkbox" id="column-select-all">Select All</label></div>');
+    columnSelect.html('<div class="checkbox"><label><input type="checkbox" id="column-select-all" checked>Select All</label></div>');
     for(var i = 0; i < columns.length; i++) {
-        var option = '<div class="checkbox"><label><input type="checkbox" name="columns[]" class="column-option" value="' + columns[i] + '">' + columns[i] + '</label></div>';
+        var option = '<div class="checkbox"><label><input type="checkbox" name="columns[]" class="column-option" value="' + columns[i] + '" checked>' + columns[i] + '</label></div>';
         columnSelect.append(option);
     }
     // Add listener to column-select-all
