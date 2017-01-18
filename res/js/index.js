@@ -127,8 +127,9 @@ function populateColumnSelect() {
        }
     });
 
-    // re-enable #generate-report
+    // re-enable generate and export buttons
     $('#generate-report').prop('disabled', false);
+    $('#export-csv').prop('disabled',false);
 }
 
 
@@ -138,6 +139,7 @@ function populateColumnSelect() {
 function clearColumnSelect() {
     // disable report generator button
     $('#generate-report').prop('disabled', true);
+    $('#export-csv').prop('disabled',true);
     // clear column options and display loading icon
     $('#column-select').html(loader);
 }
