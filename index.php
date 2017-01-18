@@ -43,6 +43,7 @@
                             <button class="btn btn-primary" type="submit" name="generate-report" id="generate-report" disabled>Generate Report</button>
                             <button class="btn btn-success btn-sm" type="submit" name="export-csv" id="export-csv" disabled>Export as CSV</button>
                         </div>
+                        <div id="error-div"></div>
                     </div>
                 </fieldset>
             </div>

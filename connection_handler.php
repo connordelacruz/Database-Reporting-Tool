@@ -27,6 +27,7 @@ switch ($function) {
         // Check validity of table name
         if (!$conn->validateTable($table)) {
             // TODO: coordinate this with JS code when table name isn't valid
+            $data['err'] = "The table $table does not appear to be valid.";
             break;
         }
         $columnNames = $conn->getColumns($table);

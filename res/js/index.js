@@ -14,8 +14,8 @@ var columns;
 // Spinning icon to display while loading
 var loader = '<div class="loader"><svg class="circular" viewBox="25 25 50 50"><circle id="loader-circle" class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="10"/></svg></div>';
 
-/* Functions */
 
+/* Functions */
 
 /**
  * clears #table-select-div contents and displays loader. Called on page load before retrieving tables.
@@ -93,6 +93,7 @@ function getColumns(table) {
         },
         dataType: "json",
         success: function (data) {
+            // TODO: if data.err is set, then display something in #error-div
             columns = data.text;
             // display columns on the page
             populateColumnSelect();
@@ -115,16 +116,30 @@ function populateColumnSelect() {
     }
     // Add listener to column-select-all
     $('#column-select-all').change(function () {
+        // set all options to match the check property of the select all button
         $('.column-option').prop('checked', $(this).prop('checked'));
+        // if nothing is checked, submit buttons should be disabled
+        $('button[type=submit]').prop('disabled', !$(this).prop('checked'));
     });
+
     // Add listeners to all .column-option checkboxes to uncheck #column-select-all if one of them is changed
     $('.column-option').change(function () {
-       if ($(this).prop('checked') == false) {
-           $('#column-select-all').prop('checked', false);
-       }
-       if ($('.column-option:checked').length == $('.column-option').length) {
-           $('#column-select-all').prop('checked', true);
-       }
+        // uncheck select all if this gets unchecked
+        if ($(this).prop('checked') == false) {
+            $('#column-select-all').prop('checked', false);
+            // Disable submit buttons if nothing is checked
+            if ($('.column-option:checked').length == 0) {
+                $('button[type=submit]').prop('disabled', true);
+            }
+        }
+        // if this was checked, re-enable submit buttons
+        else {
+            $('button[type=submit]').prop('disabled', false);
+            // if everything else is checked, then set select all to checked
+            if ($('.column-option:checked').length == $('.column-option').length) {
+                $('#column-select-all').prop('checked', true);
+            }
+        }
     });
 
     // re-enable generate and export buttons

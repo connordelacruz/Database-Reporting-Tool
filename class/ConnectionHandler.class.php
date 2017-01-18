@@ -13,8 +13,6 @@ class ConnectionHandler {
 
     // When dbConnect is called to initialize the database, it sets this variable to an array of table names in
     private $table_whitelist = array();
-    // an array where $column_whitelist[$table] = an array of valid columns in $table
-    //private $column_whitelist = array(); TODO: implement or remove
 
     public function __construct() {
         // Parse config.ini and retrieve configuration settings
