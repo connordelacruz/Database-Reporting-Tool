@@ -41,7 +41,7 @@
                         <div id="column-select"></div>
                         <div id="generate-report-div">
                             <button class="btn btn-primary" type="submit" name="generate-report" id="generate-report" disabled>Generate Report</button>
-                            <button class="btn btn-success" type="submit" name="export-csv" id="export-csv" disabled>Export as CSV</button>
+                            <button class="btn btn-success" type="submit" name="export-csv" id="export-csv" disabled>Download Report as CSV</button>
                         </div>
                     </div>
                 </fieldset>
