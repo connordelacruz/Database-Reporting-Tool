@@ -123,7 +123,7 @@ function populateColumnSelect() {
     // For each column, add an option to #column-select
     var columnSelect = $('#column-select');
     // Add select all button and clear out column names from previous table
-    columnSelect.html('<div class="checkbox"><label><input type="checkbox" id="column-select-all" checked>Select All</label></div>');
+    columnSelect.html('<div class="checkbox"><label><input type="checkbox" id="column-select-all" checked><b>Select All</b></label></div>');
     for(var i = 0; i < columns.length; i++) {
         var option = '<div class="checkbox"><label><input type="checkbox" name="columns[]" class="column-option" value="' + columns[i] + '" checked>' + columns[i] + '</label></div>';
         columnSelect.append(option);
