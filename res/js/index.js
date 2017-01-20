@@ -165,4 +165,6 @@ function clearColumnSelect() {
 $(function () {
     // retrieve the table names and add them to #table-select
     getTables();
+    // initialize tooltips
+    $('[data-toggle="tooltip"]').tooltip();
 });
