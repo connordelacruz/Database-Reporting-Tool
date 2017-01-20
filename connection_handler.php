@@ -1,6 +1,7 @@
 <?php
 /**
  * Handles ajax queries for database connection
+ * @author Connor de la Cruz
  */
 
 include_once 'autoloader.php';
@@ -14,6 +15,7 @@ $data = array();
 // Instantiate connection handler
 $conn = new ConnectionHandler();
 
+// Determine what function to perform based on query
 switch ($function) {
 
     case ('getTables'):
@@ -26,8 +28,8 @@ switch ($function) {
         $table = $_POST['table'];
         // Check validity of table name
         if (!$conn->validateTable($table)) {
-            // TODO: coordinate this with JS code when table name isn't valid
-            $data['err'] = "The table $table does not appear to be valid.";
+            // if the table wasn't validated, then pass this error message back and break
+            $data['error'] = "$table does not appear to be a valid table. Please select a different table.";
             break;
         }
         $columnNames = $conn->getColumns($table);

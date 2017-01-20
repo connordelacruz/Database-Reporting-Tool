@@ -1,6 +1,7 @@
 <?php
 /**
  * Page that is loaded when report is generated
+ * @author Connor de la Cruz
  */
 
 include_once 'autoloader.php';
@@ -84,3 +85,6 @@ else {
     }
     fclose($out);
 }
+
+// ensure that database connection is closed
+$conn->closeConnection();

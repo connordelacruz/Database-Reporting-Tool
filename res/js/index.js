@@ -1,5 +1,6 @@
 /**
  * Various ajax queries used to communicate with the database
+ * @author Connor de la Cruz
  */
 
 /* Variables */
@@ -46,7 +47,8 @@ function getTables() {
 
 
 /**
- * Populates #table-select with options containing table names. This function is called on success of getTables()
+ * Populates #table-select with options containing table names.
+ * This function is called on success of getTables().
  */
 function populateTableSelect() {
     // The div where all of these will be inserted
@@ -69,6 +71,8 @@ function populateTableSelect() {
         $('#column-select-div').collapse('show');
         // clear any existing options and show loader
         clearColumnSelect();
+        // clear any error messages previously displayed
+        clearError();
         currentTable = $(this).find(':selected').val();
         getColumns(currentTable);
     });
@@ -80,7 +84,9 @@ function populateTableSelect() {
 
 
 /**
- * Gets a list of columns from the table and calls populateColumnSelect() on success
+ * Gets a list of columns from the table and calls populateColumnSelect() on success.
+ * If the table is not valid, then connection_handler.php sets data.error. If data.error is defined, then an error
+ * message is displayed and populateColumnSelect() is not called.
  * @param table The table to get columns from
  */
 function getColumns(table) {
@@ -93,17 +99,25 @@ function getColumns(table) {
         },
         dataType: "json",
         success: function (data) {
-            // TODO: if data.err is set, then display something in #error-div
+            // if data.err is set, then display something in #error-div
+            if (data.error !== undefined) {
+                displayError(data.error);
+                // clear loader from #column-select
+                $('#column-select').html('');
+            }
+            else {
             columns = data.text;
             // display columns on the page
             populateColumnSelect();
+            }
         }
     });
 }
 
 
 /**
- * Populates #column-select with checkboxes containing column names. This function is called on success of getColumns()
+ * Populates #column-select with checkboxes containing column names.
+ * This function is called on success of getColumns().
  */
 function populateColumnSelect() {
     // For each column, add an option to #column-select
@@ -160,11 +174,27 @@ function clearColumnSelect() {
 }
 
 
+/**
+ * Displays an alert in #error-div
+ * @param message The message to display
+ */
+function displayError(message) {
+    var alertString = '<div class="alert alert-danger alert-dismissable fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' + message + '</div>';
+    $('#error-div').html(alertString);
+}
+
+
+/**
+ * clears out #error-div
+ */
+function clearError() {
+    $('#error-div').html('');
+}
+
+
 /* Executed on page load */
 
 $(function () {
     // retrieve the table names and add them to #table-select
     getTables();
-    // initialize tooltips
-    $('[data-toggle="tooltip"]').tooltip();
 });

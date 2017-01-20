@@ -40,13 +40,13 @@
                         <label class="control-label" for="column-select">Columns to display:</label>
                         <div id="column-select"></div>
                         <div id="generate-report-div">
-                            <button class="btn btn-primary" type="submit" name="generate-report" id="generate-report" data-toggle="tooltip" data-placement="bottom" title="Generates the report in a new tab." disabled>Generate Report</button>
-                            <button class="btn btn-success" type="submit" name="export-csv" id="export-csv" data-toggle="tooltip" data-placement="bottom" title="Downloads a CSV file with the generated report." disabled>Export as CSV</button>
+                            <button class="btn btn-primary" type="submit" name="generate-report" id="generate-report" disabled>Generate Report</button>
+                            <button class="btn btn-success" type="submit" name="export-csv" id="export-csv" disabled>Export as CSV</button>
                         </div>
-                        <div id="error-div"></div>
                     </div>
                 </fieldset>
             </div>
+            <div id="error-div"></div>
         </form>
     </div>
 

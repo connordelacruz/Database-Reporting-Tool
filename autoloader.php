@@ -1,6 +1,7 @@
 <?php
 /**
  * Used for autoloading classes
+ * @author Connor de la Cruz
  */
 
 /**

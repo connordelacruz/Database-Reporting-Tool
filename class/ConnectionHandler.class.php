@@ -1,6 +1,7 @@
 <?php
 /**
- * Processes the information from config.php and handles connecting to the database
+ * Processes the information from config.ini and handles connecting to the database
+ * @author Connor de la Cruz
  */
 
 class ConnectionHandler {
@@ -31,7 +32,6 @@ class ConnectionHandler {
             error_log('config.ini does not exist. Create a copy of config_template.ini named config.ini and fill out connection information there.');
         }
 
-        // TODO: try-catch block?
         // Use the connection information to create PDO object
         $dsn = $this->dsn($this->SQL_SERVER, $this->SQL_DATABASE, $this->SQL_PORT);
         $this->db = new PDO($dsn, $this->SQL_USER, $this->SQL_PASSWORD, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
