@@ -19,28 +19,31 @@ var loader = '<div class="loader"><svg class="circular" viewBox="25 25 50 50"><c
 /* Functions */
 
 /**
- * clears #table-select-div contents and displays loader. Called on page load before retrieving tables.
- */
-function loadTableSelect() {
-    $('#table-select-div').html(loader);
-}
-
-
-/**
  * Gets a list of accessible tables from database and calls populateTableSelect() on success
  */
 function getTables() {
     // display loading icon while table select is populated
-    loadTableSelect();
+    var tableSelectDiv = $('#table-select-div');
+    tableSelectDiv.html(loader);
     $.ajax({
         type: "POST",
         url: "connection_handler.php",
         data: {'function' : 'getTables'},
         dataType: "json",
         success: function (data) {
+            // Check if a server-side error was thrown and stop execution if so
+            if(data.error !== undefined) {
+                displayError(data.error);
+                tableSelectDiv.html('');
+            }
             tables = data.text;
             // Display these tables on the page
             populateTableSelect();
+        },
+        error: function (jqXHR) {
+            // If an error occurred before the server could respond, display message and stop execution
+            displayError(jqXHR.responseText);
+            tableSelectDiv.html('');
         }
     });
 }
