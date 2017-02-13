@@ -36,9 +36,11 @@ function getTables() {
                 displayError(data.error);
                 tableSelectDiv.html('');
             }
-            tables = data.text;
-            // Display these tables on the page
-            populateTableSelect();
+            else {
+                tables = data.text;
+                // Display these tables on the page
+                populateTableSelect();
+            }
         },
         error: function (jqXHR) {
             // If an error occurred before the server could respond, display message and stop execution

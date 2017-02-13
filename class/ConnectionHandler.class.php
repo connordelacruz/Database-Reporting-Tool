@@ -20,7 +20,7 @@ class ConnectionHandler {
         if (file_exists('config.ini')) {
             $ini = parse_ini_file('config.ini');
 
-            // For clarity, using static variable assignment instead of dynamic
+            // TODO: check required values and throw error if not set
             $this->SQL_SERVER = $ini['SQL_SERVER'];
             $this->SQL_DATABASE = $ini['SQL_DATABASE'];
             $this->SQL_PORT = $ini['SQL_PORT'];
@@ -29,6 +29,7 @@ class ConnectionHandler {
         }
         // If config.ini doesn't exist, then the connection will fail because the connection info wasn't specified
         else {
+            // TODO: throw exception instead of just logging error. connection_handler.php will catch it and handle it
             error_log('config.ini does not exist. Create a copy of config_template.ini named config.ini and fill out connection information there.');
         }
 
