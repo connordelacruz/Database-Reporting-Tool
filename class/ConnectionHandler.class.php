@@ -6,8 +6,10 @@
 
 class ConnectionHandler {
 
-    // variables with connection settings from config.ini
-    private $SQL_SERVER, $SQL_DATABASE, $SQL_PORT, $SQL_USER, $SQL_PASSWORD;
+    /* Array to store connection info from config.ini
+     * Keys: SQL_SERVER, SQL_DATABASE, SQL_PORT, SQL_USER, SQL_PASSWORD */
+    private $conf = [];
+    // TODO: keep a const array with default values for each key?
 
     // PDO object used to connect to the database. Assigned at construction
     private $db;
@@ -19,13 +21,12 @@ class ConnectionHandler {
         // Parse config.ini and retrieve configuration settings
         if (file_exists('config.ini')) {
             $ini = parse_ini_file('config.ini');
+            foreach($ini as $key => $value) {
+                $this->conf[$key] = $value;
+                // TODO: check required values and throw error if not set
+            }
 
-            // TODO: check required values and throw error if not set
-            $this->SQL_SERVER = $ini['SQL_SERVER'];
-            $this->SQL_DATABASE = $ini['SQL_DATABASE'];
-            $this->SQL_PORT = $ini['SQL_PORT'];
-            $this->SQL_USER = $ini['SQL_USER'];
-            $this->SQL_PASSWORD = $ini['SQL_PASSWORD'];
+            
         }
         // If config.ini doesn't exist, then the connection will fail because the connection info wasn't specified
         else {
@@ -34,8 +35,8 @@ class ConnectionHandler {
         }
 
         // Use the connection information to create PDO object
-        $dsn = $this->dsn($this->SQL_SERVER, $this->SQL_DATABASE, $this->SQL_PORT);
-        $this->db = new PDO($dsn, $this->SQL_USER, $this->SQL_PASSWORD, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+        $dsn = $this->dsn($this->conf['SQL_SERVER'], $this->conf['SQL_DATABASE'], $this->conf['SQL_PORT']);
+        $this->db = new PDO($dsn, $this->conf['SQL_USER'], $this->conf['SQL_PASSWORD'], [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
 
         // Get the list of tables and store it in $table_whitelist
         $stmt = $this->db->query("SHOW TABLES");
