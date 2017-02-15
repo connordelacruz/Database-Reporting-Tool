@@ -184,6 +184,7 @@ function clearColumnSelect() {
  * @param message The message to display
  */
 function displayError(message) {
+    // TODO: optional param to make undismissable?
     var alertString = '<div class="alert alert-danger alert-dismissable fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' + message + '</div>';
     $('#error-div').html(alertString);
 }
