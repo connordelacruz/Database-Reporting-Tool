@@ -28,12 +28,8 @@ try {
 
         case ('getColumns'):
             $table = $_POST['table'];
-            // Check validity of table name
-            if (!$conn->validateTable($table)) {
-                // if the table wasn't validated, then pass this error message back and break
-                $data['error'] = "$table does not appear to be a valid table. Please select a different table.";
-                break;
-            }
+            // Check validity of table name. Exception is thrown if not valid
+            $conn->validateTable($table);
             $columnNames = $conn->getColumns($table);
             // return column names
             $data['text'] = $columnNames;

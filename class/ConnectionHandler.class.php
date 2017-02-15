@@ -79,15 +79,16 @@ class ConnectionHandler {
     /**
      * Checks if the given string is a table in the database that we're currently connected to
      * @param string $table The name of the table
-     * @return bool|string false if the table isn't in our whitelist, or the table name with proper quotation marks if it
-     * is whitelisted.
+     * @return string The table name with proper quotation marks if it is whitelisted.
+     * @throws Exception if $table isn't in the whitelist
      */
     public function validateTable($table) {
         // Check if the table is in the whitelist
         $whitelist_key = array_search($table, $this->table_whitelist);
-        // If the search returns false, then return false
+        // If the search returns false, thrown an exception
         if ($whitelist_key === false)
-            return false;
+            throw new Exception("$table does not appear to be a valid table. Please select a different table.");
+
         // otherwise, if it returned a key, we know that it is a valid table name
         else {
             // strings in the table aren't surrounded by `s, so we can add them here without issues
