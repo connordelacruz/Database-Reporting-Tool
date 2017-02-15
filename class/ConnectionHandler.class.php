@@ -18,7 +18,7 @@ class ConnectionHandler {
 
 
     public function __construct() {
-        // Set the config filepath (since we don't necessarily know what directory we're in) TODO: test
+        // Set the config filepath (since we don't necessarily know what directory we're in)
         $config_path = $_SERVER['DOCUMENT_ROOT'] . '/reports/config/config.ini';
 
         // Parse config.ini and retrieve configuration settings
@@ -33,7 +33,6 @@ class ConnectionHandler {
         }
         // If config.ini doesn't exist, then the connection will fail because the connection info wasn't specified
         else {
-            // TODO: throw exception instead of just logging error. connection_handler.php will catch it and handle it
             throw new Exception('config.ini does not exist. Create a copy of config_template.ini named config.ini and fill out connection information there.');
         }
 
