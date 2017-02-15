@@ -16,11 +16,14 @@ class ConnectionHandler {
     // When dbConnect is called to initialize the database, it sets this variable to an array of table names in
     private $table_whitelist = array();
 
+
     public function __construct() {
-        // TODO: more reliable way of checking config filepath
+        // Set the config filepath (since we don't necessarily know what directory we're in) TODO: test
+        $config_path = $_SERVER['DOCUMENT_ROOT'] . '/reports/config/config.ini';
+
         // Parse config.ini and retrieve configuration settings
-        if (file_exists('../config/config.ini')) {
-            $ini = parse_ini_file('../config/config.ini');
+        if (file_exists($config_path)) {
+            $ini = parse_ini_file($config_path);
             foreach($ini as $key => $value) {
                 $this->conf[$key] = $value;
                 // TODO: check required values and throw error if not set
