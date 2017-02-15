@@ -4,7 +4,7 @@
  * @author Connor de la Cruz
  */
 
-include_once 'autoloader.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/reports/class/autoloader.php';
 
 // get selected table and columns from POST
 $table = $_POST['table-select'];
@@ -44,6 +44,16 @@ if ($reportType) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="res/img/icon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" href="res/img/icon/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="res/img/icon/favicon-16x16.png" sizes="16x16">
+    <link rel="manifest" href="res/img/icon/manifest.json">
+    <link rel="mask-icon" href="res/img/icon/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="res/img/icon/favicon.ico">
+    <meta name="msapplication-config" content="res/img/icon/browserconfig.xml">
+    <meta name="theme-color" content="#2196f3">
 
     <title><?php echo $table ?></title>
 
