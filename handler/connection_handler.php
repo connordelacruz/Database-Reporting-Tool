@@ -4,7 +4,7 @@
  * @author Connor de la Cruz
  */
 
-include_once 'autoloader.php';
+include_once '../class/autoloader.php';
 
 
 // Get the function requested by ajax query

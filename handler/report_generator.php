@@ -4,7 +4,7 @@
  * @author Connor de la Cruz
  */
 
-include_once 'autoloader.php';
+include_once '../class/autoloader.php';
 
 // get selected table and columns from POST
 $table = $_POST['table-select'];
@@ -48,7 +48,7 @@ if ($reportType) {
     <title><?php echo $table ?></title>
 
     <!-- Stylesheet includes Bootstrap.css + theme -->
-    <link rel="stylesheet" href="res/css/global.css">
+    <link rel="stylesheet" href="../res/css/global.css">
 
     <!-- jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>

@@ -27,7 +27,7 @@ function getTables() {
     tableSelectDiv.html(loader);
     $.ajax({
         type: "POST",
-        url: "connection_handler.php",
+        url: "handler/connection_handler.php",
         data: {'function' : 'getTables'},
         dataType: "json",
         success: function (data) {
@@ -97,7 +97,7 @@ function populateTableSelect() {
 function getColumns(table) {
     $.ajax({
         type: "POST",
-        url: "connection_handler.php",
+        url: "handler/connection_handler.php",
         data: {
             'table': table,
             'function': 'getColumns'

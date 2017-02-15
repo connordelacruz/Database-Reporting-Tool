@@ -24,10 +24,10 @@
 <div class="container">
     <h1>Report Generator</h1>
 
-    <div class="well-sm text-muted">Database: <?php echo parse_ini_file('config.ini')['SQL_DATABASE']; ?></div>
+    <div class="well-sm text-muted">Database: <?php echo parse_ini_file('config/config.ini')['SQL_DATABASE']; ?></div>
 
     <div class="well">
-        <form class="form-vertical" id="report-options" action="generate.php" method="post" target="_blank">
+        <form class="form-vertical" id="report-options" action="handler/report_generator.php" method="post" target="_blank">
             <fieldset>
                 <legend>Table</legend>
                 <div class="form-group" id="table-select-div"></div>

@@ -9,7 +9,6 @@ class ConnectionHandler {
     /* Array to store connection info from config.ini
      * Keys: SQL_SERVER, SQL_DATABASE, SQL_PORT, SQL_USER, SQL_PASSWORD */
     private $conf = [];
-    // TODO: keep a const array with default values for each key?
 
     // PDO object used to connect to the database. Assigned at construction
     private $db;
@@ -18,9 +17,10 @@ class ConnectionHandler {
     private $table_whitelist = array();
 
     public function __construct() {
+        // TODO: more reliable way of checking config filepath
         // Parse config.ini and retrieve configuration settings
-        if (file_exists('config.ini')) {
-            $ini = parse_ini_file('config.ini');
+        if (file_exists('../config/config.ini')) {
+            $ini = parse_ini_file('../config/config.ini');
             foreach($ini as $key => $value) {
                 $this->conf[$key] = $value;
                 // TODO: check required values and throw error if not set
