@@ -9,6 +9,8 @@ class ConnectionHandler {
     /* Array to store connection info from config.ini
      * Keys: SQL_SERVER, SQL_DATABASE, SQL_PORT, SQL_USER, SQL_PASSWORD */
     private $conf = [];
+    // Array of optional parameter keys (for error checking)
+    const optional = ['SQL_PORT'];
 
     // PDO object used to connect to the database. Assigned at construction
     private $db;
@@ -17,6 +19,10 @@ class ConnectionHandler {
     private $table_whitelist = array();
 
 
+    /**
+     * ConnectionHandler constructor.
+     * @throws Exception if config.ini doesn't exist or is missing necessary connection information
+     */
     public function __construct() {
         // Set the config filepath (since we don't necessarily know what directory we're in)
         $config_path = $_SERVER['DOCUMENT_ROOT'] . '/reports/config/config.ini';
@@ -25,11 +31,12 @@ class ConnectionHandler {
         if (file_exists($config_path)) {
             $ini = parse_ini_file($config_path);
             foreach($ini as $key => $value) {
+                // If value hasn't been set and the key isn't optional, throw an error
+                if ($value == '' && !in_array($key,self::optional)) {
+                    throw new Exception("Required value $key has not been set in config.ini.");
+                }
                 $this->conf[$key] = $value;
-                // TODO: check required values and throw error if not set
             }
-
-            
         }
         // If config.ini doesn't exist, then the connection will fail because the connection info wasn't specified
         else {
