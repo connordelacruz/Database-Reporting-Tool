@@ -33,7 +33,7 @@ function getTables() {
         success: function (data) {
             // Check if a server-side error was thrown and stop execution if so
             if(data.error !== undefined) {
-                displayError(data.error);
+                displayError(data.error, true);
                 tableSelectDiv.html('');
             }
             else {
@@ -44,7 +44,7 @@ function getTables() {
         },
         error: function (jqXHR) {
             // If an error occurred before the server could respond, display message and stop execution
-            displayError(jqXHR.responseText);
+            displayError(jqXHR.responseText, true);
             tableSelectDiv.html('');
         }
     });
@@ -182,11 +182,16 @@ function clearColumnSelect() {
 /**
  * Displays an alert in #error-div
  * @param message The message to display
+ * @param optIsUndismissable Optional boolean. If true, no dismiss button will be appended to error. This is for instances
+ *         where no action can be taken by the user (e.g. can't populate table list).
  */
-function displayError(message) {
-    // TODO: optional param to make undismissable?
-    var alertString = '<div class="alert alert-danger alert-dismissable fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' + message + '</div>';
-    $('#error-div').html(alertString);
+function displayError(message, optIsUndismissable) {
+    var alertDiv = $('<div class="alert alert-danger alert-dismissable fade in"></div>');
+    if (!optIsUndismissable) {
+        alertDiv.append('<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>');
+    }
+    alertDiv.append(message);
+    $('#error-div').html(alertDiv);
 }
 
 

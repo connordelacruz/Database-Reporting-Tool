@@ -34,7 +34,7 @@ class ConnectionHandler {
         // If config.ini doesn't exist, then the connection will fail because the connection info wasn't specified
         else {
             // TODO: throw exception instead of just logging error. connection_handler.php will catch it and handle it
-            error_log('config.ini does not exist. Create a copy of config_template.ini named config.ini and fill out connection information there.');
+            throw new Exception('config.ini does not exist. Create a copy of config_template.ini named config.ini and fill out connection information there.');
         }
 
         // Use the connection information to create PDO object
