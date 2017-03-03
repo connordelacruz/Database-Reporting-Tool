@@ -1,17 +1,23 @@
 <?php
 /**
  * Header template for web pages.
- * If the variable $pageTitle has been set in the script including this, then the title tag will be
+ *
+ * If $pageTitle has been set in the script including this, then the title tag will be
  * set accordingly. Otherwise, it will default to Report Generator.
+ * If $disableViewport has been set to true in the script including this, the viewport
+ * meta tag will be omitted in order to enable horizontal scrolling.
+ *
  * @author Connor de la Cruz
  */
 ?>
 <head>
     <meta charset="UTF-8">
     <?php
-    // TODO:
+    /* Omitting viewport tag enables horizontal scrolling, which is good in the event that a generated report is wider
+     * than the screen. */
+    if (!isset($disableViewport) || $disableViewport === false)
+        echo '<meta name="viewport" content="width=device-width, initial-scale=1">';
     ?>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="res/img/icon/apple-touch-icon.png">

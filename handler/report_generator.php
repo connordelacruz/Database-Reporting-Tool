@@ -42,20 +42,19 @@ if ($reportType) {
 <!DOCTYPE html>
 <html lang="en">
     <?php
+    // disable viewport to enable horizontal scrolling
+    $disableViewport = true;
     $pageTitle = $table;
     include_once 'templates/header.php';
     ?>
 <body>
 <div class="container">
     <h1><?php echo $table ?></h1>
-    <div class="table-responsive">
-        <table class="table table-striped table-bordered">
-            <?php
-            // TODO: ensure that horizontal scrolling is enabled for wide tables
-            echo $tableString;
-            ?>
-        </table>
-    </div>
+    <table class="table table-striped table-bordered">
+        <?php
+        echo $tableString;
+        ?>
+    </table>
 </div>
 </body>
 </html>
