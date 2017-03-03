@@ -149,7 +149,6 @@ class ConnectionHandler {
         // if the table is in the whitelist
         if ($whitelisted_table) {
             $stmt = $this->db->query("SHOW COLUMNS FROM $whitelisted_table");
-            $stmt->execute();
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             // Get just the field names for the columns
@@ -158,6 +157,21 @@ class ConnectionHandler {
             }
         }
         return $columnNames;
+    }
+
+
+    // TODO: finish, document, and implement
+    function countRows($table) {
+        // the count to return
+        $row_count = 0;
+        // check whitelist for $table
+        $whitelisted_table = $this->validateTable($table);
+        // if the table is in the whitelist, get its rows
+        if ($whitelisted_table) {
+            $stmt = $this->db->query("SELECT COUNT(*) FROM $whitelisted_table");
+            $row_count = $stmt->fetch()[0];
+        }
+        return $row_count;
     }
 
 
