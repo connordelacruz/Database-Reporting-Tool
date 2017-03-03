@@ -6,8 +6,11 @@
 
 class ConnectionHandler {
 
-    // variables with connection settings from config.ini
-    private $SQL_SERVER, $SQL_DATABASE, $SQL_PORT, $SQL_USER, $SQL_PASSWORD;
+    /* Array to store connection info from config.ini
+     * Keys: SQL_SERVER, SQL_DATABASE, SQL_PORT, SQL_USER, SQL_PASSWORD */
+    private $conf = [];
+    // Array of optional parameter keys (for error checking)
+    const optional = ['SQL_PORT'];
 
     // PDO object used to connect to the database. Assigned at construction
     private $db;
@@ -15,26 +18,34 @@ class ConnectionHandler {
     // When dbConnect is called to initialize the database, it sets this variable to an array of table names in
     private $table_whitelist = array();
 
-    public function __construct() {
-        // Parse config.ini and retrieve configuration settings
-        if (file_exists('config.ini')) {
-            $ini = parse_ini_file('config.ini');
 
-            // For clarity, using static variable assignment instead of dynamic
-            $this->SQL_SERVER = $ini['SQL_SERVER'];
-            $this->SQL_DATABASE = $ini['SQL_DATABASE'];
-            $this->SQL_PORT = $ini['SQL_PORT'];
-            $this->SQL_USER = $ini['SQL_USER'];
-            $this->SQL_PASSWORD = $ini['SQL_PASSWORD'];
+    /**
+     * ConnectionHandler constructor.
+     * @throws Exception if config.ini doesn't exist or is missing necessary connection information
+     */
+    public function __construct() {
+        // Set the config filepath (since we don't necessarily know what directory we're in)
+        $config_path = $_SERVER['DOCUMENT_ROOT'] . '/reports/config/config.ini';
+
+        // Parse config.ini and retrieve configuration settings
+        if (file_exists($config_path)) {
+            $ini = parse_ini_file($config_path);
+            foreach($ini as $key => $value) {
+                // If value hasn't been set and the key isn't optional, throw an error
+                if ($value == '' && !in_array($key,self::optional)) {
+                    throw new Exception("Required value $key has not been set in config.ini.");
+                }
+                $this->conf[$key] = $value;
+            }
         }
         // If config.ini doesn't exist, then the connection will fail because the connection info wasn't specified
         else {
-            error_log('config.ini does not exist. Create a copy of config_template.ini named config.ini and fill out connection information there.');
+            throw new Exception('config.ini does not exist. Create a copy of config_template.ini named config.ini and fill out connection information there.');
         }
 
         // Use the connection information to create PDO object
-        $dsn = $this->dsn($this->SQL_SERVER, $this->SQL_DATABASE, $this->SQL_PORT);
-        $this->db = new PDO($dsn, $this->SQL_USER, $this->SQL_PASSWORD, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+        $dsn = $this->dsn($this->conf['SQL_SERVER'], $this->conf['SQL_DATABASE'], $this->conf['SQL_PORT']);
+        $this->db = new PDO($dsn, $this->conf['SQL_USER'], $this->conf['SQL_PASSWORD'], [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
 
         // Get the list of tables and store it in $table_whitelist
         $stmt = $this->db->query("SHOW TABLES");
@@ -68,15 +79,16 @@ class ConnectionHandler {
     /**
      * Checks if the given string is a table in the database that we're currently connected to
      * @param string $table The name of the table
-     * @return bool|string false if the table isn't in our whitelist, or the table name with proper quotation marks if it
-     * is whitelisted.
+     * @return string The table name with proper quotation marks if it is whitelisted.
+     * @throws Exception if $table isn't in the whitelist
      */
     public function validateTable($table) {
         // Check if the table is in the whitelist
         $whitelist_key = array_search($table, $this->table_whitelist);
-        // If the search returns false, then return false
+        // If the search returns false, thrown an exception
         if ($whitelist_key === false)
-            return false;
+            throw new Exception("$table does not appear to be a valid table. Please select a different table.");
+
         // otherwise, if it returned a key, we know that it is a valid table name
         else {
             // strings in the table aren't surrounded by `s, so we can add them here without issues

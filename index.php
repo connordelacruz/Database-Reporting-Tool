@@ -5,6 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="res/img/icon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" href="res/img/icon/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="res/img/icon/favicon-16x16.png" sizes="16x16">
+    <link rel="manifest" href="res/img/icon/manifest.json">
+    <link rel="mask-icon" href="res/img/icon/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="res/img/icon/favicon.ico">
+    <meta name="msapplication-config" content="res/img/icon/browserconfig.xml">
+    <meta name="theme-color" content="#2196f3">
+
     <title>Report Generator</title>
 
     <!-- Stylesheet includes Bootstrap.css + theme -->
@@ -24,10 +34,10 @@
 <div class="container">
     <h1>Report Generator</h1>
 
-    <div class="well-sm text-muted">Database: <?php echo parse_ini_file('config.ini')['SQL_DATABASE']; ?></div>
+    <div class="well-sm text-muted">Database: <?php echo parse_ini_file('config/config.ini')['SQL_DATABASE']; ?></div>
 
     <div class="well">
-        <form class="form-vertical" id="report-options" action="generate.php" method="post" target="_blank">
+        <form class="form-vertical" id="report-options" action="report.php" method="post" target="_blank">
             <fieldset>
                 <legend>Table</legend>
                 <div class="form-group" id="table-select-div"></div>

@@ -19,28 +19,33 @@ var loader = '<div class="loader"><svg class="circular" viewBox="25 25 50 50"><c
 /* Functions */
 
 /**
- * clears #table-select-div contents and displays loader. Called on page load before retrieving tables.
- */
-function loadTableSelect() {
-    $('#table-select-div').html(loader);
-}
-
-
-/**
  * Gets a list of accessible tables from database and calls populateTableSelect() on success
  */
 function getTables() {
     // display loading icon while table select is populated
-    loadTableSelect();
+    var tableSelectDiv = $('#table-select-div');
+    tableSelectDiv.html(loader);
     $.ajax({
         type: "POST",
-        url: "connection_handler.php",
+        url: "handler/connection_handler.php",
         data: {'function' : 'getTables'},
         dataType: "json",
         success: function (data) {
-            tables = data.text;
-            // Display these tables on the page
-            populateTableSelect();
+            // Check if a server-side error was thrown and stop execution if so
+            if(data.error !== undefined) {
+                displayError(data.error, true);
+                tableSelectDiv.html('');
+            }
+            else {
+                tables = data.text;
+                // Display these tables on the page
+                populateTableSelect();
+            }
+        },
+        error: function (jqXHR) {
+            // If an error occurred before the server could respond, display message and stop execution
+            displayError(jqXHR.responseText, true);
+            tableSelectDiv.html('');
         }
     });
 }
@@ -92,7 +97,7 @@ function populateTableSelect() {
 function getColumns(table) {
     $.ajax({
         type: "POST",
-        url: "connection_handler.php",
+        url: "handler/connection_handler.php",
         data: {
             'table': table,
             'function': 'getColumns'
@@ -177,10 +182,16 @@ function clearColumnSelect() {
 /**
  * Displays an alert in #error-div
  * @param message The message to display
+ * @param optIsUndismissable Optional boolean. If true, no dismiss button will be appended to error. This is for instances
+ *         where no action can be taken by the user (e.g. can't populate table list).
  */
-function displayError(message) {
-    var alertString = '<div class="alert alert-danger alert-dismissable fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' + message + '</div>';
-    $('#error-div').html(alertString);
+function displayError(message, optIsUndismissable) {
+    var alertDiv = $('<div class="alert alert-danger alert-dismissable fade in"></div>');
+    if (!optIsUndismissable) {
+        alertDiv.append('<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>');
+    }
+    alertDiv.append(message);
+    $('#error-div').html(alertDiv);
 }
 
 
