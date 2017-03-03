@@ -16,8 +16,7 @@ $conn = new ConnectionHandler();
 
 $selection = $conn->getRows($table, $columns);
 
-// If the generate report button was clicked
-
+// If the generate report button was clicked, then the report is generated as a webpage
 if ($reportType) {
     // create string with <table> element for report generation
     $tableString = "<thead><tr>";
@@ -38,45 +37,28 @@ if ($reportType) {
     }
     $tableString .= "</tbody>";
 
-?>
+    ?>
+
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="res/img/icon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" href="res/img/icon/favicon-32x32.png" sizes="32x32">
-    <link rel="icon" type="image/png" href="res/img/icon/favicon-16x16.png" sizes="16x16">
-    <link rel="manifest" href="res/img/icon/manifest.json">
-    <link rel="mask-icon" href="res/img/icon/safari-pinned-tab.svg" color="#5bbad5">
-    <link rel="shortcut icon" href="res/img/icon/favicon.ico">
-    <meta name="msapplication-config" content="res/img/icon/browserconfig.xml">
-    <meta name="theme-color" content="#2196f3">
-
-    <title><?php echo $table ?></title>
-
-    <!-- Stylesheet includes Bootstrap.css + theme -->
-    <link rel="stylesheet" href="res/css/global.css">
-
-    <!-- jQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <!-- Bootstrap.js -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-</head>
+    <?php
+    $pageTitle = $table;
+    include_once 'templates/header.php';
+    ?>
 <body>
 <div class="container">
     <h1><?php echo $table ?></h1>
     <div class="table-responsive">
         <table class="table table-striped table-bordered">
-            <?php echo $tableString ?>
+            <?php
+            // TODO: ensure that horizontal scrolling is enabled for wide tables
+            echo $tableString;
+            ?>
         </table>
     </div>
 </div>
 </body>
-
+</html>
 <?php
 }
 
