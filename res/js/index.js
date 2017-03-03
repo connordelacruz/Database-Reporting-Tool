@@ -111,9 +111,10 @@ function getColumns(table) {
                 $('#column-select').html('');
             }
             else {
-            columns = data.text;
-            // display columns on the page
-            populateColumnSelect();
+                columns = data.text;
+                // TODO: get the total number of rows and set #row-limit max
+                // display columns on the page
+                populateColumnSelect();
             }
         }
     });

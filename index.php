@@ -28,6 +28,14 @@
                         </div>
                     </div>
                 </fieldset>
+                <fieldset>
+                    <!-- TODO: collapse fieldset by default? -->
+                    <legend>Advanced Options</legend>
+                    <div class="form-group">
+                        <label class="control-label" for="row-limit">Limit number of rows:</label>
+                        <input class="form-control" type="number" name="row-limit" id="row-limit">
+                    </div>
+                </fieldset>
             </div>
             <div id="error-div"></div>
         </form>
