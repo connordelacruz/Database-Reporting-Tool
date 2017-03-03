@@ -33,6 +33,7 @@ try {
             $columnNames = $conn->getColumns($table);
             // return column names
             $data['text'] = $columnNames;
+            // TODO: return total number of rows
             break;
     }
 
