@@ -5,7 +5,7 @@
  */
 
 include_once '../class/autoloader.php';
-
+require_once '../config/config.php';
 
 // Get the function requested by ajax query
 $function = $_POST['function'];
@@ -15,7 +15,7 @@ $data = array();
 
 try {
     // Instantiate connection handler
-    $conn = new ConnectionHandler();
+    $conn = new ConnectionHandler($SQL_SERVER, $SQL_PORT, $SQL_DATABASE, $SQL_USER, $SQL_PASSWORD);
 
     // Determine what function to perform based on query
     switch ($function) {
