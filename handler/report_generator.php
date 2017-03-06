@@ -4,7 +4,12 @@
  * @author Connor de la Cruz
  */
 
-include_once $_SERVER['DOCUMENT_ROOT'] . '/reports/class/autoloader.php';
+$siteRoot = $_SERVER['DOCUMENT_ROOT'] . '/reports';
+include_once "$siteRoot/class/autoloader.php";
+// Ensure config file exists before including it
+if (!file_exists("$siteRoot/config/config.php"))
+    throw new Exception('Configuration file config/config.php does not exist and will need to be set up before using this tool.');
+include_once "$siteRoot/config/config.php";
 
 // get selected table and columns from POST
 $table = $_POST['table-select'];
@@ -12,7 +17,7 @@ $columns = $_POST['columns'];
 // true if the generate button was clicked, false if the export CSV button was clicked
 $reportType = array_key_exists('generate-report', $_POST);
 
-$conn = new ConnectionHandler();
+$conn = new ConnectionHandler($SQL_SERVER, $SQL_PORT, $SQL_DATABASE, $SQL_USER, $SQL_PASSWORD);
 
 $selection = $conn->getRows($table, $columns);
 

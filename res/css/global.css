@@ -6665,7 +6665,7 @@ input[type="checkbox"],
   80%,
   90% {
     stroke: #56a0d3; } }
-/* For toggle switches, from  */
+/* For toggle switches, from https://codepen.io/guuslieben/pen/YyPRVP */
 .switch-input {
   display: none; }
 
@@ -6676,7 +6676,6 @@ input[type="checkbox"],
   cursor: pointer;
   font-weight: 500;
   text-align: left;
-  margin: 16px;
   padding: 16px 0 16px 44px; }
 
 .switch-label:before, .switch-label:after {

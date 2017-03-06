@@ -11,6 +11,8 @@ var tables;
 var currentTable;
 // Columns in currently selected table
 var columns;
+// Number of rows in the currently selected table
+var rowCount;
 
 // Spinning icon to display while loading
 var loader = '<div class="loader"><svg class="circular" viewBox="25 25 50 50"><circle id="loader-circle" class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="10"/></svg></div>';
@@ -113,6 +115,8 @@ function getColumns(table) {
             else {
                 columns = data.text;
                 // TODO: get the total number of rows and set #row-limit max
+                rowCount = data['rowCount'];
+                $('#row-limit').attr('max', rowCount);
                 // display columns on the page
                 populateColumnSelect();
             }

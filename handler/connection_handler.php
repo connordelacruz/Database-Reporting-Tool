@@ -31,12 +31,11 @@ try {
 
         case ('getColumns'):
             $table = $_POST['table'];
-            // Check validity of table name. Exception is thrown if not valid
-            $conn->validateTable($table);
+            // validity of table name is checked in all functions that take it as a parameter
             $columnNames = $conn->getColumns($table);
-            // return column names
+            // return column names and total number of rows
             $data['text'] = $columnNames;
-            // TODO: return total number of rows
+            $data['rowCount'] = $conn->countRows($table);
             break;
     }
 
