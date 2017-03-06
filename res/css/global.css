@@ -6665,71 +6665,67 @@ input[type="checkbox"],
   80%,
   90% {
     stroke: #56a0d3; } }
-/*
- * Toggle switches
- * Based on http://www.w3schools.com/howto/howto_css_switch.asp
- */
-/* The switch - the box around the slider */
-label.switch {
-  position: relative;
-  display: inline-block;
-  width: 50px;
-  height: 24px;
-  margin-bottom: 0; }
-
-/* Hide default HTML checkbox */
-label.switch input {
+/* For toggle switches, from  */
+.switch-input {
   display: none; }
 
-/* The slider */
-.slider {
-  position: absolute;
+.switch-label {
+  position: relative;
+  display: inline-block;
+  min-width: 112px;
   cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #bbb;
-  -moz-transition: 0.4s;
-  -o-transition: 0.4s;
-  -webkit-transition: 0.4s;
-  transition: 0.4s; }
+  font-weight: 500;
+  text-align: left;
+  margin: 16px;
+  padding: 16px 0 16px 44px; }
 
-.slider:before {
-  position: absolute;
+.switch-label:before, .switch-label:after {
   content: "";
-  height: 17px;
-  width: 17px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  -moz-transition: 0.4s;
-  -o-transition: 0.4s;
-  -webkit-transition: 0.4s;
-  transition: 0.4s; }
+  position: absolute;
+  margin: 0;
+  outline: 0;
+  top: 50%;
+  -ms-transform: translate(0, -50%);
+  -webkit-transform: translate(0, -50%);
+  transform: translate(0, -50%);
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease; }
 
-input:checked + .slider {
-  background-color: #2196F3; }
+.switch-label:before {
+  left: 1px;
+  width: 34px;
+  height: 14px;
+  background-color: #bbb;
+  border-radius: 8px; }
 
-input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3; }
+.switch-label:after {
+  left: 0;
+  width: 20px;
+  height: 20px;
+  background-color: #FAFAFA;
+  border-radius: 50%;
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.14), 0 2px 2px 0 rgba(0, 0, 0, 0.098), 0 1px 5px 0 rgba(0, 0, 0, 0.084); }
 
-input:disabled + .slider {
-  background-color: #bbb; }
+.switch-label .toggle--on {
+  display: none; }
 
-input:checked + .slider:before {
-  -moz-transform: translateX(26px);
-  -o-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  -webkit-transform: translateX(26px);
-  transform: translateX(26px); }
+.switch-label .toggle--off {
+  display: inline-block; }
 
-/* Rounded sliders */
-.slider.round {
-  border-radius: 24px; }
+.switch-input:checked + .switch-label:before {
+  background-color: rgba(33, 150, 243, 0.7); }
 
-.slider.round:before {
-  border-radius: 50%; }
+.switch-input:checked + .switch-label:after {
+  background-color: #2196F3;
+  -ms-transform: translate(80%, -50%);
+  -webkit-transform: translate(80%, -50%);
+  transform: translate(80%, -50%); }
+
+.switch-input:checked + .switch-label .toggle--on {
+  display: inline-block; }
+
+.switch-input:checked + .switch-label .toggle--off {
+  display: none; }
 
 /* Helper Classes */
 .no-pad-top-bottom {

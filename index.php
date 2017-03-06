@@ -35,11 +35,10 @@ include_once 'config/config.php';
                     <!-- TODO: collapse fieldset by default -->
                     <legend>Advanced Options</legend>
                     <div class="form-group">
-                        <label class="switch">
-                            <input type="checkbox" class="status-toggle" id="toggle-row-limit">
-                            <span class="slider round"></span>
+                        <input type="checkbox" id="toggle-row-limit" name="toggle-row-limit" class="switch-input">
+                        <label for="toggle-row-limit" class="switch-label">
+                            Limit number of rows<span class="toggle--on">:</span>
                         </label>
-                        <label class="control-label" for="row-limit">Limit number of rows:</label>
                         <input class="form-control" type="number" name="row-limit" id="row-limit">
                     </div>
                 </fieldset>
