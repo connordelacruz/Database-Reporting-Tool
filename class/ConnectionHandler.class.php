@@ -160,9 +160,10 @@ class ConnectionHandler {
      * Given a table name and an array of columns, returns all selected rows from table
      * @param string $table Table name (will be validated)
      * @param array $columns Columns (will be validated)
+     * @param int $row_count (Optional) the number of rows to display
      * @return array The resulting table selection
      */
-    function getRows($table, $columns) {
+    function getRows($table, $columns, $row_count = 0) {
         // validate table
         $whitelisted_table = $this->validateTable($table);
         // Validate column names
@@ -176,7 +177,15 @@ class ConnectionHandler {
         $whitelisted_columns = $this->quoteColumns($whitelisted_columns);
         // String of column names to select separated by commas
         $to_select = implode(',', $whitelisted_columns);
-        $stmt = $this->db->prepare("SELECT $to_select FROM $whitelisted_table");
+        $sql = "SELECT $to_select FROM $whitelisted_table";
+        // Limit number of rows if not set to 0.
+        // Negative numbers will cause issues, but numbers greater than the total number of rows just returns all rows
+        if ($row_count > 0)
+            $sql .= " LIMIT :rowCount";
+        $stmt = $this->db->prepare($sql);
+        // If $row_count is set, fill placeholder in prepared statement TODO: find way to merge if stmts
+        if ($row_count > 0)
+            $stmt->bindParam(':rowCount', $row_count, PDO::PARAM_INT);
         $stmt->execute();
         // Push each row to $rows
         while($row = $stmt->fetch(PDO::FETCH_NUM)) {

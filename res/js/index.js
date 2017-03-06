@@ -211,6 +211,13 @@ function clearError() {
 /* Executed on page load */
 
 $(function () {
+    // Add listener to toggles for advanced options to enable/disable and clear their respective fields
+    $('#toggle-row-limit').change(function () {
+        var rowLimitInput = $('#row-limit');
+        rowLimitInput.prop('disabled', !$(this).prop('checked'));
+        rowLimitInput.val('');
+    });
+
     // retrieve the table names and add them to #table-select
     getTables();
 });

@@ -6124,8 +6124,8 @@ input[type=number],
   border: none;
   border-radius: 0;
   -webkit-appearance: none;
-  -webkit-box-shadow: inset 0 -1px 0 #ddd;
-  box-shadow: inset 0 -1px 0 #ddd;
+  -webkit-box-shadow: inset 0 -2px 0 #ddd;
+  box-shadow: inset 0 -2px 0 #ddd;
   font-size: 16px; }
   textarea:focus,
   textarea.form-control:focus,
@@ -6263,8 +6263,8 @@ select.form-control {
   background-size: 13px;
   background-repeat: no-repeat;
   background-position: right center;
-  -webkit-box-shadow: inset 0 -1px 0 #ddd;
-  box-shadow: inset 0 -1px 0 #ddd;
+  -webkit-box-shadow: inset 0 -2px 0 #ddd;
+  box-shadow: inset 0 -2px 0 #ddd;
   font-size: 16px;
   line-height: 1.5; }
   select::-ms-expand,

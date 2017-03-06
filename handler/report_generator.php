@@ -14,12 +14,23 @@ include_once "$siteRoot/config/config.php";
 // get selected table and columns from POST
 $table = $_POST['table-select'];
 $columns = $_POST['columns'];
+// Advanced options (set to a default if their keys don't exist)
+// TODO: find a more elegant way to check toggles and get their associated values
+if (array_key_exists('toggle', $_POST)) {
+    $options = $_POST['toggle'];
+    // Limit row count if toggled
+    $set_row_count = in_array('row-limit', $options) && array_key_exists('row-limit', $_POST);
+    $row_count = ($set_row_count) ? intval($_POST['row-limit']) : 0;
+}
+else {
+    $row_count = 0;
+}
 // true if the generate button was clicked, false if the export CSV button was clicked
 $reportType = array_key_exists('generate-report', $_POST);
 
 $conn = new ConnectionHandler($SQL_SERVER, $SQL_PORT, $SQL_DATABASE, $SQL_USER, $SQL_PASSWORD);
 
-$selection = $conn->getRows($table, $columns);
+$selection = $conn->getRows($table, $columns, $row_count);
 
 // If the generate report button was clicked, then the report is generated as a webpage
 if ($reportType) {
