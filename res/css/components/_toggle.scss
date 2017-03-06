@@ -1,0 +1,66 @@
+/*
+ * Toggle switches
+ * Based on http://www.w3schools.com/howto/howto_css_switch.asp
+ */
+
+// TODO: fix or just use regular checkboxes?
+
+/* The switch - the box around the slider */
+label.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+  margin-bottom: 0;
+}
+
+/* Hide default HTML checkbox */
+label.switch input {display:none;}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: $gray-light;
+  @include transition(.4s);
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 17px;
+  width: 17px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  @include transition(.4s);
+}
+
+input:checked + .slider {
+  background-color: $brand-primary;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px $brand-primary;
+}
+
+input:disabled + .slider {
+  background-color: $gray-light;
+}
+
+input:checked + .slider:before {
+  @include transform(translateX(26px));
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 24px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}

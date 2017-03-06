@@ -1,7 +1,11 @@
 // Styling not handled by Bootstrap or Bootswatch. Imported after those stylesheets
 
+/* Mixins */
+@import "mixins/transition";
+
 /* Components */
 @import "components/loader";
+@import "components/toggle";
 
 /* Helper Classes */
 // Used for reducing top/bottom padding

@@ -32,6 +32,10 @@
                     <!-- TODO: collapse fieldset by default -->
                     <legend>Advanced Options</legend>
                     <div class="form-group">
+                        <label class="switch">
+                            <input type="checkbox" class="status-toggle" id="toggle-row-limit">
+                            <span class="slider round"></span>
+                        </label>
                         <label class="control-label" for="row-limit">Limit number of rows:</label>
                         <input class="form-control" type="number" name="row-limit" id="row-limit">
                     </div>

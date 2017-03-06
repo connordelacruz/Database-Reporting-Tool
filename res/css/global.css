@@ -6611,6 +6611,7 @@ input[type="checkbox"],
 .carousel-caption h1, .carousel-caption h2, .carousel-caption h3, .carousel-caption h4, .carousel-caption h5, .carousel-caption h6 {
   color: inherit; }
 
+/* Mixins */
 /* Components */
 /* for loading icon, from http://codepen.io/jczimm/pen/vEBpoL */
 .loader {
@@ -6664,6 +6665,72 @@ input[type="checkbox"],
   80%,
   90% {
     stroke: #56a0d3; } }
+/*
+ * Toggle switches
+ * Based on http://www.w3schools.com/howto/howto_css_switch.asp
+ */
+/* The switch - the box around the slider */
+label.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+  margin-bottom: 0; }
+
+/* Hide default HTML checkbox */
+label.switch input {
+  display: none; }
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #bbb;
+  -moz-transition: 0.4s;
+  -o-transition: 0.4s;
+  -webkit-transition: 0.4s;
+  transition: 0.4s; }
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 17px;
+  width: 17px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -moz-transition: 0.4s;
+  -o-transition: 0.4s;
+  -webkit-transition: 0.4s;
+  transition: 0.4s; }
+
+input:checked + .slider {
+  background-color: #2196F3; }
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3; }
+
+input:disabled + .slider {
+  background-color: #bbb; }
+
+input:checked + .slider:before {
+  -moz-transform: translateX(26px);
+  -o-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  -webkit-transform: translateX(26px);
+  transform: translateX(26px); }
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 24px; }
+
+.slider.round:before {
+  border-radius: 50%; }
+
 /* Helper Classes */
 .no-pad-top-bottom {
   padding-top: 0;
