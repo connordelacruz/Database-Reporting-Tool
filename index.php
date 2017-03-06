@@ -1,13 +1,16 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<?php include_once 'templates/header.php'; ?>
+<?php
+include_once 'templates/header.php';
+include_once 'config/config.php';
+?>
 <body>
 
 <div class="container">
     <h1>Report Generator</h1>
 
-    <div class="well-sm text-muted">Database: <?php echo parse_ini_file('config/config.ini')['SQL_DATABASE']; ?></div>
+    <div class="well-sm text-muted">Database: <?php echo $SQL_DATABASE; ?></div>
 
     <div class="well">
         <form class="form-vertical" id="report-options" action="report.php" method="post" target="_blank">

@@ -1,16 +1,10 @@
 <?php
 /**
- * Processes the information from config.ini and handles connecting to the database
+ * Handles database connections
  * @author Connor de la Cruz
  */
 
 class ConnectionHandler {
-
-    /* Array to store connection info from config.ini
-     * Keys: SQL_SERVER, SQL_DATABASE, SQL_PORT, SQL_USER, SQL_PASSWORD */
-    private $conf = [];
-    // Array of optional parameter keys (for error checking)
-    const optional = ['SQL_PORT'];
 
     // PDO object used to connect to the database. Assigned at construction
     private $db;
@@ -21,31 +15,18 @@ class ConnectionHandler {
 
     /**
      * ConnectionHandler constructor.
+     * @param string $SQL_SERVER Server the database is on
+     * @param string $SQL_PORT Port number of the database (can be left blank)
+     * @param string $SQL_DATABASE Name of the database
+     * @param string $SQL_USER Username used to connect to database
+     * @param string $SQL_PASSWORD Password for above user
      * @throws Exception if config.ini doesn't exist or is missing necessary connection information
      */
-    public function __construct() {
-        // Set the config filepath (since we don't necessarily know what directory we're in)
-        $config_path = $_SERVER['DOCUMENT_ROOT'] . '/reports/config/config.ini';
-
-        // Parse config.ini and retrieve configuration settings
-        if (file_exists($config_path)) {
-            $ini = parse_ini_file($config_path);
-            foreach($ini as $key => $value) {
-                // If value hasn't been set and the key isn't optional, throw an error
-                if ($value == '' && !in_array($key,self::optional)) {
-                    throw new Exception("Required value $key has not been set in config.ini.");
-                }
-                $this->conf[$key] = $value;
-            }
-        }
-        // If config.ini doesn't exist, then the connection will fail because the connection info wasn't specified
-        else {
-            throw new Exception('config.ini does not exist. Create a copy of config_template.ini named config.ini and fill out connection information there.');
-        }
+    public function __construct($SQL_SERVER, $SQL_PORT, $SQL_DATABASE, $SQL_USER, $SQL_PASSWORD) {
 
         // Use the connection information to create PDO object
-        $dsn = $this->dsn($this->conf['SQL_SERVER'], $this->conf['SQL_DATABASE'], $this->conf['SQL_PORT']);
-        $this->db = new PDO($dsn, $this->conf['SQL_USER'], $this->conf['SQL_PASSWORD'], [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+        $dsn = $this->dsn($SQL_SERVER, $SQL_DATABASE, $SQL_PORT);
+        $this->db = new PDO($dsn, $SQL_USER, $SQL_PASSWORD, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
 
         // Get the list of tables and store it in $table_whitelist
         $stmt = $this->db->query("SHOW TABLES");
