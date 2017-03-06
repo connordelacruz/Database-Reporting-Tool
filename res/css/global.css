@@ -6676,7 +6676,11 @@ input[type="checkbox"],
   cursor: pointer;
   font-weight: 500;
   text-align: left;
-  padding: 16px 0 16px 44px; }
+  padding: 16px 0 16px 44px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none; }
 
 .switch-label:before, .switch-label:after {
   content: "";
