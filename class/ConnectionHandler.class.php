@@ -1,6 +1,6 @@
 <?php
 /**
- * Processes the information from config.ini and handles connecting to the database
+ * Handles database connections
  * @author Connor de la Cruz
  */
 
