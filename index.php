@@ -41,8 +41,10 @@ include_once 'config/config.php';
                         <label for="toggle-row-limit" class="switch-label">
                             Limit number of rows
                         </label>
-                        <input class="form-control" type="number" disabled
-                               name="row-limit" id="row-limit" placeholder="Number of rows to display">
+                        <div class="collapse" id="collapse-row-limit">
+                            <input class="form-control" type="number" disabled
+                                   name="row-limit" id="row-limit" placeholder="Number of rows to display">
+                        </div>
                     </div>
                 </fieldset>
             </div>

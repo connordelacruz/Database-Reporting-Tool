@@ -211,11 +211,25 @@ function clearError() {
 /* Executed on page load */
 
 $(function () {
+
+    var rowToggle = $('#toggle-row-limit');
+    var rowCollapse = $('#collapse-row-limit');
+    var rowLimitInput = $('#row-limit');
+
     // Add listener to toggles for advanced options to enable/disable and clear their respective fields
-    $('#toggle-row-limit').change(function () {
-        var rowLimitInput = $('#row-limit');
+    rowToggle.change(function () {
+        var action = $(this).prop('checked') ? 'show' : 'hide';
+        rowCollapse.collapse(action);
         rowLimitInput.prop('disabled', !$(this).prop('checked'));
         rowLimitInput.val('');
+    });
+
+    // Disable the toggle until collapse div is fully collapsed or expanded
+    rowCollapse.on('show.bs.collapse hide.bs.collapse', function () {
+        rowToggle.prop('disabled', true);
+    });
+    rowCollapse.on('shown.bs.collapse hidden.bs.collapse', function () {
+        rowToggle.prop('disabled', false);
     });
 
     // retrieve the table names and add them to #table-select
