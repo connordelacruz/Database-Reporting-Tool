@@ -39,7 +39,7 @@ include_once 'config/config.php';
                         <input type="checkbox" class="switch-input"
                                id="toggle-row-limit" name="toggle[]" value="row-limit">
                         <label for="toggle-row-limit" class="switch-label">
-                            Limit number of rows
+                            Limit number of rows<span class="toggle--on">:</span>
                         </label>
                         <div class="collapse" id="collapse-row-limit">
                             <input class="form-control" type="number" disabled

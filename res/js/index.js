@@ -116,7 +116,10 @@ function getColumns(table) {
                 columns = data.text;
                 // TODO: get the total number of rows and set #row-limit max
                 rowCount = data['rowCount'];
-                $('#row-limit').attr('max', rowCount);
+                $('#row-limit').attr({
+                    'max': rowCount,
+                    'placeholder': 'Number of rows to display (max ' + rowCount + ')'
+                });
                 // display columns on the page
                 populateColumnSelect();
             }
