@@ -64,6 +64,7 @@ include_once 'config/config.php';
         </form>
     </div>
 
+    <footer class="well-lg"></footer>
 </div>
 
 </body>

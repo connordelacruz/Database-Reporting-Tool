@@ -114,7 +114,7 @@ function getColumns(table) {
             }
             else {
                 columns = data.text;
-                // TODO: get the total number of rows and set #row-limit max
+                // get the total number of rows and set #row-limit max
                 rowCount = data['rowCount'];
                 $('#row-limit').attr({
                     'max': rowCount,

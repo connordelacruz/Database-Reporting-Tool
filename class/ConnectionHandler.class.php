@@ -141,7 +141,11 @@ class ConnectionHandler {
     }
 
 
-    // TODO: finish, document, and implement
+    /**
+     * Counts the rows in a given table (after ensuring it's whitelisted)
+     * @param string $table Name of the table to check
+     * @return int The number of rows in $table
+     */
     function countRows($table) {
         // the count to return
         $row_count = 0;
