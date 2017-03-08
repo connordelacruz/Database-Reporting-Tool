@@ -34,7 +34,7 @@ include_once 'config/config.php';
                     <div class="collapse" id="collapse-advanced-options">
                         <div class="form-group">
                             <input type="checkbox" class="switch-input"
-                                   id="toggle-row-limit" name="toggle[]" value="row-limit">
+                                   id="toggle-row-limit" name="toggle-row-limit" value="row-limit">
                             <label for="toggle-row-limit" class="switch-label">
                                 Limit number of rows<span class="toggle--on">:</span>
                             </label>
