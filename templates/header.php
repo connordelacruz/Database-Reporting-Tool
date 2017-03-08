@@ -20,13 +20,13 @@
     ?>
 
     <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="res/img/icon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" href="res/img/icon/favicon-32x32.png" sizes="32x32">
-    <link rel="icon" type="image/png" href="res/img/icon/favicon-16x16.png" sizes="16x16">
-    <link rel="manifest" href="res/img/icon/manifest.json">
-    <link rel="mask-icon" href="res/img/icon/safari-pinned-tab.svg" color="#5bbad5">
-    <link rel="shortcut icon" href="res/img/icon/favicon.ico">
-    <meta name="msapplication-config" content="res/img/icon/browserconfig.xml">
+    <link rel="apple-touch-icon" sizes="180x180" href="res/img/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" href="res/img/favicon/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="res/img/favicon/favicon-16x16.png" sizes="16x16">
+    <link rel="manifest" href="res/img/favicon/manifest.json">
+    <link rel="mask-icon" href="res/img/favicon/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="res/img/favicon/favicon.ico">
+    <meta name="msapplication-config" content="res/img/favicon/browserconfig.xml">
     <meta name="theme-color" content="#2196f3">
 
     <title><?php echo isset($pageTitle) ? $pageTitle : 'Report Generator' ?></title>

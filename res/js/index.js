@@ -215,11 +215,25 @@ function clearError() {
 
 $(function () {
 
+    // Add listener to expand/collapse advanced options
+    var advOptLegend = $('#legend-advanced-options');
+    var advOptChevron = advOptLegend.find('.collapse-chevron');
+    var advOptCollapse = $('#collapse-advanced-options');
+
+    advOptLegend.click(function () {
+        advOptCollapse.collapse('toggle');
+    });
+
+    // Rotate chevron when div is collapsing/expanding
+    advOptCollapse.on('show.bs.collapse hide.bs.collapse', function () {
+        advOptChevron.toggleClass('expanded');
+    });
+
+    // Add listener to toggles for advanced options to enable/disable and clear their respective fields
     var rowToggle = $('#toggle-row-limit');
     var rowCollapse = $('#collapse-row-limit');
     var rowLimitInput = $('#row-limit');
 
-    // Add listener to toggles for advanced options to enable/disable and clear their respective fields
     rowToggle.change(function () {
         var action = $(this).prop('checked') ? 'show' : 'hide';
         rowCollapse.collapse(action);
@@ -228,7 +242,8 @@ $(function () {
     });
 
     // Disable the toggle until collapse div is fully collapsed or expanded
-    rowCollapse.on('show.bs.collapse hide.bs.collapse', function () {
+    rowCollapse.on('show.bs.collapse hide.bs.collapse', function (e) {
+        e.stopPropagation();
         rowToggle.prop('disabled', true);
     });
     rowCollapse.on('shown.bs.collapse hidden.bs.collapse', function () {
