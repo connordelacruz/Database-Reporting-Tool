@@ -25,16 +25,13 @@ try {
 
         case ('getTables'):
             // Retrieve list of tables
-            $tables = $conn->getTables();
-            $data['text'] = $tables;
+            $data['text'] = $conn->getTables();
             break;
 
         case ('getColumns'):
             $table = $_POST['table'];
-            // validity of table name is checked in all functions that take it as a parameter
-            $columnNames = $conn->getColumns($table);
             // return column names and total number of rows
-            $data['text'] = $columnNames;
+            $data['text'] = $conn->getColumns($table);
             $data['rowCount'] = $conn->countRows($table);
             break;
     }

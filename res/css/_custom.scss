@@ -18,3 +18,11 @@
 option[value=""]:disabled {
   display: none;
 }
+
+// prevent checkbox label text from getting highlighted if rapidly clicking
+div.checkbox {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
