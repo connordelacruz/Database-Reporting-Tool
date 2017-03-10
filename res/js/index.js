@@ -123,6 +123,12 @@ function getColumns(table) {
                 // display columns on the page
                 populateColumnSelect();
             }
+        },
+        error: function (jqXHR) {
+            // If an error occurred before the server could respond, display message and stop execution
+            displayError(jqXHR.responseText, true);
+            // clear loader from #column-select
+            $('#column-select').html('');
         }
     });
 }
