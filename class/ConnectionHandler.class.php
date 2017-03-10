@@ -177,24 +177,31 @@ class ConnectionHandler {
         $rows = [];
         // field headers
         $rows[0] = $whitelisted_columns;
+
         // Handle quotation marks
         $whitelisted_columns = $this->quoteColumns($whitelisted_columns);
         // String of column names to select separated by commas
         $to_select = implode(',', $whitelisted_columns);
+
+        // Build SQL query string
         $sql = "SELECT $to_select FROM $whitelisted_table";
-        // Limit number of rows if not set to 0.
-        // Negative numbers will cause issues, but numbers greater than the total number of rows just returns all rows
+
+        // If $row_count is 1 or greater, using it in a limit statement is valid.
+        // If $row_count is greater than the total number of rows, it just returns all rows
         if ($row_count > 0)
             $sql .= " LIMIT :rowCount";
+
         $stmt = $this->db->prepare($sql);
-        // If $row_count is set, fill placeholder in prepared statement TODO: find way to merge if stmts
+        // If $row_count is set, fill placeholder in prepared statement
         if ($row_count > 0)
             $stmt->bindParam(':rowCount', $row_count, PDO::PARAM_INT);
         $stmt->execute();
+
         // Push each row to $rows
         while($row = $stmt->fetch(PDO::FETCH_NUM)) {
             $rows[] = $row;
         }
+
         return $rows;
     }
 }
