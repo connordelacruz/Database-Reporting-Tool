@@ -4,35 +4,35 @@
  * @author Connor de la Cruz
  */
 
-include_once '../class/autoloader.php';
-
-
-// Get the function requested by ajax query
-$function = $_POST['function'];
-// Data to return
-$data = array();
-
-
 try {
+
+    include_once '../class/autoloader.php';
+    // Ensure config file exists before including it
+    if (!file_exists('../config/config.php'))
+        throw new Exception('Configuration file config/config.php does not exist and will need to be set up before using this tool.');
+    include_once '../config/config.php';
+
+    // Get the function requested by ajax query
+    $function = $_POST['function'];
+    // Data to return
+    $data = array();
+
     // Instantiate connection handler
-    $conn = new ConnectionHandler();
+    $conn = new ConnectionHandler($SQL_SERVER, $SQL_PORT, $SQL_DATABASE, $SQL_USER, $SQL_PASSWORD);
 
     // Determine what function to perform based on query
     switch ($function) {
 
         case ('getTables'):
             // Retrieve list of tables
-            $tables = $conn->getTables();
-            $data['text'] = $tables;
+            $data['text'] = $conn->getTables();
             break;
 
         case ('getColumns'):
             $table = $_POST['table'];
-            // Check validity of table name. Exception is thrown if not valid
-            $conn->validateTable($table);
-            $columnNames = $conn->getColumns($table);
-            // return column names
-            $data['text'] = $columnNames;
+            // return column names and total number of rows
+            $data['text'] = $conn->getColumns($table);
+            $data['rowCount'] = $conn->countRows($table);
             break;
     }
 

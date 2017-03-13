@@ -4,20 +4,28 @@
  * @author Connor de la Cruz
  */
 
-include_once $_SERVER['DOCUMENT_ROOT'] . '/reports/class/autoloader.php';
+$siteRoot = $_SERVER['DOCUMENT_ROOT'] . '/reports';
+include_once "$siteRoot/class/autoloader.php";
+// Ensure config file exists before including it
+if (!file_exists("$siteRoot/config/config.php"))
+    throw new Exception('Configuration file config/config.php does not exist and will need to be set up before using this tool.');
+include_once "$siteRoot/config/config.php";
 
 // get selected table and columns from POST
 $table = $_POST['table-select'];
 $columns = $_POST['columns'];
+
+// Advanced options (set to a default if not toggled or set)
+$row_count = (isset($_POST['toggle-row-limit']) && isset($_POST['row-limit'])) ? intval($_POST['row-limit']) : 0;
+
 // true if the generate button was clicked, false if the export CSV button was clicked
 $reportType = array_key_exists('generate-report', $_POST);
 
-$conn = new ConnectionHandler();
+$conn = new ConnectionHandler($SQL_SERVER, $SQL_PORT, $SQL_DATABASE, $SQL_USER, $SQL_PASSWORD);
 
-$selection = $conn->getRows($table, $columns);
+$selection = $conn->getRows($table, $columns, $row_count);
 
-// If the generate report button was clicked
-
+// If the generate report button was clicked, then the report is generated as a webpage
 if ($reportType) {
     // create string with <table> element for report generation
     $tableString = "<thead><tr>";
@@ -38,45 +46,27 @@ if ($reportType) {
     }
     $tableString .= "</tbody>";
 
-?>
+    ?>
+
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="res/img/icon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" href="res/img/icon/favicon-32x32.png" sizes="32x32">
-    <link rel="icon" type="image/png" href="res/img/icon/favicon-16x16.png" sizes="16x16">
-    <link rel="manifest" href="res/img/icon/manifest.json">
-    <link rel="mask-icon" href="res/img/icon/safari-pinned-tab.svg" color="#5bbad5">
-    <link rel="shortcut icon" href="res/img/icon/favicon.ico">
-    <meta name="msapplication-config" content="res/img/icon/browserconfig.xml">
-    <meta name="theme-color" content="#2196f3">
-
-    <title><?php echo $table ?></title>
-
-    <!-- Stylesheet includes Bootstrap.css + theme -->
-    <link rel="stylesheet" href="res/css/global.css">
-
-    <!-- jQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <!-- Bootstrap.js -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-</head>
+    <?php
+    // disable viewport to enable horizontal scrolling
+    $disableViewport = true;
+    $pageTitle = $table;
+    include_once 'templates/header.php';
+    ?>
 <body>
 <div class="container">
     <h1><?php echo $table ?></h1>
-    <div class="table-responsive">
-        <table class="table table-striped table-bordered">
-            <?php echo $tableString ?>
-        </table>
-    </div>
+    <table class="table table-striped table-bordered">
+        <?php
+        echo $tableString;
+        ?>
+    </table>
 </div>
 </body>
-
+</html>
 <?php
 }
 

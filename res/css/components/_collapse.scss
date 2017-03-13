@@ -1,0 +1,32 @@
+/*
+ * Styling for small triange that indicates when something can be expanded or collapsed.
+ * Used with Bootstrap's glyphicon class.
+ * Adding .expanded rotates it to point up, indicating that it can be collapsed.
+ */
+
+// The chevron to indicate that something can be clicked to expand/collapse it (defaults to collapsed)
+.collapse-chevron {
+  // override glyphicon styling
+  top: 0;
+  font-size: 10px;
+  // Display downward triangle glyphicon
+  &:before {
+    content: "\e252";
+  }
+  // for rotation animation
+  @include transition(all 0.3s ease);
+}
+
+// when .expanded is added, rotate 180 degrees (triangle pointing upwards)
+.collapse-chevron.expanded {
+  @include transform(rotate(180deg));
+}
+
+// For the element containing the chevron
+.collapse-toggle {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: pointer;
+}

@@ -1,7 +1,12 @@
 // Styling not handled by Bootstrap or Bootswatch. Imported after those stylesheets
 
+/* Mixins */
+@import "mixins/transition";
+
 /* Components */
 @import "components/loader";
+@import "components/toggle";
+@import "components/collapse";
 
 /* Helper Classes */
 // Used for reducing top/bottom padding
@@ -13,4 +18,12 @@
 // For placeholder text in select
 option[value=""]:disabled {
   display: none;
+}
+
+// prevent checkbox label text from getting highlighted if rapidly clicking
+div.checkbox {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
