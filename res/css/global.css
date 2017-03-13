@@ -6756,7 +6756,8 @@ input[type="checkbox"],
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
-  user-select: none; }
+  user-select: none;
+  cursor: pointer; }
 
 /* Helper Classes */
 .no-pad-top-bottom {
