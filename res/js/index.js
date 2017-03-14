@@ -11,6 +11,8 @@ var tables;
 var currentTable;
 // Columns in currently selected table
 var columns;
+// Number of rows in the currently selected table
+var rowCount;
 
 // Spinning icon to display while loading
 var loader = '<div class="loader"><svg class="circular" viewBox="25 25 50 50"><circle id="loader-circle" class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="10"/></svg></div>';
@@ -111,10 +113,22 @@ function getColumns(table) {
                 $('#column-select').html('');
             }
             else {
-            columns = data.text;
-            // display columns on the page
-            populateColumnSelect();
+                columns = data.text;
+                // get the total number of rows and set #row-limit max
+                rowCount = data['rowCount'];
+                $('#row-limit').attr({
+                    'max': rowCount,
+                    'placeholder': 'Number of rows to display (max ' + rowCount + ')'
+                });
+                // display columns on the page
+                populateColumnSelect();
             }
+        },
+        error: function (jqXHR) {
+            // If an error occurred before the server could respond, display message and stop execution
+            displayError(jqXHR.responseText, true);
+            // clear loader from #column-select
+            $('#column-select').html('');
         }
     });
 }
@@ -206,6 +220,42 @@ function clearError() {
 /* Executed on page load */
 
 $(function () {
+
+    // Add listener to expand/collapse advanced options
+    var advOptLegend = $('#legend-advanced-options');
+    var advOptChevron = advOptLegend.find('.collapse-chevron');
+    var advOptCollapse = $('#collapse-advanced-options');
+
+    advOptLegend.click(function () {
+        advOptCollapse.collapse('toggle');
+    });
+
+    // Rotate chevron when div is collapsing/expanding
+    advOptCollapse.on('show.bs.collapse hide.bs.collapse', function () {
+        advOptChevron.toggleClass('expanded');
+    });
+
+    // Add listener to toggles for advanced options to enable/disable and clear their respective fields
+    var rowToggle = $('#toggle-row-limit');
+    var rowCollapse = $('#collapse-row-limit');
+    var rowLimitInput = $('#row-limit');
+
+    rowToggle.change(function () {
+        var action = $(this).prop('checked') ? 'show' : 'hide';
+        rowCollapse.collapse(action);
+        rowLimitInput.prop('disabled', !$(this).prop('checked'));
+        rowLimitInput.val('');
+    });
+
+    // Disable the toggle until collapse div is fully collapsed or expanded
+    rowCollapse.on('show.bs.collapse hide.bs.collapse', function (e) {
+        e.stopPropagation();
+        rowToggle.prop('disabled', true);
+    });
+    rowCollapse.on('shown.bs.collapse hidden.bs.collapse', function () {
+        rowToggle.prop('disabled', false);
+    });
+
     // retrieve the table names and add them to #table-select
     getTables();
 });

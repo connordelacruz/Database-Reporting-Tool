@@ -9,7 +9,7 @@
  * @param string $class The class to load
  */
 function autoloader($class) {
-    // load from classes directory TODO: More reliable way of determining the location of the class directory
+    // load from classes directory
     include $_SERVER['DOCUMENT_ROOT'] . "/reports/class/".$class.".class.php";
 }
 

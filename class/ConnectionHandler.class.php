@@ -1,16 +1,10 @@
 <?php
 /**
- * Processes the information from config.ini and handles connecting to the database
+ * Handles database connections
  * @author Connor de la Cruz
  */
 
 class ConnectionHandler {
-
-    /* Array to store connection info from config.ini
-     * Keys: SQL_SERVER, SQL_DATABASE, SQL_PORT, SQL_USER, SQL_PASSWORD */
-    private $conf = [];
-    // Array of optional parameter keys (for error checking)
-    const optional = ['SQL_PORT'];
 
     // PDO object used to connect to the database. Assigned at construction
     private $db;
@@ -21,31 +15,18 @@ class ConnectionHandler {
 
     /**
      * ConnectionHandler constructor.
+     * @param string $SQL_SERVER Server the database is on
+     * @param string $SQL_PORT Port number of the database (can be left blank)
+     * @param string $SQL_DATABASE Name of the database
+     * @param string $SQL_USER Username used to connect to database
+     * @param string $SQL_PASSWORD Password for above user
      * @throws Exception if config.ini doesn't exist or is missing necessary connection information
      */
-    public function __construct() {
-        // Set the config filepath (since we don't necessarily know what directory we're in)
-        $config_path = $_SERVER['DOCUMENT_ROOT'] . '/reports/config/config.ini';
-
-        // Parse config.ini and retrieve configuration settings
-        if (file_exists($config_path)) {
-            $ini = parse_ini_file($config_path);
-            foreach($ini as $key => $value) {
-                // If value hasn't been set and the key isn't optional, throw an error
-                if ($value == '' && !in_array($key,self::optional)) {
-                    throw new Exception("Required value $key has not been set in config.ini.");
-                }
-                $this->conf[$key] = $value;
-            }
-        }
-        // If config.ini doesn't exist, then the connection will fail because the connection info wasn't specified
-        else {
-            throw new Exception('config.ini does not exist. Create a copy of config_template.ini named config.ini and fill out connection information there.');
-        }
+    public function __construct($SQL_SERVER, $SQL_PORT, $SQL_DATABASE, $SQL_USER, $SQL_PASSWORD) {
 
         // Use the connection information to create PDO object
-        $dsn = $this->dsn($this->conf['SQL_SERVER'], $this->conf['SQL_DATABASE'], $this->conf['SQL_PORT']);
-        $this->db = new PDO($dsn, $this->conf['SQL_USER'], $this->conf['SQL_PASSWORD'], [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+        $dsn = $this->dsn($SQL_SERVER, $SQL_DATABASE, $SQL_PORT);
+        $this->db = new PDO($dsn, $SQL_USER, $SQL_PASSWORD, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
 
         // Get the list of tables and store it in $table_whitelist
         $stmt = $this->db->query("SHOW TABLES");
@@ -149,7 +130,6 @@ class ConnectionHandler {
         // if the table is in the whitelist
         if ($whitelisted_table) {
             $stmt = $this->db->query("SHOW COLUMNS FROM $whitelisted_table");
-            $stmt->execute();
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             // Get just the field names for the columns
@@ -162,12 +142,32 @@ class ConnectionHandler {
 
 
     /**
+     * Counts the rows in a given table (after ensuring it's whitelisted)
+     * @param string $table Name of the table to check
+     * @return int The number of rows in $table
+     */
+    function countRows($table) {
+        // the count to return
+        $row_count = 0;
+        // check whitelist for $table
+        $whitelisted_table = $this->validateTable($table);
+        // if the table is in the whitelist, get its rows
+        if ($whitelisted_table) {
+            $stmt = $this->db->query("SELECT COUNT(*) FROM $whitelisted_table");
+            $row_count = $stmt->fetch()[0];
+        }
+        return $row_count;
+    }
+
+
+    /**
      * Given a table name and an array of columns, returns all selected rows from table
      * @param string $table Table name (will be validated)
      * @param array $columns Columns (will be validated)
+     * @param int $row_count (Optional) the number of rows to display
      * @return array The resulting table selection
      */
-    function getRows($table, $columns) {
+    function getRows($table, $columns, $row_count = 0) {
         // validate table
         $whitelisted_table = $this->validateTable($table);
         // Validate column names
@@ -177,16 +177,31 @@ class ConnectionHandler {
         $rows = [];
         // field headers
         $rows[0] = $whitelisted_columns;
+
         // Handle quotation marks
         $whitelisted_columns = $this->quoteColumns($whitelisted_columns);
         // String of column names to select separated by commas
         $to_select = implode(',', $whitelisted_columns);
-        $stmt = $this->db->prepare("SELECT $to_select FROM $whitelisted_table");
+
+        // Build SQL query string
+        $sql = "SELECT $to_select FROM $whitelisted_table";
+
+        // If $row_count is 1 or greater, using it in a limit statement is valid.
+        // If $row_count is greater than the total number of rows, it just returns all rows
+        if ($row_count > 0)
+            $sql .= " LIMIT :rowCount";
+
+        $stmt = $this->db->prepare($sql);
+        // If $row_count is set, fill placeholder in prepared statement
+        if ($row_count > 0)
+            $stmt->bindParam(':rowCount', $row_count, PDO::PARAM_INT);
         $stmt->execute();
+
         // Push each row to $rows
         while($row = $stmt->fetch(PDO::FETCH_NUM)) {
             $rows[] = $row;
         }
+
         return $rows;
     }
 }
