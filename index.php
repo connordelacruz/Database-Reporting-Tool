@@ -29,7 +29,7 @@ include_once 'config/config.php';
                 </fieldset>
                 <fieldset>
                     <legend class="collapse-toggle" id="legend-advanced-options">
-                        Advanced Options <span class="glyphicon collapse-chevron"></span>
+                        Advanced Options
                     </legend>
                     <div class="collapse" id="collapse-advanced-options">
                         <div class="form-group">
