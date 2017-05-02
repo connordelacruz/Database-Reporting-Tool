@@ -1,0 +1,21 @@
+/*
+ * Additional styling for inputs
+ */
+
+
+/* Select */
+
+// For placeholder text in select
+option[value=""]:disabled {
+  display: none;
+}
+
+/* Checkbox */
+
+// prevent checkbox label text from getting highlighted if rapidly clicking
+div.checkbox {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
