@@ -7,23 +7,5 @@
 @import "components/loader";
 @import "components/toggle";
 @import "components/collapse";
-
-/* Helper Classes */
-// Used for reducing top/bottom padding
-.no-pad-top-bottom {
-  padding-top: 0;
-  padding-bottom: 0;
-}
-
-// For placeholder text in select
-option[value=""]:disabled {
-  display: none;
-}
-
-// prevent checkbox label text from getting highlighted if rapidly clicking
-div.checkbox {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
+@import "components/helper";
+@import "components/input";

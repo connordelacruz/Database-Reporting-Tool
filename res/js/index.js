@@ -196,12 +196,12 @@ function clearColumnSelect() {
 /**
  * Displays an alert in #error-div
  * @param message The message to display
- * @param optIsUndismissable Optional boolean. If true, no dismiss button will be appended to error. This is for instances
+ * @param isUndismissable Optional boolean. If true, no dismiss button will be appended to error. This is for instances
  *         where no action can be taken by the user (e.g. can't populate table list).
  */
-function displayError(message, optIsUndismissable) {
+function displayError(message, isUndismissable) {
     var alertDiv = $('<div class="alert alert-danger alert-dismissable fade in"></div>');
-    if (!optIsUndismissable) {
+    if (!isUndismissable) {
         alertDiv.append('<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>');
     }
     alertDiv.append(message);
@@ -223,7 +223,6 @@ $(function () {
 
     // Add listener to expand/collapse advanced options
     var advOptLegend = $('#legend-advanced-options');
-    var advOptChevron = advOptLegend.find('.collapse-chevron');
     var advOptCollapse = $('#collapse-advanced-options');
 
     advOptLegend.click(function () {
@@ -232,7 +231,7 @@ $(function () {
 
     // Rotate chevron when div is collapsing/expanding
     advOptCollapse.on('show.bs.collapse hide.bs.collapse', function () {
-        advOptChevron.toggleClass('expanded');
+        advOptLegend.toggleClass('expanded');
     });
 
     // Add listener to toggles for advanced options to enable/disable and clear their respective fields

@@ -29,7 +29,7 @@ include_once 'config/config.php';
                 </fieldset>
                 <fieldset>
                     <legend class="collapse-toggle" id="legend-advanced-options">
-                        Advanced Options <span class="glyphicon collapse-chevron"></span>
+                        Advanced Options
                     </legend>
                     <div class="collapse" id="collapse-advanced-options">
                         <div class="form-group">
@@ -39,7 +39,7 @@ include_once 'config/config.php';
                                 Limit number of rows<span class="toggle--on">:</span>
                             </label>
                             <div class="collapse" id="collapse-row-limit">
-                                <input class="form-control" type="number" disabled
+                                <input class="form-control" type="number" disabled autocomplete="off"
                                        name="row-limit" id="row-limit" placeholder="Number of rows to display">
                             </div>
                         </div>
