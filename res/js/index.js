@@ -42,6 +42,7 @@ function getTables() {
                 tables = data.text;
                 // Display these tables on the page
                 populateTableSelect();
+                // TODO: call populateTableJoin() as well
             }
         },
         error: function (jqXHR) {
@@ -61,8 +62,10 @@ function populateTableSelect() {
     // The div where all of these will be inserted
     var tableSelectDiv = $('#table-select-div');
     // the label for #table-select
+    // TODO: make radio input for selecting this
     var tableSelectLabel = '<label class="control-label" for="table-select">Table:</label>';
     // The table select element
+    // TODO: create generic function to generate table select for easy reuse
     var tableSelect = $('<select class="form-control" id="table-select" name="table-select" required></select>');
 
     // add placeholder text
@@ -87,6 +90,16 @@ function populateTableSelect() {
     // Add the elements to the page
     tableSelectDiv.html(tableSelectLabel);
     tableSelectDiv.append(tableSelect);
+}
+
+
+function populateTableJoin() {
+    // The div where this will be inserted
+    var tableJoinDiv = $('#table-join-div');
+    // TODO: create label w/ radio select
+    // TODO: create table select elements
+    // TODO: create join select element?
+    // TODO: create column selects for tables 1 and 2
 }
 
 

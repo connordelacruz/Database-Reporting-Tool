@@ -17,6 +17,7 @@ include_once 'config/config.php';
             <fieldset>
                 <legend>Table</legend>
                 <div class="form-group" id="table-select-div"></div>
+                <div class="form-group" id="table-join-div"></div>
             </fieldset>
 
             <div class="collapse" id="column-select-div">
