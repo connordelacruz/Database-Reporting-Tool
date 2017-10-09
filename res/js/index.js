@@ -3,16 +3,30 @@
  * @author Connor de la Cruz
  */
 
+/* Objects */
+
+/**
+ * Object representing table data
+ * @param name Name of the table
+ * @param columns List of columns
+ * @param rowCount Number of rows
+ */
+function TableDataObject(name, columns, rowCount) {
+    this.name = name;
+    this.columns = columns;
+    this.rowCount = rowCount;
+}
+
 /* Variables */
 
 // Array of table names from the database
 var tables;
-// Currently selected table
-var currentTable;
-// Columns in currently selected table
-var columns;
-// Number of rows in the currently selected table
-var rowCount;
+
+// TableDataObject for the currently selected table
+var selectedTable;
+
+// Array of TableDataObjects for the currently selected tables for join statement. [0] = first table, [1] = second table
+var selectedJoinTables;
 
 // Spinning icon to display while loading
 var loader = '<div class="loader"><svg class="circular" viewBox="25 25 50 50"><circle id="loader-circle" class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="10"/></svg></div>';
@@ -83,8 +97,9 @@ function populateTableSelect() {
         clearColumnSelect();
         // clear any error messages previously displayed
         clearError();
-        currentTable = $(this).find(':selected').val();
-        getColumns(currentTable);
+        var tableName = $(this).find(':selected').val();
+        selectedTable = new TableDataObject(tableName);
+        getColumns(tableName);
     });
 
     // Add the elements to the page
@@ -93,13 +108,51 @@ function populateTableSelect() {
 }
 
 
+/**
+ * TODO: document
+ */
 function populateTableJoin() {
     // The div where this will be inserted
     var tableJoinDiv = $('#table-join-div');
+
     // TODO: create label w/ radio select
-    // TODO: create table select elements
-    // TODO: create join select element?
+    var tableJoinLabelString = '<label class="control-label">Join Tables:</label>';
+
+    // Create table select elements
+    var tableSelectString = '<select class="form-control" required>';
+    // Add placeholder option
+    tableSelectString += '<option class="placeholder" value="" disabled selected>Select a table</option>';
+    // Add options for each table
+    $.each(tables, function (i, table) {
+        tableSelectString += '<option value="' + table + '">' + table + '</option>';
+    });
+    tableSelectString += '</select>';
+    
+    var table1Select = $(tableSelectString).attr('id', 'join-table1-select');
+    var table2Select = $(tableSelectString).attr('id', 'join-table2-select');
+    // TODO: add on change listener that updates column selects
+
+    var table1LabelString = '<label for="join-table1-select"></label>';
+    var table2LabelString = '<label for="join-table2-select"></label>';
+    var table1Container = $('<td class="form-group"></td>').append(table1LabelString, table1Select);
+    var table2Container = $('<td class="form-group"></td>').append(table2LabelString, table2Select);
+
+    // Create join select element
+    var joinLabelString = '<label for="join-type-select">Join Type:</label>';
+    var joinSelectString = [
+        '<select id="join-type-select">' +
+            '<option value="inner" selected>Inner Join</option>' +
+            '<option value="left" selected>Left Join</option>' +
+            '<option value="right" selected>Right Join</option>' +
+            '<option value="outer" selected>Outer Join</option>' +
+        '</select>'
+    ].join('');
+    var joinSelectContainer = '<td class="form-group">' + joinLabelString + joinSelectString + '</td>';
+
     // TODO: create column selects for tables 1 and 2
+
+    // TODO: build table
+    
 }
 
 
@@ -109,6 +162,7 @@ function populateTableJoin() {
  * message is displayed and populateColumnSelect() is not called.
  * @param table The table to get columns from
  */
+// TODO: extend to work with join feature
 function getColumns(table) {
     $.ajax({
         type: "POST",
@@ -126,12 +180,12 @@ function getColumns(table) {
                 $('#column-select').html('');
             }
             else {
-                columns = data.text;
+                selectedTable.columns = data.text;
                 // get the total number of rows and set #row-limit max
-                rowCount = data['rowCount'];
+                selectedTable.rowCount = data['rowCount'];
                 $('#row-limit').attr({
-                    'max': rowCount,
-                    'placeholder': 'Number of rows to display (max ' + rowCount + ')'
+                    'max': selectedTable.rowCount,
+                    'placeholder': 'Number of rows to display (max ' + selectedTable.rowCount + ')'
                 });
                 // display columns on the page
                 populateColumnSelect();
@@ -156,8 +210,8 @@ function populateColumnSelect() {
     var columnSelect = $('#column-select');
     // Add select all button and clear out column names from previous table
     columnSelect.html('<div class="checkbox"><label><input type="checkbox" id="column-select-all" checked><b>Select All</b></label></div>');
-    for(var i = 0; i < columns.length; i++) {
-        var option = '<div class="checkbox"><label><input type="checkbox" name="columns[]" class="column-option" value="' + columns[i] + '" checked>' + columns[i] + '</label></div>';
+    for(var i = 0; i < selectedTable.columns.length; i++) {
+        var option = '<div class="checkbox"><label><input type="checkbox" name="columns[]" class="column-option" value="' + selectedTable.columns[i] + '" checked>' + selectedTable.columns[i] + '</label></div>';
         columnSelect.append(option);
     }
     // Add listener to column-select-all
