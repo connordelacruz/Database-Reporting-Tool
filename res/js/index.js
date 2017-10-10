@@ -251,9 +251,10 @@ function populateTableJoin() {
  * If the table is not valid, then connection_handler.php sets data.error. If data.error is defined, then an error
  * message is displayed and populateColumnSelect() is not called.
  * @param table The table to get columns from
+ * @param selectIndex Index in selectedTables
  */
 // TODO: extend to work with join feature
-function getColumns(table) {
+function getColumns(table, selectIndex) {
     $.ajax({
         type: "POST",
         url: "handler/connection_handler.php",
