@@ -1,0 +1,14 @@
+// Styling for the join tables table
+table.join-table {
+  tbody tr td {
+    vertical-align: bottom;
+
+    label {
+      font-weight: bold;
+    }
+
+    b {
+      font-size: 16px;
+    }
+  }
+}

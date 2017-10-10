@@ -5,6 +5,11 @@
 
 /* Select */
 
+// Reduce size of text
+select, select.form-control {
+  font-size: $font-size-base;
+}
+
 // For placeholder text in select
 option[value=""]:disabled {
   display: none;

@@ -56,7 +56,7 @@ function getTables() {
                 tables = data.text;
                 // Display these tables on the page
                 populateTableSelect();
-                // TODO: call populateTableJoin() as well
+                populateTableJoin();
             }
         },
         error: function (jqXHR) {
@@ -127,32 +127,60 @@ function populateTableJoin() {
         tableSelectString += '<option value="' + table + '">' + table + '</option>';
     });
     tableSelectString += '</select>';
-    
+
     var table1Select = $(tableSelectString).attr('id', 'join-table1-select');
     var table2Select = $(tableSelectString).attr('id', 'join-table2-select');
     // TODO: add on change listener that updates column selects
 
-    var table1LabelString = '<label for="join-table1-select"></label>';
-    var table2LabelString = '<label for="join-table2-select"></label>';
+    var table1LabelString = '<label for="join-table1-select">Table 1:</label>';
+    var table2LabelString = '<label for="join-table2-select">Table 2:</label>';
     var table1Container = $('<td class="form-group"></td>').append(table1LabelString, table1Select);
     var table2Container = $('<td class="form-group"></td>').append(table2LabelString, table2Select);
 
     // Create join select element
     var joinLabelString = '<label for="join-type-select">Join Type:</label>';
     var joinSelectString = [
-        '<select id="join-type-select">' +
-            '<option value="inner" selected>Inner Join</option>' +
-            '<option value="left" selected>Left Join</option>' +
-            '<option value="right" selected>Right Join</option>' +
-            '<option value="outer" selected>Outer Join</option>' +
+        '<select class="form-control" id="join-type-select" required>' +
+        '<option value="inner" selected>Inner Join</option>' +
+        '<option value="left">Left Join</option>' +
+        '<option value="right">Right Join</option>' +
+        '<option value="outer">Outer Join</option>' +
         '</select>'
     ].join('');
     var joinSelectContainer = '<td class="form-group">' + joinLabelString + joinSelectString + '</td>';
 
-    // TODO: create column selects for tables 1 and 2
+    // Create column selects for tables 1 and 2
+    var columnSelectString = [
+        '<select class="form-control" required>' +
+        '<option class="placeholder" value="" disabled selected>Select a column</option>' +
+        '</select>'
+    ].join('');
+    var column1Select = $(columnSelectString).attr('id', 'join-column1-select');
+    var column2Select = $(columnSelectString).attr('id', 'join-column2-select');
+    var column1LabelString = '<label for="join-column1-select">Table 1 Column:</label>';
+    var column2LabelString = '<label for="join-column1-select">Table 2 Column:</label>';
+    var column1Container = $('<td class="form-group"></td>').append(column1LabelString, column1Select);
+    var column2Container = $('<td class="form-group"></td>').append(column2LabelString, column2Select);
 
-    // TODO: build table
-    
+    // Build table
+    var joinTablesContainer =
+        $('<table class="table table-condensed join-table"></table>').html(
+            $('<tbody></tbody>').html(
+                $('<tr></tr>').append(
+                    table1Container,
+                    joinSelectContainer,
+                    table2Container,
+                    '<td><b>ON</b></td>',
+                    column1Container,
+                    '<td><b>=</b></td>',
+                    column2Container
+                )
+            )
+        );
+    tableJoinDiv.append(
+        tableJoinLabelString,
+        joinTablesContainer
+    );
 }
 
 
