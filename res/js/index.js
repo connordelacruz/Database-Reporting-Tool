@@ -72,6 +72,7 @@ function getTables() {
  * Populates #table-select with options containing table names.
  * This function is called on success of getTables().
  */
+// TODO: don't use jQuery to create all these elements. Implement placeholders in index.php
 function populateTableSelect() {
     // The div where all of these will be inserted
     var tableSelectDiv = $('#table-select-div');
@@ -107,6 +108,7 @@ function populateTableSelect() {
     // Add listener to table select
     tableSelect.change(function () {
         // expand column select div
+        // TODO: maybe don't collapse and instead have a placeholder message when no table is selected
         $('#column-select-div').collapse('show');
         // clear any existing options and show loader
         clearColumnSelect();
@@ -114,6 +116,7 @@ function populateTableSelect() {
         clearError();
         var tableName = $(this).find(':selected').val();
         selectedTable = new TableDataObject(tableName);
+        // TODO: set join table 1 to match
         getColumns(tableName);
     });
     var tableSelectContainer = $('<div class="collapse in" id="table-select-collapse"></div>').html(tableSelect);
@@ -127,6 +130,7 @@ function populateTableSelect() {
 /**
  * TODO: document
  */
+// TODO: don't use jQuery to create all these elements. Implement placeholders in index.php
 function populateTableJoin() {
     // The div where this will be inserted
     var tableJoinDiv = $('#table-join-div');
@@ -162,7 +166,7 @@ function populateTableJoin() {
 
     var table1Select = $(tableSelectString).attr('id', 'join-table1-select');
     var table2Select = $(tableSelectString).attr('id', 'join-table2-select');
-    // TODO: add on change listener that updates column selects
+    // TODO: add on change listener that updates column selects and global vars
 
     var table1LabelString = '<label for="join-table1-select">Table 1:</label>';
     var table2LabelString = '<label for="join-table2-select">Table 2:</label>';
@@ -287,10 +291,10 @@ function populateColumnSelect() {
     // Add listeners to all .column-option checkboxes to uncheck #column-select-all if one of them is changed
     $('.column-option').change(function () {
         // uncheck select all if this gets unchecked
-        if ($(this).prop('checked') == false) {
+        if ($(this).prop('checked') === false) {
             $('#column-select-all').prop('checked', false);
             // Disable submit buttons if nothing is checked
-            if ($('.column-option:checked').length == 0) {
+            if ($('.column-option:checked').length === 0) {
                 $('button[type=submit]').prop('disabled', true);
             }
         }
@@ -298,7 +302,7 @@ function populateColumnSelect() {
         else {
             $('button[type=submit]').prop('disabled', false);
             // if everything else is checked, then set select all to checked
-            if ($('.column-option:checked').length == $('.column-option').length) {
+            if ($('.column-option:checked').length === $('.column-option').length) {
                 $('#column-select-all').prop('checked', true);
             }
         }
