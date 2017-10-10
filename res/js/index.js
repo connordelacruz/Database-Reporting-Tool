@@ -23,10 +23,11 @@ function TableDataObject(name, columns, rowCount) {
 var tables;
 
 // TableDataObject for the currently selected table
+// TODO: use selectedTables[0] instead
 var selectedTable;
 
 // Array of TableDataObjects for the currently selected tables for join statement. [0] = first table, [1] = second table
-var selectedJoinTables;
+var selectedTables;
 
 // Spinning icon to display while loading
 var loader = '<div class="loader"><svg class="circular" viewBox="25 25 50 50"><circle id="loader-circle" class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="10"/></svg></div>';
@@ -120,8 +121,19 @@ function populateTableSelect() {
         getColumns(tableName);
     });
     var tableSelectContainer = $('<div class="collapse in" id="table-select-collapse"></div>').html(tableSelect);
-    // TODO: disable radio buttons while collapsing
-
+    // Disable radio buttons while collapsing
+    tableSelectContainer
+        .on('show.bs.collapse hide.bs.collapse',
+            function (e) {
+                e.stopPropagation();
+                $('input[name="select-type"]').prop('disabled', true);
+            }
+        )
+        .on('shown.bs.collapse hidden.bs.collapse',
+            function () {
+                $('input[name="select-type"]').prop('disabled', false);
+            }
+        );
     // Add the elements to the page
     tableSelectDiv.html(tableSelectLabel).append(tableSelectContainer);
 }
@@ -214,7 +226,19 @@ function populateTableJoin() {
             )
         );
     var joinTablesContainer = $('<div class="collapse" id="table-join-collapse"></div>').html(joinTablesTable);
-    // TODO: disable radio buttons while collapsing
+    // Disable radio buttons while collapsing
+    joinTablesContainer
+        .on('show.bs.collapse hide.bs.collapse',
+            function (e) {
+                e.stopPropagation();
+                $('input[name="select-type"]').prop('disabled', true);
+            }
+        )
+        .on('shown.bs.collapse hidden.bs.collapse',
+            function () {
+                $('input[name="select-type"]').prop('disabled', false);
+            }
+        );
     tableJoinDiv.append(
         tableJoinLabel,
         joinTablesContainer
