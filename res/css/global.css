@@ -2429,7 +2429,13 @@ select, select.form-control { font-size: 13px; }
 option[value=""]:disabled { display: none; }
 
 /* Checkbox */
-div.checkbox { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
+div.checkbox, div.radio { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
+
+/* Radio Toggle */
+.radio-label input[type=radio] + .toggle--on { display: none; }
+.radio-label input[type=radio] + .toggle--off { display: inline-block; }
+.radio-label input[type=radio]:checked + .toggle--on { display: inline-block; }
+.radio-label input[type=radio]:checked + .toggle--off { display: none; }
 
 table.join-table tbody tr td { vertical-align: bottom; }
 table.join-table tbody tr td label { font-weight: bold; }

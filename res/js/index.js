@@ -76,8 +76,23 @@ function populateTableSelect() {
     // The div where all of these will be inserted
     var tableSelectDiv = $('#table-select-div');
     // the label for #table-select
-    // TODO: make radio input for selecting this
-    var tableSelectLabel = '<label class="control-label" for="table-select">Table:</label>';
+    var tableSelectLabel = $([
+        '<div class="radio">' +
+        '<label class="control-label radio-label">' +
+        '<input type="radio" id="select-table-radio" name="select-type" value="select" checked>' +
+        'Single Table<span class="toggle--on">:</span>' +
+        '</label>' +
+        '</div>'
+    ].join(''));
+    // Add listener that toggles collapse state of #table-select-collapse
+    // TODO: find a better way of doing this
+    tableSelectLabel.find('input#select-table-radio').change(
+        function () {
+            $('#table-select-collapse').collapse($(this).prop('checked') ? 'show' : 'hide')
+                .find(':input').prop('disabled', !$(this).prop('checked'));
+            $('#table-join-collapse').collapse($(this).prop('checked') ? 'hide' : 'show')
+                .find(':input').prop('disabled', $(this).prop('checked'));
+        });
     // The table select element
     // TODO: create generic function to generate table select for easy reuse
     var tableSelect = $('<select class="form-control" id="table-select" name="table-select" required></select>');
@@ -101,10 +116,11 @@ function populateTableSelect() {
         selectedTable = new TableDataObject(tableName);
         getColumns(tableName);
     });
+    var tableSelectContainer = $('<div class="collapse in" id="table-select-collapse"></div>').html(tableSelect);
+    // TODO: disable radio buttons while collapsing
 
     // Add the elements to the page
-    tableSelectDiv.html(tableSelectLabel);
-    tableSelectDiv.append(tableSelect);
+    tableSelectDiv.html(tableSelectLabel).append(tableSelectContainer);
 }
 
 
@@ -115,8 +131,24 @@ function populateTableJoin() {
     // The div where this will be inserted
     var tableJoinDiv = $('#table-join-div');
 
-    // TODO: create label w/ radio select
-    var tableJoinLabelString = '<label class="control-label">Join Tables:</label>';
+    // Create label w/ radio select
+    var tableJoinLabel = $([
+        '<div class="radio">' +
+        '<label class="control-label radio-label">' +
+        '<input type="radio" id="join-table-radio" name="select-type" value="join">' +
+        'Join Tables<span class="toggle--on">:</span>' +
+        '</label>' +
+        '</div>'
+    ].join(''));
+    // Add listener that toggles collapse state of #join-tables-collapse
+    // TODO: find a better way of doing this
+    tableJoinLabel.find('input#join-table-radio').change(
+        function () {
+            $('#table-join-collapse').collapse($(this).prop('checked') ? 'show' : 'hide')
+                .find(':input').prop('disabled', !$(this).prop('checked'));
+            $('#table-select-collapse').collapse($(this).prop('checked') ? 'hide' : 'show')
+                .find(':input').prop('disabled', $(this).prop('checked'));
+        });
 
     // Create table select elements
     var tableSelectString = '<select class="form-control" required>';
@@ -163,7 +195,7 @@ function populateTableJoin() {
     var column2Container = $('<td class="form-group"></td>').append(column2LabelString, column2Select);
 
     // Build table
-    var joinTablesContainer =
+    var joinTablesTable =
         $('<table class="table table-condensed join-table"></table>').html(
             $('<tbody></tbody>').html(
                 $('<tr></tr>').append(
@@ -177,8 +209,10 @@ function populateTableJoin() {
                 )
             )
         );
+    var joinTablesContainer = $('<div class="collapse" id="table-join-collapse"></div>').html(joinTablesTable);
+    // TODO: disable radio buttons while collapsing
     tableJoinDiv.append(
-        tableJoinLabelString,
+        tableJoinLabel,
         joinTablesContainer
     );
 }

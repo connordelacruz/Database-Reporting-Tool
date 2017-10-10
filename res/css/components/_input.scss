@@ -18,9 +18,30 @@ option[value=""]:disabled {
 /* Checkbox */
 
 // prevent checkbox label text from getting highlighted if rapidly clicking
-div.checkbox {
+div.checkbox, div.radio {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+/* Radio Toggle */
+
+.radio-label input[type=radio] {
+  // hide .toggle--on and show .toggle--off when unchecked
+  + .toggle--on {
+    display: none;
+  }
+  + .toggle--off {
+    display: inline-block;
+  }
+  // show .toggle--on and hide .toggle--off when checked
+  &:checked {
+    + .toggle--on {
+      display: inline-block;
+    }
+    + .toggle--off {
+      display: none;
+    }
+  }
 }
