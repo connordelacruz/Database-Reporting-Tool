@@ -40,8 +40,8 @@ var loader = '<div class="loader"><svg class="circular" viewBox="25 25 50 50"><c
  */
 function getTables() {
     // display loading icon while table select is populated
-    var tableSelectDiv = $('#table-select-div');
-    tableSelectDiv.html(loader);
+    var tableLoaderDiv = $('#table-loader-div');
+    tableLoaderDiv.html(loader);
     $.ajax({
         type: "POST",
         url: "handler/connection_handler.php",
@@ -51,7 +51,7 @@ function getTables() {
             // Check if a server-side error was thrown and stop execution if so
             if(data.error !== undefined) {
                 displayError(data.error, true);
-                tableSelectDiv.html('');
+                tableLoaderDiv.html('');
             }
             else {
                 tables = data.text;
@@ -63,7 +63,10 @@ function getTables() {
         error: function (jqXHR) {
             // If an error occurred before the server could respond, display message and stop execution
             displayError(jqXHR.responseText, true);
-            tableSelectDiv.html('');
+        },
+        complete: function () {
+            // Hide loader
+            tableLoaderDiv.html('');
         }
     });
 }
@@ -73,22 +76,11 @@ function getTables() {
  * Populates #table-select with options containing table names.
  * This function is called on success of getTables().
  */
-// TODO: don't use jQuery to create all these elements. Implement placeholders in index.php
 function populateTableSelect() {
-    // The div where all of these will be inserted
-    var tableSelectDiv = $('#table-select-div');
-    // the label for #table-select
-    var tableSelectLabel = $([
-        '<div class="radio">' +
-        '<label class="control-label radio-label">' +
-        '<input type="radio" id="select-table-radio" name="select-type" value="select" checked>' +
-        'Single Table<span class="toggle--on">:</span>' +
-        '</label>' +
-        '</div>'
-    ].join(''));
     // Add listener that toggles collapse state of #table-select-collapse
+    // TODO: move to onload function
     // TODO: find a better way of doing this
-    tableSelectLabel.find('input#select-table-radio').change(
+    $('#select-table-radio').change(
         function () {
             $('#table-select-collapse').collapse($(this).prop('checked') ? 'show' : 'hide')
                 .find(':input').prop('disabled', !$(this).prop('checked'));
@@ -96,12 +88,10 @@ function populateTableSelect() {
                 .find(':input').prop('disabled', $(this).prop('checked'));
         });
     // The table select element
-    // TODO: create generic function to generate table select for easy reuse
-    var tableSelect = $('<select class="form-control" id="table-select" name="table-select" required></select>');
+    var tableSelect = $('#table-select');
 
-    // add placeholder text
-    tableSelect.append('<option id="placeholder" value="" disabled selected>Select a table</option>');
-
+    // Add tables to select
+    // TODO: add to join selects as well?
     for (var i = 0; i < tables.length; i++) {
         var option = "<option name='table' value='" + tables[i] + "'>" + tables[i] + "</option>";
         tableSelect.append(option);
@@ -117,7 +107,7 @@ function populateTableSelect() {
         // TODO: set join table 1 to match
         getColumns(tableName);
     });
-    var tableSelectContainer = $('<div class="collapse in" id="table-select-collapse"></div>').html(tableSelect);
+    var tableSelectContainer = $('#table-select-collapse');
     // Disable radio buttons while collapsing
     tableSelectContainer
         .on('show.bs.collapse hide.bs.collapse',
@@ -131,8 +121,6 @@ function populateTableSelect() {
                 $('input[name="select-type"]').prop('disabled', false);
             }
         );
-    // Add the elements to the page
-    tableSelectDiv.html(tableSelectLabel).append(tableSelectContainer);
 }
 
 
