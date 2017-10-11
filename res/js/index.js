@@ -22,12 +22,8 @@ function TableDataObject(name, columns, rowCount) {
 // Array of table names from the database
 var tables;
 
-// TableDataObject for the currently selected table
-// TODO: use selectedTables[0] instead
-var selectedTable;
-
 // Array of TableDataObjects for the currently selected tables for join statement. [0] = first table, [1] = second table
-var selectedTables;
+var selectedTables = [];
 
 // Spinning icon to display while loading
 var loader = '<div class="loader"><svg class="circular" viewBox="25 25 50 50"><circle id="loader-circle" class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="10"/></svg></div>';
@@ -92,9 +88,9 @@ function populateTableSelect() {
         // clear any error messages previously displayed
         clearError();
         var tableName = $(this).find(':selected').val();
-        selectedTable = new TableDataObject(tableName);
+        selectedTables[0] = new TableDataObject(tableName);
         // TODO: set join table 1 to match
-        getColumns(tableName);
+        getColumns(tableName, 0);
     });
 
     // TODO: add listener to join table selects
@@ -128,12 +124,12 @@ function getColumns(table, selectIndex) {
                 $('#column-select').html('');
             }
             else {
-                selectedTable.columns = data.text;
+                selectedTables[selectIndex].columns = data.text;
                 // get the total number of rows and set #row-limit max
-                selectedTable.rowCount = data['rowCount'];
+                selectedTables[selectIndex].rowCount = data['rowCount'];
                 $('#row-limit').attr({
-                    'max': selectedTable.rowCount,
-                    'placeholder': 'Number of rows to display (max ' + selectedTable.rowCount + ')'
+                    'max': selectedTables[selectIndex].rowCount,
+                    'placeholder': 'Number of rows to display (max ' + selectedTables[selectIndex].rowCount + ')'
                 });
                 // display columns on the page
                 populateColumnSelect();
@@ -153,13 +149,16 @@ function getColumns(table, selectIndex) {
  * Populates #column-select with checkboxes containing column names.
  * This function is called on success of getColumns().
  */
+// TODO: take an index into selectedTables as a param
+// TODO: extend to work with join functionality
 function populateColumnSelect() {
     // For each column, add an option to #column-select
     var columnSelect = $('#column-select');
     // Add select all button and clear out column names from previous table
     columnSelect.html('<div class="checkbox"><label><input type="checkbox" id="column-select-all" checked><b>Select All</b></label></div>');
-    for(var i = 0; i < selectedTable.columns.length; i++) {
-        var option = '<div class="checkbox"><label><input type="checkbox" name="columns[]" class="column-option" value="' + selectedTable.columns[i] + '" checked>' + selectedTable.columns[i] + '</label></div>';
+    // TODO: change selectedTables[0] once index param is implemented
+    for(var i = 0; i < selectedTables[0].columns.length; i++) {
+        var option = '<div class="checkbox"><label><input type="checkbox" name="columns[]" class="column-option" value="' + selectedTables[0].columns[i] + '" checked>' + selectedTables[0].columns[i] + '</label></div>';
         columnSelect.append(option);
     }
     // Add listener to column-select-all
