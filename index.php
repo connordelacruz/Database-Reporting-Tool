@@ -15,9 +15,12 @@ include_once 'config/config.php';
     <div class="well">
         <form class="form-vertical" id="report-options" action="report.php" method="post" target="_blank">
             <fieldset>
+                <!-- TODO: start form collapse -->
                 <legend>Table</legend>
+                <!-- TODO: move loader div outside of form collapse -->
                 <div id="table-loader-div"></div>
-                <!-- TODO: disable radio buttons on load -->
+                <!-- TODO: disable radio buttons and inputs on load -->
+                <!-- TODO: rename table-select* to single-table* for clarity? -->
                 <div class="form-group" id="table-select-div">
                     <div class="radio">
                         <label class="control-label radio-label" id="table-select-label">
@@ -25,7 +28,7 @@ include_once 'config/config.php';
                             Single Table<span class="toggle--on">:</span>
                         </label>
                     </div>
-                    <div class="collapse in" id="table-select-collapse">
+                    <div class="table-collapse collapse in" id="table-select-collapse">
                         <label class="sr-only" for="table-select">Select a Table:</label>
                         <select class="form-control table-select-input" id="table-select" name="table-select" required>
                             <option id="placeholder" value="" disabled selected>Select a table</option>
@@ -38,7 +41,7 @@ include_once 'config/config.php';
                             <input type="radio" id="table-join-radio" name="select-type" value="join">Join Tables<span class="toggle--on">:</span>
                         </label>
                     </div>
-                    <div class="collapse" id="table-join-collapse">
+                    <div class="table-collapse collapse" id="table-join-collapse">
                         <table class="table table-condensed join-table">
                             <tbody>
                             <tr>
@@ -129,6 +132,7 @@ include_once 'config/config.php';
                     </div>
                 </fieldset>
             </div>
+            <!-- TODO: end form collapse -->
             <div id="error-div"></div>
         </form>
     </div>

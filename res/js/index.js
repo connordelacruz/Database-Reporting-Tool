@@ -57,7 +57,6 @@ function getTables() {
                 tables = data.text;
                 // Display these tables on the page
                 populateTableSelect();
-                populateTableJoin();
             }
         },
         error: function (jqXHR) {
@@ -77,21 +76,10 @@ function getTables() {
  * This function is called on success of getTables().
  */
 function populateTableSelect() {
-    // Add listener that toggles collapse state of #table-select-collapse
-    // TODO: move to onload function
-    // TODO: find a better way of doing this
-    $('#select-table-radio').change(
-        function () {
-            $('#table-select-collapse').collapse($(this).prop('checked') ? 'show' : 'hide')
-                .find(':input').prop('disabled', !$(this).prop('checked'));
-            $('#table-join-collapse').collapse($(this).prop('checked') ? 'hide' : 'show')
-                .find(':input').prop('disabled', $(this).prop('checked'));
-        });
-
     // The table select elements
     var tableSelectInputs = $('.table-select-input');
 
-    // Add tables to select
+    // Add tables to select inputs
     for (var i = 0; i < tables.length; i++) {
         var option = "<option name='table' value='" + tables[i] + "'>" + tables[i] + "</option>";
         tableSelectInputs.append(option);
@@ -108,58 +96,10 @@ function populateTableSelect() {
         // TODO: set join table 1 to match
         getColumns(tableName);
     });
-    // TODO: add to both collapse containers
-    var tableSelectContainer = $('#table-select-collapse');
-    // Disable radio buttons while collapsing
-    tableSelectContainer
-        .on('show.bs.collapse hide.bs.collapse',
-            function (e) {
-                e.stopPropagation();
-                $('input[name="select-type"]').prop('disabled', true);
-            }
-        )
-        .on('shown.bs.collapse hidden.bs.collapse',
-            function () {
-                $('input[name="select-type"]').prop('disabled', false);
-            }
-        );
-}
 
-
-/**
- * TODO: document
- */
-// TODO: don't use jQuery to create all these elements. Implement placeholders in index.php
-function populateTableJoin() {
-    // Add listener that toggles collapse state of #join-tables-collapse
-    // TODO: move to onload function
-    // TODO: find a better way of doing this
-    $('#table-join-radio').change(
-        function () {
-            $('#table-join-collapse').collapse($(this).prop('checked') ? 'show' : 'hide')
-                .find(':input').prop('disabled', !$(this).prop('checked'));
-            $('#table-select-collapse').collapse($(this).prop('checked') ? 'hide' : 'show')
-                .find(':input').prop('disabled', $(this).prop('checked'));
-        });
-
+    // TODO: add listener to join table selects
     var table1Select = $('#join-table1-select');
     var table2Select = $('#join-table2-select');
-    // TODO: add on change listener that updates column selects and global vars
-
-    var joinTablesContainer = $('#table-join-collapse');
-    // Disable radio buttons while collapsing
-    joinTablesContainer
-        .on('show.bs.collapse hide.bs.collapse',
-            function (e) {
-                e.stopPropagation();
-                $('input[name="select-type"]').prop('disabled', true);
-            }
-        )
-        .on('shown.bs.collapse hidden.bs.collapse',
-            function () {
-                $('input[name="select-type"]').prop('disabled', false);
-            }
-        );
 }
 
 
@@ -295,6 +235,35 @@ function clearError() {
 /* Executed on page load */
 
 $(function () {
+
+    // Add listener that toggles collapse state depending on which radio is selected
+    $('input[name="select-type"]').change(
+        function () {
+            // Determine which radio is checked (select or join)
+            var isSelect = $('input[name="select-type"]:checked').val() === 'select';
+            // (don't need this variable, but using it for readability's sake)
+            var isJoin = !isSelect;
+            $('#table-select-collapse').collapse(isSelect ? 'show' : 'hide')
+                .find(':input').prop('disabled', !isSelect);
+            $('#table-join-collapse').collapse(isJoin ? 'show' : 'hide')
+                .find(':input').prop('disabled', !isJoin);
+
+            // TODO: update select fields/columns section on expanding
+        });
+
+    // Disable radio buttons while collapsing
+    $('.table-collapse')
+        .on('show.bs.collapse hide.bs.collapse',
+            function (e) {
+                e.stopPropagation();
+                $('input[name="select-type"]').prop('disabled', true);
+            }
+        )
+        .on('shown.bs.collapse hidden.bs.collapse',
+            function () {
+                $('input[name="select-type"]').prop('disabled', false);
+            }
+        );
 
     // Add listener to expand/collapse advanced options
     var advOptLegend = $('#legend-advanced-options');
