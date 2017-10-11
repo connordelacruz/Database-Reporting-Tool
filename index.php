@@ -27,13 +27,60 @@ include_once 'config/config.php';
                     </div>
                     <div class="collapse in" id="table-select-collapse">
                         <label class="sr-only" for="table-select">Select a Table:</label>
-                        <select class="form-control" id="table-select" name="table-select" required>
+                        <select class="form-control table-select-input" id="table-select" name="table-select" required>
                             <option id="placeholder" value="" disabled selected>Select a table</option>
                         </select>
                     </div>
                 </div>
                 <div class="form-group" id="table-join-div">
-                    <!-- TODO: placeholder markup -->
+                    <div class="radio">
+                        <label class="control-label radio-label" id="table-join-label">
+                            <input type="radio" id="table-join-radio" name="select-type" value="join">Join Tables<span class="toggle--on">:</span>
+                        </label>
+                    </div>
+                    <div class="collapse" id="table-join-collapse">
+                        <table class="table table-condensed join-table">
+                            <tbody>
+                            <tr>
+                                <td class="form-group">
+                                    <label for="join-table1-select">Table 1:</label>
+                                    <select class="form-control table-select-input" id="join-table1-select" name="table-select" required>
+                                        <option id="placeholder" value="" disabled selected>Select a table</option>
+                                    </select>
+                                </td>
+                                <td class="form-group">
+                                    <label for="join-type-select">Join Type:</label>
+                                    <select class="form-control" id="join-type-select" required>
+                                        <option value="inner" selected>Inner Join</option>
+                                        <option value="left">Left Join</option>
+                                        <option value="right">Right Join</option>
+                                        <option value="outer">Outer Join</option>
+                                    </select>
+                                </td>
+                                <td class="form-group">
+                                    <label for="join-table2-select">Table 2:</label>
+                                    <select class="form-control table-select-input" id="join-table2-select" name="table-select" required>
+                                        <option id="placeholder" value="" disabled selected>Select a table</option>
+                                    </select>
+                                </td>
+                                <td><b>ON</b></td>
+                                <td class="form-group">
+                                    <label for="join-column1-select">Table 1 Column:</label>
+                                    <select class="form-control" id="join-column1-select" required>
+                                        <option class="placeholder" value="" disabled selected>Select a column</option>
+                                    </select>
+                                </td>
+                                <td><b>=</b></td>
+                                <td class="form-group">
+                                    <label for="join-column2-select">Table 2 Column:</label>
+                                    <select class="form-control" id="join-column2-select" required>
+                                        <option class="placeholder" value="" disabled selected>Select a column</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </fieldset>
 

@@ -87,17 +87,18 @@ function populateTableSelect() {
             $('#table-join-collapse').collapse($(this).prop('checked') ? 'hide' : 'show')
                 .find(':input').prop('disabled', $(this).prop('checked'));
         });
-    // The table select element
-    var tableSelect = $('#table-select');
+
+    // The table select elements
+    var tableSelectInputs = $('.table-select-input');
 
     // Add tables to select
-    // TODO: add to join selects as well?
     for (var i = 0; i < tables.length; i++) {
         var option = "<option name='table' value='" + tables[i] + "'>" + tables[i] + "</option>";
-        tableSelect.append(option);
+        tableSelectInputs.append(option);
     }
-    // Add listener to table select
-    tableSelect.change(function () {
+
+    // Add listener to single table select
+    $('#table-select').change(function () {
         // clear any existing options and show loader
         clearColumnSelect();
         // clear any error messages previously displayed
@@ -107,6 +108,7 @@ function populateTableSelect() {
         // TODO: set join table 1 to match
         getColumns(tableName);
     });
+    // TODO: add to both collapse containers
     var tableSelectContainer = $('#table-select-collapse');
     // Disable radio buttons while collapsing
     tableSelectContainer
@@ -129,21 +131,10 @@ function populateTableSelect() {
  */
 // TODO: don't use jQuery to create all these elements. Implement placeholders in index.php
 function populateTableJoin() {
-    // The div where this will be inserted
-    var tableJoinDiv = $('#table-join-div');
-
-    // Create label w/ radio select
-    var tableJoinLabel = $([
-        '<div class="radio">' +
-        '<label class="control-label radio-label">' +
-        '<input type="radio" id="join-table-radio" name="select-type" value="join">' +
-        'Join Tables<span class="toggle--on">:</span>' +
-        '</label>' +
-        '</div>'
-    ].join(''));
     // Add listener that toggles collapse state of #join-tables-collapse
+    // TODO: move to onload function
     // TODO: find a better way of doing this
-    tableJoinLabel.find('input#join-table-radio').change(
+    $('#table-join-radio').change(
         function () {
             $('#table-join-collapse').collapse($(this).prop('checked') ? 'show' : 'hide')
                 .find(':input').prop('disabled', !$(this).prop('checked'));
@@ -151,66 +142,11 @@ function populateTableJoin() {
                 .find(':input').prop('disabled', $(this).prop('checked'));
         });
 
-    // Create table select elements
-    var tableSelectString = '<select class="form-control" required>';
-    // Add placeholder option
-    tableSelectString += '<option class="placeholder" value="" disabled selected>Select a table</option>';
-    // Add options for each table
-    $.each(tables, function (i, table) {
-        tableSelectString += '<option value="' + table + '">' + table + '</option>';
-    });
-    tableSelectString += '</select>';
-
-    var table1Select = $(tableSelectString).attr('id', 'join-table1-select');
-    var table2Select = $(tableSelectString).attr('id', 'join-table2-select');
+    var table1Select = $('#join-table1-select');
+    var table2Select = $('#join-table2-select');
     // TODO: add on change listener that updates column selects and global vars
 
-    var table1LabelString = '<label for="join-table1-select">Table 1:</label>';
-    var table2LabelString = '<label for="join-table2-select">Table 2:</label>';
-    var table1Container = $('<td class="form-group"></td>').append(table1LabelString, table1Select);
-    var table2Container = $('<td class="form-group"></td>').append(table2LabelString, table2Select);
-
-    // Create join select element
-    var joinLabelString = '<label for="join-type-select">Join Type:</label>';
-    var joinSelectString = [
-        '<select class="form-control" id="join-type-select" required>' +
-        '<option value="inner" selected>Inner Join</option>' +
-        '<option value="left">Left Join</option>' +
-        '<option value="right">Right Join</option>' +
-        '<option value="outer">Outer Join</option>' +
-        '</select>'
-    ].join('');
-    var joinSelectContainer = '<td class="form-group">' + joinLabelString + joinSelectString + '</td>';
-
-    // Create column selects for tables 1 and 2
-    var columnSelectString = [
-        '<select class="form-control" required>' +
-        '<option class="placeholder" value="" disabled selected>Select a column</option>' +
-        '</select>'
-    ].join('');
-    var column1Select = $(columnSelectString).attr('id', 'join-column1-select');
-    var column2Select = $(columnSelectString).attr('id', 'join-column2-select');
-    var column1LabelString = '<label for="join-column1-select">Table 1 Column:</label>';
-    var column2LabelString = '<label for="join-column1-select">Table 2 Column:</label>';
-    var column1Container = $('<td class="form-group"></td>').append(column1LabelString, column1Select);
-    var column2Container = $('<td class="form-group"></td>').append(column2LabelString, column2Select);
-
-    // Build table
-    var joinTablesTable =
-        $('<table class="table table-condensed join-table"></table>').html(
-            $('<tbody></tbody>').html(
-                $('<tr></tr>').append(
-                    table1Container,
-                    joinSelectContainer,
-                    table2Container,
-                    '<td><b>ON</b></td>',
-                    column1Container,
-                    '<td><b>=</b></td>',
-                    column2Container
-                )
-            )
-        );
-    var joinTablesContainer = $('<div class="collapse" id="table-join-collapse"></div>').html(joinTablesTable);
+    var joinTablesContainer = $('#table-join-collapse');
     // Disable radio buttons while collapsing
     joinTablesContainer
         .on('show.bs.collapse hide.bs.collapse',
@@ -224,10 +160,6 @@ function populateTableJoin() {
                 $('input[name="select-type"]').prop('disabled', false);
             }
         );
-    tableJoinDiv.append(
-        tableJoinLabel,
-        joinTablesContainer
-    );
 }
 
 
