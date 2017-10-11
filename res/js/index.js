@@ -264,6 +264,8 @@ $(function () {
             }
         );
 
+    // TODO: style <select>s differently if placeholder option is selected
+
     // Add listener to expand/collapse advanced options
     var advOptLegend = $('#legend-advanced-options');
     var advOptCollapse = $('#collapse-advanced-options');
