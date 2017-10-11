@@ -108,9 +108,6 @@ function populateTableSelect() {
     }
     // Add listener to table select
     tableSelect.change(function () {
-        // expand column select div
-        // TODO: maybe don't collapse and instead have a placeholder message when no table is selected
-        $('#column-select-div').collapse('show');
         // clear any existing options and show loader
         clearColumnSelect();
         // clear any error messages previously displayed

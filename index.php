@@ -20,12 +20,16 @@ include_once 'config/config.php';
                 <div class="form-group" id="table-join-div"></div>
             </fieldset>
 
-            <div class="collapse" id="column-select-div">
+            <div id="column-select-div">
                 <fieldset>
                     <legend>Columns</legend>
                     <div class="form-group">
                         <label class="control-label" for="column-select">Columns to display:</label>
-                        <div id="column-select"></div>
+                        <div id="column-select">
+                            <div class="text-muted">
+                                Select a table to continue.
+                            </div>
+                        </div>
                     </div>
                 </fieldset>
                 <fieldset>
