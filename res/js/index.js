@@ -152,48 +152,17 @@ function getColumns(selectIndex) {
 }
 
 
+// TODO: extend to work with join functionality
 /**
  * Populates #column-select with checkboxes containing column names.
  * This function is called on success of getColumns().
+ * @param selectIndex Index in selectedTables
+ * @param {boolean} [tableJoin] If true, include table names and show column selects for multiple tables
  */
-// TODO: extend to work with join functionality
-function populateColumnSelect(selectIndex) {
-    var columnSelect = $('#column-select');
-    // Add select all button and clear out column names from previous table
-    columnSelect.html('<div class="checkbox"><label><input type="checkbox" id="column-select-all" checked><b>Select All</b></label></div>');
-    // TODO: use buildColumnOptions(selectIndex)
-    for(var i = 0; i < selectedTables[selectIndex].columns.length; i++) {
-        var option = '<div class="checkbox"><label><input type="checkbox" name="columns[]" class="column-option" value="' + selectedTables[selectIndex].columns[i] + '" checked>' + selectedTables[selectIndex].columns[i] + '</label></div>';
-        columnSelect.append(option);
-    }
-    // Add listener to column-select-all
-    // TODO: move this to buildColumnOptions
-    $('#column-select-all').change(function () {
-        // set all options to match the check property of the select all button
-        $('.column-option').prop('checked', $(this).prop('checked'));
-        // if nothing is checked, submit buttons should be disabled
-        disableSubmit(!$(this).prop('checked'));
-    });
-
-    // Add listeners to all .column-option checkboxes to uncheck #column-select-all if one of them is changed
-    $('.column-option').change(function () {
-        // uncheck select all if this gets unchecked
-        if ($(this).prop('checked') === false) {
-            $('#column-select-all').prop('checked', false);
-            // Disable submit buttons if nothing is checked
-            if ($('.column-option:checked').length === 0) {
-                disableSubmit(true);
-            }
-        }
-        // if this was checked, re-enable submit buttons
-        else {
-            disableSubmit(false);
-            // if everything else is checked, then set select all to checked
-            if ($('.column-option:checked').length === $('.column-option').length) {
-                $('#column-select-all').prop('checked', true);
-            }
-        }
-    });
+function populateColumnSelect(selectIndex, tableJoin) {
+    var columnOptionsContainer = buildColumnOptions(selectIndex, tableJoin);
+    // TODO: don't just insert if tableJoin is true
+    $('#column-select').html(columnOptionsContainer);
 
     disableSubmit(false);
 }
@@ -202,16 +171,16 @@ function populateColumnSelect(selectIndex) {
 /**
  * Generate markup for column options list
  * @param selectIndex The index into selectedTables for the table
- * @param {boolean} [tableJoinList] If true, include the name of the table and a horizontal rule at the top
+ * @param {boolean} [tableJoin] If true, include the name of the table and a horizontal rule at the top
  * @returns jQuery object for the options list
  */
-function buildColumnOptions(selectIndex, tableJoinList) {
+function buildColumnOptions(selectIndex, tableJoin) {
     var table = selectedTables[selectIndex];
     var containerId = table.name + '-column-options-container';
     var columnOptionsContainerString = '<div id="' + containerId + '">';
 
     // Include table name if this is a join list
-    if (tableJoinList) {
+    if (tableJoin) {
         columnOptionsContainerString += '<hr><b class="text-primary">' + table.name + '</b><br>';
     }
 
