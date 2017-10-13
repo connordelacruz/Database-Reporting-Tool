@@ -158,8 +158,6 @@ function getColumns(selectIndex) {
  */
 // TODO: extend to work with join functionality
 function populateColumnSelect(selectIndex) {
-    // For each column, add an option to #column-select
-    // TODO: use selectIndex instead of hard-coded id (also probably rename it to indicate that it's the select's id?)
     var columnSelect = $('#column-select');
     // Add select all button and clear out column names from previous table
     columnSelect.html('<div class="checkbox"><label><input type="checkbox" id="column-select-all" checked><b>Select All</b></label></div>');
@@ -172,7 +170,7 @@ function populateColumnSelect(selectIndex) {
         // set all options to match the check property of the select all button
         $('.column-option').prop('checked', $(this).prop('checked'));
         // if nothing is checked, submit buttons should be disabled
-        $('button[type=submit]').prop('disabled', !$(this).prop('checked'));
+        disableSubmit(!$(this).prop('checked'));
     });
 
     // Add listeners to all .column-option checkboxes to uncheck #column-select-all if one of them is changed
@@ -182,12 +180,12 @@ function populateColumnSelect(selectIndex) {
             $('#column-select-all').prop('checked', false);
             // Disable submit buttons if nothing is checked
             if ($('.column-option:checked').length === 0) {
-                $('button[type=submit]').prop('disabled', true);
+                disableSubmit(true);
             }
         }
         // if this was checked, re-enable submit buttons
         else {
-            $('button[type=submit]').prop('disabled', false);
+            disableSubmit(false);
             // if everything else is checked, then set select all to checked
             if ($('.column-option:checked').length === $('.column-option').length) {
                 $('#column-select-all').prop('checked', true);
@@ -195,9 +193,7 @@ function populateColumnSelect(selectIndex) {
         }
     });
 
-    // re-enable generate and export buttons
-    $('#generate-report').prop('disabled', false);
-    $('#export-csv').prop('disabled',false);
+    disableSubmit(false);
 }
 
 
@@ -205,11 +201,18 @@ function populateColumnSelect(selectIndex) {
  * Removed column select options, display loader, and disables #generate-report. Used when a new table is selected
  */
 function clearColumnSelect() {
-    // disable report generator button
-    $('#generate-report').prop('disabled', true);
-    $('#export-csv').prop('disabled',true);
+    disableSubmit(true);
     // clear column options and display loading icon
     $('#column-select').html(loader);
+}
+
+
+/**
+ * Set the disabled property of the submit buttons
+ * @param setDisabled Value to set the disabled property to
+ */
+function disableSubmit(setDisabled) {
+    $('button[type=submit]').prop('disabled', setDisabled);
 }
 
 
@@ -244,6 +247,7 @@ $(function () {
     // Add listener that toggles collapse state depending on which radio is selected
     $('input[name="select-type"]').change(
         function () {
+            // TODO: clearColumnSelect() (and clearError()?)
             // Determine which radio is checked (select or join)
             var isSelect = $('input[name="select-type"]:checked').val() === 'select';
             // (don't need this variable, but using it for readability's sake)
