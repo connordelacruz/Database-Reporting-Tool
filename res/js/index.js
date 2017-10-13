@@ -239,6 +239,7 @@ function buildColumnOptions(selectIndex, tableJoin) {
 /**
  * Removed column select options, display loader, and disables #generate-report. Used when a new table is selected
  */
+// TODO: add params for showing loader, showing placeholder text
 function clearColumnSelect() {
     disableSubmit(true);
     // clear column options and display loading icon
