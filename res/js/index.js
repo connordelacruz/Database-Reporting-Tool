@@ -127,6 +127,7 @@ function getColumns(selectIndex) {
             if (data.error !== undefined) {
                 displayError(data.error);
                 // clear loader from #column-select
+                // TODO: use selectIndex instead of hard-coded id (also probably rename it to indicate that it's the select's id?)
                 $('#column-select').html('');
             }
             else {
@@ -158,6 +159,7 @@ function getColumns(selectIndex) {
 // TODO: extend to work with join functionality
 function populateColumnSelect(selectIndex) {
     // For each column, add an option to #column-select
+    // TODO: use selectIndex instead of hard-coded id (also probably rename it to indicate that it's the select's id?)
     var columnSelect = $('#column-select');
     // Add select all button and clear out column names from previous table
     columnSelect.html('<div class="checkbox"><label><input type="checkbox" id="column-select-all" checked><b>Select All</b></label></div>');

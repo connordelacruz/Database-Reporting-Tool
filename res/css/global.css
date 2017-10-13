@@ -2426,6 +2426,7 @@ input[type="checkbox"]:disabled:checked:after, .checkbox input[type="checkbox"]:
 /* Select */
 select, select.form-control { font-size: 13px; }
 select.placeholder, select.form-control.placeholder { color: #bbb; }
+select.placeholder option, select.form-control.placeholder option { color: #666; }
 
 option[value=""]:disabled, option.placeholder { display: none; }
 

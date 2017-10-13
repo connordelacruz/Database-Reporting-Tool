@@ -13,6 +13,10 @@ select, select.form-control {
   // NOTE: requires JavaScript to add the class when placeholder is selected
   &.placeholder {
     color: $text-muted;
+    // keep option elements their normal color
+    option {
+      color: $input-color;
+    }
   }
 }
 
