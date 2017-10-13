@@ -2425,8 +2425,9 @@ input[type="checkbox"]:disabled:checked:after, .checkbox input[type="checkbox"]:
 /* Additional styling for inputs */
 /* Select */
 select, select.form-control { font-size: 13px; }
+select.placeholder, select.form-control.placeholder { color: #bbb; }
 
-option[value=""]:disabled { display: none; }
+option[value=""]:disabled, option.placeholder { display: none; }
 
 /* Checkbox */
 div.checkbox, div.radio { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }

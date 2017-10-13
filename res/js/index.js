@@ -35,7 +35,8 @@ var loader = '<div class="loader"><svg class="circular" viewBox="25 25 50 50"><c
  * Gets a list of accessible tables from database and calls populateTableSelect() on success
  */
 function getTables() {
-    // display loading icon while table select is populated
+    // disable table inputs and show loader
+    $('#table-fieldset').find(':input').prop('disabled', true);
     var tableLoaderDiv = $('#table-loader-div');
     tableLoaderDiv.html(loader);
     $.ajax({
@@ -96,6 +97,10 @@ function populateTableSelect() {
     // TODO: add listener to join table selects
     var table1Select = $('#join-table1-select');
     var table2Select = $('#join-table2-select');
+
+    // Enable radio buttons and select single table as default
+    $('input[name="select-type"]').prop('disabled', false);
+    $('#select-table-radio').prop('checked', true).change();
 }
 
 

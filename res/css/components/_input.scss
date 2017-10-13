@@ -5,13 +5,19 @@
 
 /* Select */
 
-// Reduce size of text
 select, select.form-control {
+  // Reduce size of text
   font-size: $font-size-base;
+
+  // style differently when a placeholder option is selected
+  // NOTE: requires JavaScript to add the class when placeholder is selected
+  &.placeholder {
+    color: $text-muted;
+  }
 }
 
 // For placeholder text in select
-option[value=""]:disabled {
+option[value=""]:disabled, option.placeholder {
   display: none;
 }
 
