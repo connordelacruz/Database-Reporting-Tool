@@ -90,10 +90,10 @@ include_once 'config/config.php';
                     <legend>Columns</legend>
                     <div class="form-group">
                         <label class="control-label" for="column-select">Columns to display:</label>
+                        <div class="text-muted" id="column-select-placeholder">
+                            Select a table to continue.
+                        </div>
                         <div id="column-select">
-                            <div class="text-muted">
-                                Select a table to continue.
-                            </div>
                         </div>
                     </div>
                 </fieldset>
