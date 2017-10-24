@@ -77,6 +77,7 @@ function populateTableSelects() {
     var tableSelectInputs = $('.table-select-input');
 
     // Add tables to select inputs
+    // TODO: vary name attribute?
     for (var i = 0; i < tables.length; i++) {
         var option = "<option name='table' value='" + tables[i] + "'>" + tables[i] + "</option>";
         tableSelectInputs.append(option);
@@ -161,7 +162,7 @@ function getColumns(selectIndex) {
  * @param {boolean} [tableJoin] If true, include table names and show column selects for multiple tables
  */
 function populateColumnSelect(selectIndex, tableJoin) {
-    var columnOptionsContainer = buildColumnOptions(selectIndex, tableJoin);
+    var columnOptionsContainer = buildColumnCheckboxes(selectIndex, tableJoin);
     // TODO: don't just insert if tableJoin is true
     $('#column-select').html(columnOptionsContainer);
 
@@ -171,12 +172,12 @@ function populateColumnSelect(selectIndex, tableJoin) {
 
 
 /**
- * Generate markup for column options list
+ * Generate markup for column checkbox list
  * @param selectIndex The index into selectedTables for the table
  * @param {boolean} [tableJoin] If true, include the name of the table and a horizontal rule at the top
- * @returns jQuery object for the options list
+ * @returns jQuery object for the column list
  */
-function buildColumnOptions(selectIndex, tableJoin) {
+function buildColumnCheckboxes(selectIndex, tableJoin) {
     var table = selectedTables[selectIndex];
     var containerId = table.name + '-column-options-container';
     var columnOptionsContainerString = '<div id="' + containerId + '">';
@@ -238,6 +239,21 @@ function buildColumnOptions(selectIndex, tableJoin) {
     columnOptionsContainer.find('.column-option').change(columnOptionListener('#' + containerId, '#' + selectAllId));
 
     return columnOptionsContainer;
+}
+
+
+/**
+ * Generate markup for column select options
+ * @param selectIndex The index into selectedTables for the table
+ * @returns {string} Markup for column select options
+ */
+function buildColumnOptions(selectIndex) {
+    var table = selectedTables[selectIndex];
+    var columnOptionsString = '<option class="placeholder" value="" disabled selected>Select a column</option>';
+    $.each(table.columns, function (i, column) {
+        columnOptionsString += '<option value="' + column + '">' + column + '</option>';
+    });
+    return columnOptionsString;
 }
 
 
