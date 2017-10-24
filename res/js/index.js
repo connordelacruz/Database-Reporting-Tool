@@ -101,40 +101,37 @@ function populateTableSelects() {
     });
 
     // Add listener to join table selects
-    // TODO: make listener generic since they're almost the same
     var table1Select = $('#join-table1-select');
-    table1Select.change(function () {
-        var tableName = $(this).find(':selected').val();
-        var selectIndex = $(this).attr('id');
-        selectedTables[selectIndex] = new TableDataObject(tableName);
-        // Populate column select once columns are retrieved
-        var getColumnsCallback = function () {
-            var optionsString = buildColumnOptions(selectIndex);
-            $('#join-column1-select').html(optionsString)
-                .prop('disabled', false);
-        };
-        // Get columns for selected table
-        getColumns(selectIndex, getColumnsCallback);
-    });
+    table1Select.change(joinTableSelectListener('#join-column1-select'));
     var table2Select = $('#join-table2-select');
-    table2Select.change(function () {
-        var tableName = $(this).find(':selected').val();
-        var selectIndex = $(this).attr('id');
-        selectedTables[selectIndex] = new TableDataObject(tableName);
-        // Populate column select once columns are retrieved
-        var getColumnsCallback = function () {
-            var optionsString = buildColumnOptions(selectIndex);
-            $('#join-column2-select').html(optionsString)
-                .prop('disabled', false);
-        };
-        // Get columns for selected table
-        getColumns(selectIndex, getColumnsCallback);
-    });
+    table2Select.change(joinTableSelectListener('#join-column2-select'));
     // TODO: add listeners to join column selects
 
     // Enable radio buttons and select single table as default
     $('input[name="select-type"]').prop('disabled', false);
     $('#select-table-radio').prop('checked', true).change();
+}
+
+
+/**
+ * Generates an onchange listener function for a join table select
+ * @param columnSelectId id of the corresponding column select
+ * @returns {Function} onchange listener for the table select
+ */
+function joinTableSelectListener(columnSelectId) {
+    return function () {
+        var tableName = $(this).find(':selected').val();
+        var selectIndex = $(this).attr('id');
+        selectedTables[selectIndex] = new TableDataObject(tableName);
+        // Populate column select once columns are retrieved
+        var getColumnsCallback = function () {
+            var optionsString = buildColumnOptions(selectIndex);
+            $(columnSelectId).html(optionsString)
+                .prop('disabled', false);
+        };
+        // Get columns for selected table
+        getColumns(selectIndex, getColumnsCallback);
+    }
 }
 
 
