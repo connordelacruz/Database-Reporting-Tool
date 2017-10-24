@@ -67,14 +67,14 @@ include_once 'config/config.php';
                                 <td><b>ON</b></td>
                                 <td class="form-group">
                                     <label for="join-column1-select">Table 1 Column:</label>
-                                    <select class="form-control" id="join-column1-select" required>
+                                    <select class="form-control join-column-select" id="join-column1-select" required>
                                         <option class="placeholder" value="" disabled selected>Select a column</option>
                                     </select>
                                 </td>
                                 <td><b>=</b></td>
                                 <td class="form-group">
                                     <label for="join-column2-select">Table 2 Column:</label>
-                                    <select class="form-control" id="join-column2-select" required>
+                                    <select class="form-control join-column-select" id="join-column2-select" required>
                                         <option class="placeholder" value="" disabled selected>Select a column</option>
                                     </select>
                                 </td>

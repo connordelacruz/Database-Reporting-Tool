@@ -130,6 +130,7 @@ function populateTableSelects() {
         // Get columns for selected table
         getColumns(selectIndex, getColumnsCallback);
     });
+    // TODO: add listeners to join column selects
 
     // Enable radio buttons and select single table as default
     $('input[name="select-type"]').prop('disabled', false);
@@ -186,7 +187,7 @@ function getColumns(selectIndex, callbackFunction) {
 }
 
 
-// TODO: extend to work with join functionality
+// TODO: kind of redundant, remove?
 /**
  * Populates #column-select with checkboxes containing column names.
  * This function is called on success of getColumns().
@@ -194,11 +195,25 @@ function getColumns(selectIndex, callbackFunction) {
  * @param {boolean} [tableJoin] If true, include table names and show column selects for multiple tables
  */
 function populateColumnList(selectIndex, tableJoin) {
-    var columnOptionsContainer = buildColumnList(selectIndex, tableJoin);
-    // TODO: don't just insert if tableJoin is true
-    $('#column-select').html(columnOptionsContainer);
+    var columnListContainer = buildColumnList(selectIndex, tableJoin);
+    $('#column-select').html(columnListContainer);
+    disableSubmit(false);
+}
 
-    // TODO: don't enable submit if only 1 join table selected
+
+/**
+ * Populate #column-select with checkboxes containing columns for each table in the join
+ * @param selectIndices Array of indices into selectedTables
+ */
+function populateTableJoinColumnList(selectIndices) {
+    // TODO: create select all button
+    // For each table select index, build a column list
+    var columnListContainer = $('<div></div>');
+    $.each(selectIndices, function (i, selectIndex) {
+        var columnList = buildColumnList(selectIndex, true);
+        columnListContainer.append(columnList);
+    });
+    $('#column-select').html(columnListContainer);
     disableSubmit(false);
 }
 
@@ -340,7 +355,7 @@ $(function () {
     // Add listener that toggles collapse state depending on which radio is selected
     $('input[name="select-type"]').change(
         function () {
-            // TODO: clearColumnSelect() (and clearError()?)
+            // TODO: clearColumnSelect() (and clearError())
             // Determine which radio is checked (select or join)
             var isSelect = $('input[name="select-type"]:checked').val() === 'select';
             // (don't need this variable, but using it for readability's sake)
