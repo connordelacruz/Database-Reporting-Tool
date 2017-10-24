@@ -112,6 +112,7 @@ function populateTableSelects() {
  * @param selectIndex Index in selectedTables
  */
 // TODO: extend to work with join feature
+// TODO: param for callback function
 function getColumns(selectIndex) {
     var table = selectedTables[selectIndex].name;
     $.ajax({
@@ -164,6 +165,7 @@ function populateColumnSelect(selectIndex, tableJoin) {
     // TODO: don't just insert if tableJoin is true
     $('#column-select').html(columnOptionsContainer);
 
+    // TODO: don't enable submit if only 1 join table selected
     disableSubmit(false);
 }
 
@@ -186,9 +188,12 @@ function buildColumnOptions(selectIndex, tableJoin) {
 
     // Add select all checkbox
     var selectAllId = table.name + '-column-select-all';
+    var selectAllHeading = 'Select All';
+    if (tableJoin)
+        selectAllHeading += ' From ' + table.name;
     columnOptionsContainerString += [
         '<div class="checkbox">',
-        '<label><input type="checkbox" id="' + selectAllId + '" checked><b>Select All From ' + table.name + '</b></label>',
+        '<label><input type="checkbox" id="' + selectAllId + '" checked><b>' + selectAllHeading + '</b></label>',
         '</div>'
     ].join('');
 
@@ -315,6 +320,11 @@ $(function () {
         );
 
     // TODO: style <select>s differently if placeholder option is selected
+    /*$('select').each(function () {
+        // Set the placeholder class on selects where the currently selected value is an empty string
+        $(this).toggleClass('placeholder', $(this).find(':selected').val() === '');
+        // TODO: add listener to remove placeholder class on change
+    });*/
 
     // Add listener to expand/collapse advanced options
     var advOptLegend = $('#legend-advanced-options');
