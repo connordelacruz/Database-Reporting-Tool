@@ -105,7 +105,9 @@ function populateTableSelects() {
     table1Select.change(joinTableSelectListener('#join-column1-select'));
     var table2Select = $('#join-table2-select');
     table2Select.change(joinTableSelectListener('#join-column2-select'));
-    // TODO: add listeners to join column selects
+
+    // Add listeners to join column selects
+    $('.join-column-select').change(joinColumnSelectListener);
 
     // Enable radio buttons and select single table as default
     $('input[name="select-type"]').prop('disabled', false);
@@ -136,8 +138,11 @@ function joinTableSelectListener(columnSelectId) {
 
 
 /**
- * onchange listener function for join column selects
+ * onchange listener function for join column selects.
+ * Checks to see if all required fields for a join are filled. If they are,
+ * populate column list
  */
+// TODO: add this listener to join table selects too
 function joinColumnSelectListener() {
     // If all required fields for join are filled, populate column list
     var joinFields = $('#table-join-collapse').find('select:required');
@@ -154,6 +159,7 @@ function joinColumnSelectListener() {
         // TODO: show loader
         populateTableJoinColumnList(selectIndices);
     }
+    // TODO: else show placeholder in column list container
 }
 
 
