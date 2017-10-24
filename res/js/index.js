@@ -136,6 +136,28 @@ function joinTableSelectListener(columnSelectId) {
 
 
 /**
+ * onchange listener function for join column selects
+ */
+function joinColumnSelectListener() {
+    // If all required fields for join are filled, populate column list
+    var joinFields = $('#table-join-collapse').find('select:required');
+    var fieldsValidated = true;
+    joinFields.each(function () {
+        if ($(this).find(':selected').val() === '') {
+            return fieldsValidated = false;
+        }
+    });
+    if (fieldsValidated) {
+        // Retrieve an array of table select input ids (used as indices in selectedTables)
+        var selectIndices = joinFields.filter('.table-select-input')
+            .map(function() { return this.id }).get();
+        // TODO: show loader
+        populateTableJoinColumnList(selectIndices);
+    }
+}
+
+
+/**
  * Gets a list of columns from the table and calls populateColumnList() on success.
  * If the table is not valid, then connection_handler.php sets data.error. If data.error is defined, then an error
  * message is displayed and populateColumnList() is not called.
