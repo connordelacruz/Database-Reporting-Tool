@@ -220,6 +220,7 @@ function getColumns(selectIndex, callbackFunction) {
  * @param {boolean} [tableJoin] If true, include table names and show column selects for multiple tables
  */
 function populateColumnList(selectIndex, tableJoin) {
+    // TODO: remove tableJoin param, it'll always be false here
     var columnListContainer = buildColumnList(selectIndex, tableJoin);
     $('#column-select').html(columnListContainer);
     disableSubmit(false);
@@ -256,7 +257,7 @@ function buildColumnList(selectIndex, tableJoin) {
 
     // Include table name if this is a join list
     if (tableJoin) {
-        columnOptionsContainerString += '<hr><b class="text-primary">' + table.name + '</b><br>';
+        columnOptionsContainerString += '<b class="text-primary">' + table.name + '</b><br>';
     }
 
     // Add select all checkbox
