@@ -100,13 +100,36 @@ function populateTableSelects() {
         getColumns(selectIndex, getColumnsCallback);
     });
 
-    // TODO: add listener to join table selects
+    // Add listener to join table selects
+    // TODO: make listener generic since they're almost the same
     var table1Select = $('#join-table1-select');
     table1Select.change(function () {
+        var tableName = $(this).find(':selected').val();
+        var selectIndex = $(this).attr('id');
+        selectedTables[selectIndex] = new TableDataObject(tableName);
+        // Populate column select once columns are retrieved
+        var getColumnsCallback = function () {
+            var optionsString = buildColumnOptions(selectIndex);
+            $('#join-column1-select').html(optionsString)
+                .prop('disabled', false);
+        };
         // Get columns for selected table
-        // Populate column select
+        getColumns(selectIndex, getColumnsCallback);
     });
     var table2Select = $('#join-table2-select');
+    table2Select.change(function () {
+        var tableName = $(this).find(':selected').val();
+        var selectIndex = $(this).attr('id');
+        selectedTables[selectIndex] = new TableDataObject(tableName);
+        // Populate column select once columns are retrieved
+        var getColumnsCallback = function () {
+            var optionsString = buildColumnOptions(selectIndex);
+            $('#join-column2-select').html(optionsString)
+                .prop('disabled', false);
+        };
+        // Get columns for selected table
+        getColumns(selectIndex, getColumnsCallback);
+    });
 
     // Enable radio buttons and select single table as default
     $('input[name="select-type"]').prop('disabled', false);
@@ -121,7 +144,6 @@ function populateTableSelects() {
  * @param selectIndex Index in selectedTables
  * @param callbackFunction Function to call on success (i.e. function to populate column list)
  */
-// TODO: extend to work with join feature
 function getColumns(selectIndex, callbackFunction) {
     var table = selectedTables[selectIndex].name;
     $.ajax({
