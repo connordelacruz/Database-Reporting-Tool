@@ -93,11 +93,19 @@ function populateTableSelects() {
         var selectIndex = $(this).attr('id');
         selectedTables[selectIndex] = new TableDataObject(tableName);
 
-        getColumns(selectIndex);
+        // Populate column list once columns are retrieved
+        var getColumnsCallback = function () {
+            populateColumnList(selectIndex);
+        };
+        getColumns(selectIndex, getColumnsCallback);
     });
 
     // TODO: add listener to join table selects
     var table1Select = $('#join-table1-select');
+    table1Select.change(function () {
+        // Get columns for selected table
+        // Populate column select
+    });
     var table2Select = $('#join-table2-select');
 
     // Enable radio buttons and select single table as default
@@ -107,14 +115,14 @@ function populateTableSelects() {
 
 
 /**
- * Gets a list of columns from the table and calls populateColumnSelect() on success.
+ * Gets a list of columns from the table and calls populateColumnList() on success.
  * If the table is not valid, then connection_handler.php sets data.error. If data.error is defined, then an error
- * message is displayed and populateColumnSelect() is not called.
+ * message is displayed and populateColumnList() is not called.
  * @param selectIndex Index in selectedTables
+ * @param callbackFunction Function to call on success (i.e. function to populate column list)
  */
 // TODO: extend to work with join feature
-// TODO: param for callback function
-function getColumns(selectIndex) {
+function getColumns(selectIndex, callbackFunction) {
     var table = selectedTables[selectIndex].name;
     $.ajax({
         type: "POST",
@@ -136,12 +144,14 @@ function getColumns(selectIndex) {
                 selectedTables[selectIndex].columns = data.text;
                 // get the total number of rows and set #row-limit max
                 selectedTables[selectIndex].rowCount = data['rowCount'];
+                // TODO: extract this to callback?
                 $('#row-limit').attr({
                     'max': selectedTables[selectIndex].rowCount,
                     'placeholder': 'Number of rows to display (max ' + selectedTables[selectIndex].rowCount + ')'
                 });
-                // display columns on the page
-                populateColumnSelect(selectIndex);
+                // Execute callback function if defined
+                if (callbackFunction !== undefined)
+                    callbackFunction();
             }
         },
         error: function (jqXHR) {
@@ -161,8 +171,8 @@ function getColumns(selectIndex) {
  * @param selectIndex Index in selectedTables
  * @param {boolean} [tableJoin] If true, include table names and show column selects for multiple tables
  */
-function populateColumnSelect(selectIndex, tableJoin) {
-    var columnOptionsContainer = buildColumnCheckboxes(selectIndex, tableJoin);
+function populateColumnList(selectIndex, tableJoin) {
+    var columnOptionsContainer = buildColumnList(selectIndex, tableJoin);
     // TODO: don't just insert if tableJoin is true
     $('#column-select').html(columnOptionsContainer);
 
@@ -177,7 +187,7 @@ function populateColumnSelect(selectIndex, tableJoin) {
  * @param {boolean} [tableJoin] If true, include the name of the table and a horizontal rule at the top
  * @returns jQuery object for the column list
  */
-function buildColumnCheckboxes(selectIndex, tableJoin) {
+function buildColumnList(selectIndex, tableJoin) {
     var table = selectedTables[selectIndex];
     var containerId = table.name + '-column-options-container';
     var columnOptionsContainerString = '<div id="' + containerId + '">';
