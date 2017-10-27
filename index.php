@@ -90,13 +90,10 @@ include_once 'config/config.php';
                     <legend>Columns</legend>
                     <div class="form-group">
                         <label class="control-label" for="column-select">Columns to display:</label>
-                        <div id="column-select">
-                            <!-- TODO: have a separate div for displaying loader -->
-                            <!-- TODO: implement some smoother means of having a placeholder -->
-                            <div class="text-muted" id="column-select-placeholder">
-                                Select a table to continue.
-                            </div>
+                        <div class="text-muted" id="column-select-placeholder">
+                            Select a table to continue.
                         </div>
+                        <div id="column-select"></div>
                     </div>
                 </fieldset>
                 <fieldset>

@@ -86,7 +86,8 @@ function populateTableSelects() {
     // Add listener to single table select
     $('#table-select').change(function () {
         // clear any existing options and show loader
-        clearColumnSelect();
+        clearColumnSelect(true);
+        showColumnSelectPlaceholder(false);
         // clear any error messages previously displayed
         clearError();
         var tableName = $(this).find(':selected').val();
@@ -160,6 +161,9 @@ function joinColumnSelectListener() {
         populateTableJoinColumnList(selectIndices);
     }
     // TODO: else show placeholder in column list container
+    else {
+        showColumnSelectPlaceholder(true);
+    }
 }
 
 
@@ -185,8 +189,7 @@ function getColumns(selectIndex, callbackFunction) {
             if (data.error !== undefined) {
                 displayError(data.error);
                 // clear loader from #column-select
-                // TODO: use selectIndex instead of hard-coded id (also probably rename it to indicate that it's the select's id?)
-                $('#column-select').html('');
+                clearColumnSelect(false);
             }
             else {
                 selectedTables[selectIndex].columns = data.text;
@@ -206,7 +209,7 @@ function getColumns(selectIndex, callbackFunction) {
             // If an error occurred before the server could respond, display message and stop execution
             displayError(jqXHR.responseText, true);
             // clear loader from #column-select
-            $('#column-select').html('');
+            clearColumnSelect(false);
         }
     });
 }
@@ -332,12 +335,21 @@ function buildColumnOptions(selectIndex) {
 
 /**
  * Removed column select options, display loader, and disables #generate-report. Used when a new table is selected
+ * @param {boolean} [showLoader] If true, display loading icon
  */
-// TODO: add params for showing loader, showing placeholder text
-function clearColumnSelect() {
+function clearColumnSelect(showLoader) {
     disableSubmit(true);
     // clear column options and display loading icon
-    $('#column-select').html(loader);
+    $('#column-select').html(showLoader ? loader : '');
+}
+
+
+/**
+ * Toggle visibility of column select placeholder text
+ * @param {boolean} visible If true, show placeholder text. If false, hide it
+ */
+function showColumnSelectPlaceholder(visible) {
+    $('#column-select-placeholder').toggleClass('hidden', !visible);
 }
 
 
