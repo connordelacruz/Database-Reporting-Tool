@@ -169,6 +169,7 @@ class ConnectionHandler {
      */
     function getRows($table, $columns, $row_count = 0) {
         // validate table
+        // TODO: make function to create join stmt if applicable
         $whitelisted_table = $this->validateTable($table);
         // Validate column names
         $whitelisted_columns = $this->validateColumns($table, $columns);
@@ -181,6 +182,7 @@ class ConnectionHandler {
         // Handle quotation marks
         $whitelisted_columns = $this->quoteColumns($whitelisted_columns);
         // String of column names to select separated by commas
+        // TODO: make function to build $to_select for an arbitrary number of tables
         $to_select = implode(',', $whitelisted_columns);
 
         // Build SQL query string
@@ -204,4 +206,6 @@ class ConnectionHandler {
 
         return $rows;
     }
+
+    // TODO: function for table joins
 }

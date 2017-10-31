@@ -12,6 +12,8 @@ if (!file_exists("$siteRoot/config/config.php"))
 include_once "$siteRoot/config/config.php";
 
 // get selected table and columns from POST
+// TODO: determine if this a single table or a join statement
+$select_type = $_POST['select-type'];
 $table = $_POST['table-select'];
 $columns = $_POST['columns'];
 
