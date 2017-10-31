@@ -40,6 +40,7 @@ include_once 'config/config.php';
                         </label>
                     </div>
                     <div class="table-collapse collapse" id="table-join-collapse">
+                        <?php // TODO: re-work markup join field markup (table is just for prototyping) ?>
                         <table class="table table-condensed join-table">
                             <tbody>
                             <tr>
@@ -51,7 +52,7 @@ include_once 'config/config.php';
                                 </td>
                                 <td class="form-group">
                                     <label for="join-type-select">Join Type:</label>
-                                    <select class="form-control" id="join-type-select" required>
+                                    <select class="form-control" id="join-type-select" name="join[type]" required>
                                         <option value="inner" selected>Inner Join</option>
                                         <option value="left">Left Join</option>
                                         <option value="right">Right Join</option>
@@ -67,14 +68,14 @@ include_once 'config/config.php';
                                 <td><b>ON</b></td>
                                 <td class="form-group">
                                     <label for="join-column1-select">Table 1 Column:</label>
-                                    <select class="form-control join-column-select" id="join-column1-select" required>
+                                    <select class="form-control join-column-select" id="join-column1-select" name="join[columns][0]" required>
                                         <option class="placeholder" value="" disabled selected>Select a column</option>
                                     </select>
                                 </td>
                                 <td><b>=</b></td>
                                 <td class="form-group">
                                     <label for="join-column2-select">Table 2 Column:</label>
-                                    <select class="form-control join-column-select" id="join-column2-select" required>
+                                    <select class="form-control join-column-select" id="join-column2-select" name="join[columns][1]" required>
                                         <option class="placeholder" value="" disabled selected>Select a column</option>
                                     </select>
                                 </td>
