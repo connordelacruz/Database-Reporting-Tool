@@ -106,12 +106,16 @@ class ConnectionHandler {
 
     /**
      * Takes an array of column names and puts quotation marks around them
+     * @param string $table Whitelisted table name
      * @param array $columns Whitelisted column names
      * @return array The contents of $columns surrounded by quotes
      */
-    public function quoteColumns($columns) {
+    public function quoteColumns($table, $columns) {
+        // Prefix with quoted table name followed by a .
+        $table_prefix = $table . '.';
         foreach ($columns as $index => $column) {
-            $columns[$index] = "`" . str_replace("`", "``", $column) . "`";
+            $quoted_column = "`" . str_replace("`", "``", $column) . "`";
+            $columns[$index] = $table_prefix . $quoted_column;
         }
         return $columns;
     }
@@ -161,30 +165,13 @@ class ConnectionHandler {
 
 
     /**
-     * Generate column select query string
-     * @param array $tables Array mapping table names to arrays of columns
-     */
-    function buildColumnSelectString($tables) {
-        $select_query = '';
-        // TODO: for each table in tables, validate table, then validate table['columns']
-        foreach ($tables as $table => $columns) {
-            $whitelisted_table = $this->validateTable($table);
-            $whitelisted_columns = $this->validateColumns($table, $columns);
-            // TODO: array_map table name as prefix
-            // TODO: join array separated by commas
-        }
-        // TODO: if valid, build a string with each <table>.<column>, ...
-        // TODO: return string
-    }
-
-
-    /**
      * Given a table name and an array of columns, returns all selected rows from table
      * @param string $table Table name (will be validated)
      * @param array $columns Columns (will be validated)
      * @param int $row_count (Optional) the number of rows to display
      * @return array The resulting table selection
      */
+    // TODO: take an array mapping table names to a list of columns
     function getRows($table, $columns, $row_count = 0) {
         // validate table
         // TODO: make function to create join stmt if applicable
@@ -198,7 +185,7 @@ class ConnectionHandler {
         $rows[0] = $whitelisted_columns;
 
         // Handle quotation marks
-        $whitelisted_columns = $this->quoteColumns($whitelisted_columns);
+        $whitelisted_columns = $this->quoteColumns($whitelisted_table, $whitelisted_columns);
         // String of column names to select separated by commas
         // TODO: make function to build $to_select for an arbitrary number of tables
         $to_select = implode(',', $whitelisted_columns);
