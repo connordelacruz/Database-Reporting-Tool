@@ -12,10 +12,12 @@ if (!file_exists("$siteRoot/config/config.php"))
 include_once "$siteRoot/config/config.php";
 
 // get selected table and columns from POST
-$select_type = $_POST['select-type'];
 // TODO: handle differently based on select-type
+$select_type = $_POST['select-type'];
+// TODO: use keys in $_POST['tables'] instead
 $table = $_POST['table-select'][0];
-$columns = $_POST['columns'];
+// TODO: iterate through tables
+$columns = $_POST['tables'][$table];
 
 // Advanced options (set to a default if not toggled or set)
 $row_count = (isset($_POST['toggle-row-limit']) && isset($_POST['row-limit'])) ? intval($_POST['row-limit']) : 0;

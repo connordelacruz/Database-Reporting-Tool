@@ -84,20 +84,22 @@ function populateTableSelects() {
 
     // Add listener to single table select
     $('#table-select').change(function () {
-        // clear any existing options and show loader
-        clearColumnSelect(true);
-        showColumnSelectPlaceholder(false);
-        // clear any error messages previously displayed
-        clearError();
         var tableName = $(this).find(':selected').val();
-        var selectIndex = $(this).attr('id');
-        selectedTables[selectIndex] = new TableDataObject(tableName);
+        if (tableName !== '') {
+            // clear any existing options and show loader
+            clearColumnSelect(true);
+            showColumnSelectPlaceholder(false);
+            // clear any error messages previously displayed
+            clearError();
+            var selectIndex = $(this).attr('id');
+            selectedTables[selectIndex] = new TableDataObject(tableName);
 
-        // Populate column list once columns are retrieved
-        var getColumnsCallback = function () {
-            populateColumnList(selectIndex);
-        };
-        getColumns(selectIndex, getColumnsCallback);
+            // Populate column list once columns are retrieved
+            var getColumnsCallback = function () {
+                populateColumnList(selectIndex);
+            };
+            getColumns(selectIndex, getColumnsCallback);
+        }
     });
 
     // Add listener to join table selects
@@ -225,6 +227,7 @@ function populateColumnList(selectIndex, tableJoin) {
     // TODO: remove tableJoin param, it'll always be false here
     var columnListContainer = buildColumnList(selectIndex, tableJoin);
     $('#column-select').html(columnListContainer);
+    showColumnSelectPlaceholder(false);
     disableSubmit(false);
 }
 
@@ -242,6 +245,7 @@ function populateTableJoinColumnList(selectIndices) {
         columnListContainer.append(columnList);
     });
     $('#column-select').html(columnListContainer);
+    showColumnSelectPlaceholder(false);
     disableSubmit(false);
 }
 
@@ -275,7 +279,7 @@ function buildColumnList(selectIndex, tableJoin) {
 
     // Build options list
     $.each(table.columns, function (i, column) {
-        columnOptionsContainerString += '<div class="checkbox"><label><input type="checkbox" name="columns[]" class="column-option" value="' + column + '" checked>' + column + '</label></div>';
+        columnOptionsContainerString += '<div class="checkbox"><label><input type="checkbox" name="tables[' + table.name + '][]" class="column-option" value="' + column + '" checked>' + column + '</label></div>';
     });
     columnOptionsContainerString += '</div>';
     var columnOptionsContainer = $(columnOptionsContainerString);
@@ -393,6 +397,8 @@ $(function () {
     $('input[name="select-type"]').change(
         function () {
             // TODO: clearColumnSelect() (and clearError())
+            clearColumnSelect(false);
+            showColumnSelectPlaceholder(true);
             // Determine which radio is checked (select or join)
             var isSelect = $('input[name="select-type"]:checked').val() === 'select';
             // (don't need this variable, but using it for readability's sake)
@@ -402,7 +408,7 @@ $(function () {
             $('#table-join-collapse').collapse(isJoin ? 'show' : 'hide')
                 .find(':input').prop('disabled', !isJoin);
 
-            // TODO: update select fields/columns section on expanding
+            // TODO: update select fields/columns section on expanding by calling .change()
         });
 
     // Disable radio buttons while collapsing
