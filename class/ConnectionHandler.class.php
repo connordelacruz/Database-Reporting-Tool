@@ -160,9 +160,21 @@ class ConnectionHandler {
     }
 
 
+    /**
+     * Generate column select query string
+     * @param array $tables Array mapping table names to arrays of columns
+     */
     function buildColumnSelectString($tables) {
+        $select_query = '';
         // TODO: for each table in tables, validate table, then validate table['columns']
+        foreach ($tables as $table => $columns) {
+            $whitelisted_table = $this->validateTable($table);
+            $whitelisted_columns = $this->validateColumns($table, $columns);
+            // TODO: array_map table name as prefix
+            // TODO: join array separated by commas
+        }
         // TODO: if valid, build a string with each <table>.<column>, ...
+        // TODO: return string
     }
 
 

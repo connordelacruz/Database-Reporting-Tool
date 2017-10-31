@@ -408,7 +408,7 @@ $(function () {
             $('#table-join-collapse').collapse(isJoin ? 'show' : 'hide')
                 .find(':input').prop('disabled', !isJoin);
 
-            // TODO: update select fields/columns section on expanding by calling .change()
+            // TODO: update select fields/columns section on expanding (by calling .change()?)
         });
 
     // Disable radio buttons while collapsing
