@@ -160,6 +160,12 @@ class ConnectionHandler {
     }
 
 
+    function buildColumnSelectString($tables) {
+        // TODO: for each table in tables, validate table, then validate table['columns']
+        // TODO: if valid, build a string with each <table>.<column>, ...
+    }
+
+
     /**
      * Given a table name and an array of columns, returns all selected rows from table
      * @param string $table Table name (will be validated)
