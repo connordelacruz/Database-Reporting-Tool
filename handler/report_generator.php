@@ -12,9 +12,9 @@ if (!file_exists("$siteRoot/config/config.php"))
 include_once "$siteRoot/config/config.php";
 
 // get selected table and columns from POST
-// TODO: determine if this a single table or a join statement
 $select_type = $_POST['select-type'];
-$table = $_POST['table-select'];
+// TODO: handle differently based on select-type
+$table = $_POST['table-select'][0];
 $columns = $_POST['columns'];
 
 // Advanced options (set to a default if not toggled or set)
@@ -29,6 +29,10 @@ $selection = $conn->getRows($table, $columns, $row_count);
 
 // If the generate report button was clicked, then the report is generated as a webpage
 if ($reportType) {
+
+    // TODO: DEBUGGING, REMOVE
+    echo "<pre>" . print_r($_POST, true) . "</pre>";
+
     // create string with <table> element for report generation
     $tableString = "<thead><tr>";
     // handle the column headers first

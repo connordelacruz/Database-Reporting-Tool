@@ -27,7 +27,7 @@ include_once 'config/config.php';
                     </div>
                     <div class="table-collapse collapse" id="table-select-collapse">
                         <label class="sr-only" for="table-select">Select a Table:</label>
-                        <select class="form-control table-select-input" id="table-select" name="table-select" required>
+                        <select class="form-control table-select-input" id="table-select" name="table-select[]" required>
                             <option id="placeholder" value="" disabled selected>Select a table</option>
                         </select>
                     </div>
@@ -45,7 +45,7 @@ include_once 'config/config.php';
                             <tr>
                                 <td class="form-group">
                                     <label for="join-table1-select">Table 1:</label>
-                                    <select class="form-control table-select-input" id="join-table1-select" name="table-select" required>
+                                    <select class="form-control table-select-input" id="join-table1-select" name="table-select[]" required>
                                         <option id="placeholder" value="" disabled selected>Select a table</option>
                                     </select>
                                 </td>
@@ -60,7 +60,7 @@ include_once 'config/config.php';
                                 </td>
                                 <td class="form-group">
                                     <label for="join-table2-select">Table 2:</label>
-                                    <select class="form-control table-select-input" id="join-table2-select" name="table-select" required>
+                                    <select class="form-control table-select-input" id="join-table2-select" name="table-select[]" required>
                                         <option id="placeholder" value="" disabled selected>Select a table</option>
                                     </select>
                                 </td>
