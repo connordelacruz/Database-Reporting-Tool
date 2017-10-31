@@ -77,9 +77,8 @@ function populateTableSelects() {
     var tableSelectInputs = $('.table-select-input');
 
     // Add tables to select inputs
-    // TODO: vary name attribute?
     for (var i = 0; i < tables.length; i++) {
-        var option = "<option name='table' value='" + tables[i] + "'>" + tables[i] + "</option>";
+        var option = "<option value='" + tables[i] + "'>" + tables[i] + "</option>";
         tableSelectInputs.append(option);
     }
 
