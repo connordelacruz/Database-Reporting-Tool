@@ -179,7 +179,7 @@ class ConnectionHandler {
      */
     function getRows($tables, $select_type = 'single', $row_count = 0) {
         // If $select_type is invalid, set it to 'single'
-        if (!array_key_exists($select_type, self::SELECT_TYPES))
+        if (!in_array($select_type, self::SELECT_TYPES))
             $select_type = 'single';
 
         // validate tables and columns
