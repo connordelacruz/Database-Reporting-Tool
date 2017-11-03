@@ -177,7 +177,8 @@ class ConnectionHandler {
      * @param int $row_count (Optional) the number of rows to display
      * @return array The resulting table selection
      */
-    function getRows($tables, $select_type = 'single', $row_count = 0) {
+    // TODO: instead of $select_type, have $join_query, which takes the data from $_POST['join'] and defaults to false
+    public function getRows($tables, $select_type = 'single', $row_count = 0) {
         // If $select_type is invalid, set it to 'single'
         if (!in_array($select_type, self::SELECT_TYPES))
             $select_type = 'single';
@@ -230,5 +231,4 @@ class ConnectionHandler {
         return $rows;
     }
 
-    // TODO: function for table joins
 }
