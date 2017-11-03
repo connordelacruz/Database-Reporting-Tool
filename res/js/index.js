@@ -132,6 +132,7 @@ function joinTableSelectListener(columnSelectId) {
             var optionsString = buildColumnOptions(selectIndex);
             $(columnSelectId).html(optionsString)
                 .prop('disabled', false);
+            // TODO: change corresponding column select label to table name
         };
         // Get columns for selected table
         getColumns(selectIndex, getColumnsCallback);
@@ -400,7 +401,7 @@ $(function () {
             clearColumnSelect(false);
             showColumnSelectPlaceholder(true);
             // Determine which radio is checked (select or join)
-            var isSelect = $('input[name="select-type"]:checked').val() === 'select';
+            var isSelect = $('input[name="select-type"]:checked').val() === 'single';
             // (don't need this variable, but using it for readability's sake)
             var isJoin = !isSelect;
             $('#table-select-collapse').collapse(isSelect ? 'show' : 'hide')
@@ -408,7 +409,8 @@ $(function () {
             $('#table-join-collapse').collapse(isJoin ? 'show' : 'hide')
                 .find(':input').prop('disabled', !isJoin);
 
-            // TODO: update select fields/columns section on expanding (by calling .change()?)
+            // TODO: update select fields/columns section on expanding if corresponded key in selectedTables
+            // TODO: make sure to update row limit, too
         });
 
     // Disable radio buttons while collapsing

@@ -27,7 +27,7 @@ $reportType = array_key_exists('generate-report', $_POST);
 
 $conn = new ConnectionHandler($SQL_SERVER, $SQL_PORT, $SQL_DATABASE, $SQL_USER, $SQL_PASSWORD);
 
-$selection = $conn->getRows($table, $columns, $row_count);
+$selection = $conn->getRows($table, $columns, $select_type, $row_count);
 
 // If the generate report button was clicked, then the report is generated as a webpage
 if ($reportType) {

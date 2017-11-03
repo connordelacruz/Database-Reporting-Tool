@@ -168,11 +168,12 @@ class ConnectionHandler {
      * Given a table name and an array of columns, returns all selected rows from table
      * @param string $table Table name (will be validated)
      * @param array $columns Columns (will be validated)
+     * @param string $select_type
      * @param int $row_count (Optional) the number of rows to display
      * @return array The resulting table selection
      */
     // TODO: take an array mapping table names to a list of columns
-    function getRows($table, $columns, $row_count = 0) {
+    function getRows($table, $columns, $select_type = 'single', $row_count = 0) {
         // validate table
         // TODO: make function to create join stmt if applicable
         $whitelisted_table = $this->validateTable($table);

@@ -17,11 +17,11 @@ include_once 'config/config.php';
             <fieldset id="table-fieldset">
                 <legend>Table</legend>
                 <div id="table-loader-div"></div>
-                <!-- TODO: rename table-select* to single-table* for clarity? -->
+                <!-- TODO: rename table-select* to single-table* for clarity -->
                 <div class="form-group" id="table-select-div">
                     <div class="radio">
                         <label class="control-label radio-label" id="table-select-label">
-                            <input type="radio" id="select-table-radio" name="select-type" value="select">
+                            <input type="radio" id="select-table-radio" name="select-type" value="single">
                             Single Table<span class="toggle--on">:</span>
                         </label>
                     </div>
