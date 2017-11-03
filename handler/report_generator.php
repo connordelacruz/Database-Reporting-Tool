@@ -11,13 +11,11 @@ if (!file_exists("$siteRoot/config/config.php"))
     throw new Exception('Configuration file config/config.php does not exist and will need to be set up before using this tool.');
 include_once "$siteRoot/config/config.php";
 
-// get selected table and columns from POST
-// TODO: handle differently based on select-type
+// get POST data
 $select_type = $_POST['select-type'];
-// TODO: use keys in $_POST['tables'] instead
+$tables = $_POST['tables'];
+// TODO: This is used for the page header/filename. Figure out convention for naming these for 1 or more tables and get rid of this variable
 $table = $_POST['table-select'][0];
-// TODO: iterate through tables
-$columns = $_POST['tables'][$table];
 
 // Advanced options (set to a default if not toggled or set)
 $row_count = (isset($_POST['toggle-row-limit']) && isset($_POST['row-limit'])) ? intval($_POST['row-limit']) : 0;
@@ -27,7 +25,7 @@ $reportType = array_key_exists('generate-report', $_POST);
 
 $conn = new ConnectionHandler($SQL_SERVER, $SQL_PORT, $SQL_DATABASE, $SQL_USER, $SQL_PASSWORD);
 
-$selection = $conn->getRows($table, $columns, $select_type, $row_count);
+$selection = $conn->getRows($tables, $select_type, $row_count);
 
 // If the generate report button was clicked, then the report is generated as a webpage
 if ($reportType) {

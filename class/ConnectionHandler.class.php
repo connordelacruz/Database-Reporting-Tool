@@ -12,6 +12,11 @@ class ConnectionHandler {
     // When dbConnect is called to initialize the database, it sets this variable to an array of table names in
     private $table_whitelist = array();
 
+    // List of valid select types
+    const SELECT_TYPES = [
+        'single',
+        'join'
+    ];
 
     /**
      * ConnectionHandler constructor.
@@ -166,33 +171,45 @@ class ConnectionHandler {
 
     /**
      * Given a table name and an array of columns, returns all selected rows from table
-     * @param string $table Table name (will be validated)
-     * @param array $columns Columns (will be validated)
-     * @param string $select_type
+     * @param array $tables Array of columns indexed by the name of the table containing them
+     * @param string $select_type (Optional) 'single' for 1 table, 'join' for join statements. Defaults to 'single' if
+     * not provided or an invalid value
      * @param int $row_count (Optional) the number of rows to display
      * @return array The resulting table selection
      */
-    // TODO: take an array mapping table names to a list of columns
-    function getRows($table, $columns, $select_type = 'single', $row_count = 0) {
-        // validate table
-        // TODO: make function to create join stmt if applicable
-        $whitelisted_table = $this->validateTable($table);
-        // Validate column names
-        $whitelisted_columns = $this->validateColumns($table, $columns);
+    function getRows($tables, $select_type = 'single', $row_count = 0) {
+        // If $select_type is invalid, set it to 'single'
+        if (!array_key_exists($select_type, self::SELECT_TYPES))
+            $select_type = 'single';
+
+        // validate tables and columns
+        $quoted_columns = [];
+        $quoted_tables = [];
+        $column_headers = [];
+        foreach ($tables as $table => $columns) {
+            $whitelisted_table = $this->validateTable($table);
+            $whitelisted_columns = $this->validateColumns($table, $columns);
+            // Add list of unquoted column names to $column_headers
+            $column_headers = array_merge($column_headers, $whitelisted_columns);
+            // Quote columns and prefix them by quoted table name
+            $whitelisted_columns = $this->quoteColumns($whitelisted_table, $whitelisted_columns);
+            // Add validated table name and columns to their respective arrays
+            $quoted_tables[] = $whitelisted_table;
+            $quoted_columns = array_merge($quoted_columns, $whitelisted_columns);
+        }
 
         // array of rows where $rows[0] contains an array of column headers
         $rows = [];
-        // field headers
-        $rows[0] = $whitelisted_columns;
+        $rows[0] = $column_headers;
 
-        // Handle quotation marks
-        $whitelisted_columns = $this->quoteColumns($whitelisted_table, $whitelisted_columns);
         // String of column names to select separated by commas
-        // TODO: make function to build $to_select for an arbitrary number of tables
-        $to_select = implode(',', $whitelisted_columns);
+        $columns_string = implode(',', $quoted_columns);
+        // Table(s) to select from
+        // TODO: if $select_type == 'join', build join statement
+        $from_string = $quoted_tables[0];
 
         // Build SQL query string
-        $sql = "SELECT $to_select FROM $whitelisted_table";
+        $sql = "SELECT $columns_string FROM $from_string";
 
         // If $row_count is 1 or greater, using it in a limit statement is valid.
         // If $row_count is greater than the total number of rows, it just returns all rows
