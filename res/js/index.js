@@ -189,7 +189,7 @@ function getColumns(selectIndex, callbackFunction) {
             // if data.err is set, then display something in #error-div
             if (data.error !== undefined) {
                 displayError(data.error);
-                // clear loader from #column-select
+                // clear loader from #column-list-container
                 clearColumnSelect(false);
             }
             else {
@@ -209,7 +209,7 @@ function getColumns(selectIndex, callbackFunction) {
         error: function (jqXHR) {
             // If an error occurred before the server could respond, display message and stop execution
             displayError(jqXHR.responseText, true);
-            // clear loader from #column-select
+            // clear loader from #column-list-container
             clearColumnSelect(false);
         }
     });
@@ -218,7 +218,7 @@ function getColumns(selectIndex, callbackFunction) {
 
 // TODO: kind of redundant, remove?
 /**
- * Populates #column-select with checkboxes containing column names.
+ * Populates #column-list-container with checkboxes containing column names.
  * This function is called on success of getColumns().
  * @param selectIndex Index in selectedTables
  * @param {boolean} [tableJoin] If true, include table names and show column selects for multiple tables
@@ -226,14 +226,14 @@ function getColumns(selectIndex, callbackFunction) {
 function populateColumnList(selectIndex, tableJoin) {
     // TODO: remove tableJoin param, it'll always be false here
     var columnListContainer = buildColumnList(selectIndex, tableJoin);
-    $('#column-select').html(columnListContainer);
+    $('#column-list-container').html(columnListContainer);
     showColumnSelectPlaceholder(false);
     disableSubmit(false);
 }
 
 
 /**
- * Populate #column-select with checkboxes containing columns for each table in the join
+ * Populate #column-list-container with checkboxes containing columns for each table in the join
  * @param selectIndices Array of indices into selectedTables
  */
 function populateTableJoinColumnList(selectIndices) {
@@ -244,7 +244,7 @@ function populateTableJoinColumnList(selectIndices) {
         var columnList = buildColumnList(selectIndex, true);
         columnListContainer.append(columnList);
     });
-    $('#column-select').html(columnListContainer);
+    $('#column-list-container').html(columnListContainer);
     showColumnSelectPlaceholder(false);
     disableSubmit(false);
 }
@@ -343,7 +343,7 @@ function buildColumnOptions(selectIndex) {
 function clearColumnSelect(showLoader) {
     disableSubmit(true);
     // clear column options and display loading icon
-    $('#column-select').html(showLoader ? loader : '');
+    $('#column-list-container').html(showLoader ? loader : '');
 }
 
 
