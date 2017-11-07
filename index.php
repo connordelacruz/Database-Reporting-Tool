@@ -92,7 +92,8 @@ include_once 'config/config.php';
                     <div class="form-group">
                         <label class="control-label" for="column-list-container">Columns to display:</label>
                         <div class="text-muted" id="column-select-placeholder">
-                            Select a table to continue.
+                            <span class="single-select">Select a table to continue.</span>
+                            <span class="join-select hidden">Select tables and columns to continue.</span>
                         </div>
                         <div id="column-list-container"></div>
                     </div>

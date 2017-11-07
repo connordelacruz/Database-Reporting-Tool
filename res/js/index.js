@@ -397,7 +397,7 @@ $(function () {
     // Add listener that toggles collapse state depending on which radio is selected
     $('input[name="select-type"]').change(
         function () {
-            // TODO: clearColumnSelect() (and clearError())
+            // TODO: toggle visibility of these instead based on state
             clearColumnSelect(false);
             showColumnSelectPlaceholder(true);
             // Determine which radio is checked (select or join)
@@ -408,6 +408,12 @@ $(function () {
                 .find(':input').prop('disabled', !isSelect);
             $('#table-join-collapse').collapse(isJoin ? 'show' : 'hide')
                 .find(':input').prop('disabled', !isJoin);
+
+            // Toggle visibility of elements specific to radio state
+            $('.join-select').toggleClass('hidden', !isJoin)
+                .find(':input').prop('disabled', !isJoin);
+            $('.single-select').toggleClass('hidden', !isSelect)
+                .find(':input').prop('disabled', !isSelect);
 
             // TODO: update select fields/columns section on expanding if corresponded key in selectedTables
             // TODO: make sure to update row limit, too
