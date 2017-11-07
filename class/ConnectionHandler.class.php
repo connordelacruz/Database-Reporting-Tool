@@ -17,6 +17,14 @@ class ConnectionHandler {
         'single',
         'join'
     ];
+    
+    // List of valid join types
+    const JOIN_TYPES = [
+        'inner',
+        'left',
+        'right',
+        'outer'
+    ];
 
     /**
      * ConnectionHandler constructor.

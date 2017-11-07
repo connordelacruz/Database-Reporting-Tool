@@ -14,6 +14,8 @@ include_once "$siteRoot/config/config.php";
 // get POST data
 $select_type = $_POST['select-type'];
 $tables = $_POST['tables'];
+$join_data = array_key_exists('join', $_POST) ? $_POST['join'] : false;
+
 // TODO: This is used for the page header/filename. Figure out convention for naming these for 1 or more tables and get rid of this variable
 $table = $_POST['table-select'][0];
 
