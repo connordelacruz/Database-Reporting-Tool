@@ -27,13 +27,13 @@ $reportType = array_key_exists('generate-report', $_POST);
 
 $conn = new ConnectionHandler($SQL_SERVER, $SQL_PORT, $SQL_DATABASE, $SQL_USER, $SQL_PASSWORD);
 
-$selection = $conn->getRows($tables, $select_type, $row_count);
+$selection = $conn->getRows($tables, $join_data, $row_count);
 
 // If the generate report button was clicked, then the report is generated as a webpage
 if ($reportType) {
 
     // TODO: DEBUGGING, REMOVE
-    echo "<pre>" . print_r($_POST, true) . "</pre>";
+    //echo "<pre>" . print_r($_POST, true) . "</pre>";
 
     // create string with <table> element for report generation
     $tableString = "<thead><tr>";

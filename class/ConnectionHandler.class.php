@@ -18,12 +18,12 @@ class ConnectionHandler {
         'join'
     ];
     
-    // List of valid join types
+    // List of valid join types mapped to the correct SQL syntax
     const JOIN_TYPES = [
-        'inner',
-        'left',
-        'right',
-        'outer'
+        'inner' => 'INNER JOIN',
+        'left' => 'LEFT JOIN',
+        'right' => 'RIGHT JOIN',
+        'outer' => 'FULL OUTER JOIN'
     ];
 
     /**
@@ -117,6 +117,9 @@ class ConnectionHandler {
     }
 
 
+    // TODO: validateColumn()
+
+
     /**
      * Takes an array of column names and puts quotation marks around them
      * @param string $table Whitelisted table name
@@ -126,12 +129,17 @@ class ConnectionHandler {
     public function quoteColumns($table, $columns) {
         // Prefix with quoted table name followed by a .
         $table_prefix = $table . '.';
+        // Array to return
+        $quoted_columns = [];
         foreach ($columns as $index => $column) {
             $quoted_column = "`" . str_replace("`", "``", $column) . "`";
-            $columns[$index] = $table_prefix . $quoted_column;
+            $quoted_columns[] = $table_prefix . $quoted_column;
         }
-        return $columns;
+        return $quoted_columns;
     }
+
+
+    // TODO: quoteColumn()
 
 
     /**
@@ -178,18 +186,43 @@ class ConnectionHandler {
 
 
     /**
+     * Returns a string in the format 'JOIN table1 ON table0.column0 = table1.column1'
+     * @param string $join_type A valid index into JOIN_TYPES. Defaults to JOIN if it's not a valid key
+     * @param string $table0 The name of the first table to join. This function assumes we're appending to a SELECT
+     * statement, so it does not include 'FROM table0' in the returned string
+     * @param string $column0 The column from table0 to join on
+     * @param string $table1 The name of the second table to join
+     * @param string $column1 The column from table1 to join on
+     * @return string Formatted join string
+     */
+    function joinString($join_type, $table0, $column0, $table1, $column1) {
+        // Validate $join_type
+        // TODO: throw exception instead?
+        $join_type_string = array_key_exists($join_type, ConnectionHandler::JOIN_TYPES) ?
+            ConnectionHandler::JOIN_TYPES[$join_type] : 'JOIN';
+        // Validate tables
+        $quoted_table0 = $this->validateTable($table0);
+        $quoted_table1 = $this->validateTable($table1);
+        // Validate and quote columns
+
+        // TODO: make a shorthand function to do this that can take a single column rather than an array
+        $quoted_column0 = $this->quoteColumns($quoted_table0, $this->validateColumns($table0, [$column0]))[0];
+        $quoted_column1 = $this->quoteColumns($quoted_table1, $this->validateColumns($table1, [$column1]))[0];
+        // Build string
+        $join_string = "$join_type_string $quoted_table1 ON $quoted_column0 = $quoted_column1";
+        return $join_string;
+    }
+
+
+    /**
      * Given a table name and an array of columns, returns all selected rows from table
      * @param array $tables Array of columns indexed by the name of the table containing them
-     * @param string $select_type (Optional) 'single' for 1 table, 'join' for join statements. Defaults to 'single' if
-     * not provided or an invalid value
+     * @param array|boolean $join_data (Optional) Array of join statement data or false if only a single table is being
+     * selected. Defaults to false if unspecified.
      * @param int $row_count (Optional) the number of rows to display
      * @return array The resulting table selection
      */
-    // TODO: instead of $select_type, have $join_query, which takes the data from $_POST['join'] and defaults to false
-    public function getRows($tables, $select_type = 'single', $row_count = 0) {
-        // If $select_type is invalid, set it to 'single'
-        if (!in_array($select_type, self::SELECT_TYPES))
-            $select_type = 'single';
+    public function getRows($tables, $join_data = false, $row_count = 0) {
 
         // validate tables and columns
         $quoted_columns = [];
@@ -214,9 +247,16 @@ class ConnectionHandler {
         // String of column names to select separated by commas
         $columns_string = implode(',', $quoted_columns);
         // Table(s) to select from
-        // TODO: if $select_type == 'join', build join statement
         $from_string = $quoted_tables[0];
-
+        // Append join string if applicable
+        if ($join_data) {
+            $join_string =
+                $this->joinString(
+                    $join_data['type'],
+                    $join_data[0]['table'], $join_data[0]['column'],
+                    $join_data[1]['table'], $join_data[1]['column']);
+            $from_string .= ' ' . $join_string;
+        }
         // Build SQL query string
         $sql = "SELECT $columns_string FROM $from_string";
 
