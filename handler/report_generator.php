@@ -66,7 +66,11 @@ if ($reportType) {
     ?>
 <body>
 <div class="container">
-    <h1><?php echo $table ?></h1>
+    <?php
+    // Add a heading with the table name if this is a single table
+    if ($select_type == 'single')
+        echo "<h1>$table</h1>"
+    ?>
     <table class="table table-striped table-bordered">
         <?php
         echo $tableString;
