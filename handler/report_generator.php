@@ -13,11 +13,12 @@ include_once "$siteRoot/config/config.php";
 
 // get POST data
 $select_type = $_POST['select-type'];
+$single_select = $select_type == 'single';
 $tables = $_POST['tables'];
 $join_data = array_key_exists('join', $_POST) ? $_POST['join'] : false;
 
-// TODO: This is used for the page header/filename. Figure out convention for naming these for 1 or more tables and get rid of this variable
-$table = $_POST['table-select'][0];
+// Use table name as page title for single selects, otherwise use generic title
+$title = ($single_select && array_key_exists('table-select', $_POST)) ? $_POST['table-select'] : 'Report';
 
 // Advanced options (set to a default if not toggled or set)
 $row_count = (isset($_POST['toggle-row-limit']) && isset($_POST['row-limit'])) ? intval($_POST['row-limit']) : 0;
@@ -61,15 +62,15 @@ if ($reportType) {
     <?php
     // disable viewport to enable horizontal scrolling
     $disableViewport = true;
-    $pageTitle = $table;
+    $pageTitle = $title;
     include_once 'templates/header.php';
     ?>
 <body>
 <div class="container">
     <?php
     // Add a heading with the table name if this is a single table
-    if ($select_type == 'single')
-        echo "<h1>$table</h1>"
+    if ($single_select)
+        echo "<h1>$title</h1>"
     ?>
     <table class="table table-striped table-bordered">
         <?php
@@ -88,8 +89,8 @@ else {
     header('Content-Type: application/csv');
     // if this is a single table select, remove special characters from table name so it can be used as a valid filename
     // if this is a join statement, use a timestamp instead of table name
-    $saveas = ($select_type == 'single') ?
-        preg_replace('/[^\w\-. ]/', '', $table) :
+    $saveas = ($single_select) ?
+        preg_replace('/[^\w\-. ]/', '', $title) :
         date('m-d-y-Hi');
     header('Content-Disposition: attachment; filename="' . $saveas . '-report.csv"');
     header('Pragma: no-cache');

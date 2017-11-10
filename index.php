@@ -27,7 +27,7 @@ include_once 'config/config.php';
                     </div>
                     <div class="table-collapse collapse" id="table-select-collapse">
                         <label class="sr-only" for="table-select">Select a Table:</label>
-                        <select class="form-control table-select-input" id="table-select" name="table-select[]" required>
+                        <select class="form-control table-select-input" id="table-select" name="table-select" required>
                             <option id="placeholder" value="" disabled selected>Select a table</option>
                         </select>
                     </div>
