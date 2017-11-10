@@ -132,7 +132,6 @@ function joinTableSelectListener(columnSelectId) {
             var optionsString = buildColumnOptions(selectIndex);
             $(columnSelectId).html(optionsString)
                 .prop('disabled', false);
-            // TODO: change corresponding column select label to table name
         };
         // Get columns for selected table
         getColumns(selectIndex, getColumnsCallback);
@@ -145,7 +144,7 @@ function joinTableSelectListener(columnSelectId) {
  * Checks to see if all required fields for a join are filled. If they are,
  * populate column list
  */
-// TODO: add this listener to join table selects too
+// TODO: Use a submit button instead of ajax, it will get messy with 3+ tables
 function joinColumnSelectListener() {
     // If all required fields for join are filled, populate column list
     var joinFields = $('#table-join-collapse').find('select:required');
@@ -162,7 +161,7 @@ function joinColumnSelectListener() {
         // TODO: show loader
         populateTableJoinColumnList(selectIndices);
     }
-    // TODO: else show placeholder in column list container
+    // else show placeholder in column list container
     else {
         showColumnSelectPlaceholder(true);
     }
@@ -217,16 +216,13 @@ function getColumns(selectIndex, callbackFunction) {
 }
 
 
-// TODO: kind of redundant, remove?
 /**
  * Populates #column-list-container with checkboxes containing column names.
  * This function is called on success of getColumns().
  * @param selectIndex Index in selectedTables
- * @param {boolean} [tableJoin] If true, include table names and show column selects for multiple tables
  */
-function populateColumnList(selectIndex, tableJoin) {
-    // TODO: remove tableJoin param, it'll always be false here
-    var columnListContainer = buildColumnList(selectIndex, tableJoin);
+function populateColumnList(selectIndex) {
+    var columnListContainer = buildColumnList(selectIndex);
     $('#column-list-container').html(columnListContainer);
     showColumnSelectPlaceholder(false);
     disableSubmit(false);
@@ -238,7 +234,6 @@ function populateColumnList(selectIndex, tableJoin) {
  * @param selectIndices Array of indices into selectedTables
  */
 function populateTableJoinColumnList(selectIndices) {
-    // TODO: create select all button
     // For each table select index, build a column list
     var columnListContainer = $('<div></div>');
     $.each(selectIndices, function (i, selectIndex) {
