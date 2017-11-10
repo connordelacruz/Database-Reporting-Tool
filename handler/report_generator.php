@@ -82,9 +82,12 @@ if ($reportType) {
 else {
     // set header to indicate that this is a CSV file download
     header('Content-Type: application/csv');
-    // remove special characters from table name so it can be used as a valid filename
-    $saveas = preg_replace('/[^A-Za-z0-9\-]/', '', $table);
-    header('Content-Disposition: attachment; filename="' . $table . '-report.csv"');
+    // if this is a single table select, remove special characters from table name so it can be used as a valid filename
+    // if this is a join statement, use a timestamp instead of table name
+    $saveas = ($select_type == 'single') ?
+        preg_replace('/[^\w\-. ]/', '', $table) :
+        date('m-d-y-Hi');
+    header('Content-Disposition: attachment; filename="' . $saveas . '-report.csv"');
     header('Pragma: no-cache');
     // open output as file pointer and write results of $selection
     $out = fopen('php://output', 'w');
