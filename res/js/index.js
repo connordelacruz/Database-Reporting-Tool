@@ -1,5 +1,5 @@
 /**
- * Various ajax queries used to communicate with the database
+ * JavaScript for index page
  * @author Connor de la Cruz
  */
 
@@ -28,6 +28,8 @@ var selectedTables = {};
 // Spinning icon to display while loading
 var loader = '<div class="loader"><svg class="circular" viewBox="25 25 50 50"><circle id="loader-circle" class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="10"/></svg></div>';
 
+// Current select-type (single or join)
+var selectType;
 
 /* Functions */
 
@@ -183,7 +185,7 @@ function getColumns(selectIndex, callbackFunction) {
         // if data.err is set, then display something in #error-div
         if (data.error !== undefined) {
             displayError(data.error);
-            // clear loader from #column-list-container
+            // clear loader from column list container
             clearColumnSelect(false);
         }
         else {
@@ -203,7 +205,7 @@ function getColumns(selectIndex, callbackFunction) {
     callbacks.error = function (jqXHR) {
         // If an error occurred before the server could respond, display message and stop execution
         displayError(jqXHR.responseText, true);
-        // clear loader from #column-list-container
+        // clear loader from column list container
         clearColumnSelect(false);
     };
 
@@ -212,20 +214,20 @@ function getColumns(selectIndex, callbackFunction) {
 
 
 /**
- * Populates #column-list-container with checkboxes containing column names.
+ * Populates column list container with checkboxes containing column names.
  * This function is called on success of getColumns().
  * @param selectIndex Index in selectedTables
  */
 function populateColumnList(selectIndex) {
     var columnListContainer = buildColumnList(selectIndex);
-    $('#column-list-container').html(columnListContainer);
+    $('#single-column-list-container').html(columnListContainer);
     showColumnSelectPlaceholder(false);
     disableSubmit(false);
 }
 
 
 /**
- * Populate #column-list-container with checkboxes containing columns for each table in the join
+ * Populate column list container with checkboxes containing columns for each table in the join
  * @param selectIndices Array of indices into selectedTables
  */
 function populateTableJoinColumnList(selectIndices) {
@@ -235,7 +237,7 @@ function populateTableJoinColumnList(selectIndices) {
         var columnList = buildColumnList(selectIndex, true);
         columnListContainer.append(columnList);
     });
-    $('#column-list-container').html(columnListContainer);
+    $('#join-column-list-container').html(columnListContainer);
     showColumnSelectPlaceholder(false);
     disableSubmit(false);
 }
@@ -334,7 +336,8 @@ function buildColumnOptions(selectIndex) {
 function clearColumnSelect(showLoader) {
     disableSubmit(true);
     // clear column options and display loading icon
-    $('#column-list-container').html(showLoader ? loader : '');
+    var containerId = '#' + selectType + '-column-list-container';
+    $(containerId).html(showLoader ? loader : '');
 }
 
 
@@ -344,6 +347,24 @@ function clearColumnSelect(showLoader) {
  */
 function showColumnSelectPlaceholder(visible) {
     $('#column-select-placeholder').toggleClass('hidden', !visible);
+}
+
+
+/**
+ * Check if column list for current select type is empty
+ * @returns {boolean} True if no columns are present
+ */
+function columnListIsEmpty() {
+    var containerId = '#' + selectType + '-column-list-container';
+    return !$.trim($(containerId).html()).length;
+}
+
+
+/**
+ * Checks if column list is empty and shows placeholder if true
+ */
+function refreshPlaceholderState() {
+    showColumnSelectPlaceholder(columnListIsEmpty());
 }
 
 
@@ -387,11 +408,9 @@ $(function () {
     // Add listener that toggles collapse state depending on which radio is selected
     $('input[name="select-type"]').change(
         function () {
-            // TODO: toggle visibility of these instead based on state
-            clearColumnSelect(false);
-            showColumnSelectPlaceholder(true);
             // Determine which radio is checked (select or join)
-            var isSelect = $('input[name="select-type"]:checked').val() === 'single';
+            selectType = $('input[name="select-type"]:checked').val();
+            var isSelect = selectType === 'single';
             // (don't need this variable, but using it for readability's sake)
             var isJoin = !isSelect;
             $('#table-select-collapse').collapse(isSelect ? 'show' : 'hide')
@@ -405,7 +424,8 @@ $(function () {
             $('.single-select').toggleClass('hidden', !isSelect)
                 .find(':input').prop('disabled', !isSelect);
 
-            // TODO: update select fields/columns section on expanding if corresponded key in selectedTables
+            // Update placeholder visibility
+            refreshPlaceholderState();
             // TODO: make sure to update row limit, too
         });
 
@@ -464,6 +484,5 @@ $(function () {
         rowToggle.prop('disabled', false);
     });
 
-    // retrieve the table names and add them to #table-select
     getTables();
 });

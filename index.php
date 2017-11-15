@@ -100,7 +100,10 @@ include_once 'config/config.php';
                             <span class="single-select">Select a table to continue.</span>
                             <span class="join-select hidden">Select tables and columns to continue.</span>
                         </div>
-                        <div id="column-list-container"></div>
+                        <div id="column-list-container">
+                            <div class="single-select" id="single-column-list-container"></div>
+                            <div class="join-select hidden" id="join-column-list-container"></div>
+                        </div>
                     </div>
                 </fieldset>
                 <fieldset>
