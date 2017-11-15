@@ -39,32 +39,29 @@ function getTables() {
     $('#table-fieldset').find(':input').prop('disabled', true);
     var tableLoaderDiv = $('#table-loader-div');
     tableLoaderDiv.html(loader);
-    $.ajax({
-        type: "POST",
-        url: "handler/connection_handler.php",
-        data: {'function' : 'getTables'},
-        dataType: "json",
-        success: function (data) {
-            // Check if a server-side error was thrown and stop execution if so
-            if(data.error !== undefined) {
-                displayError(data.error, true);
-                tableLoaderDiv.html('');
-            }
-            else {
-                tables = data.text;
-                // Display these tables on the page
-                populateTableSelects();
-            }
-        },
-        error: function (jqXHR) {
-            // If an error occurred before the server could respond, display message and stop execution
-            displayError(jqXHR.responseText, true);
-        },
-        complete: function () {
-            // Hide loader
+
+    var callbacks = new AjaxCallbacks();
+    callbacks.success = function (data) {
+        // Check if a server-side error was thrown and stop execution if so
+        if(data.error !== undefined) {
+            displayError(data.error, true);
             tableLoaderDiv.html('');
         }
-    });
+        else {
+            tables = data.text;
+            // Display these tables on the page
+            populateTableSelects();
+        }
+    };
+    callbacks.error = function (jqXHR) {
+        // If an error occurred before the server could respond, display message and stop execution
+        displayError(jqXHR.responseText, true);
+    };
+    callbacks.complete = function () {
+        // Hide loader
+        tableLoaderDiv.html('');
+    };
+    getTablesAjax(callbacks);
 }
 
 
@@ -144,7 +141,7 @@ function joinTableSelectListener(columnSelectId) {
  * Checks to see if all required fields for a join are filled. If they are,
  * populate column list
  */
-// TODO: Use a submit button instead of ajax, it will get messy with 3+ tables
+// TODO: Use a submit button instead of ajax? it may get messy with 3+ tables
 function joinColumnSelectListener() {
     // If all required fields for join are filled, populate column list
     var joinFields = $('#table-join-collapse').find('select:required');
