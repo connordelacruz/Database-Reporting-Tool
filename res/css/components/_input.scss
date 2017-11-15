@@ -21,9 +21,11 @@ select, select.form-control {
 }
 
 // For placeholder text in select
-option[value=""]:disabled, option.placeholder {
+option.placeholder {
   display: none;
 }
+
+//
 
 /* Checkbox */
 
