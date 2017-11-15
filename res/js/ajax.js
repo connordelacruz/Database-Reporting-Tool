@@ -6,9 +6,9 @@
 
 /**
  * Object containing ajax callback functions
- * @param {function} success Success callback function. Takes data parameter
- * @param {function} error Error callback function. Takes jqXHR parameter
- * @param {function} complete Complete callback function. No parameters
+ * @param {function} [success] Success callback function. Takes data parameter
+ * @param {function} [error] Error callback function. Takes jqXHR parameter
+ * @param {function} [complete] Complete callback function. No parameters
  * @constructor
  */
 function AjaxCallbacks(success, error, complete) {
@@ -33,6 +33,33 @@ function getTablesAjax(ajaxCallbacks) {
         type: "POST",
         url: "handler/connection_handler.php",
         data: {'function' : 'getTables'},
+        dataType: "json",
+        success: function (data) {
+            ajaxCallbacks.success(data);
+        },
+        error: function (jqXHR) {
+            ajaxCallbacks.error(jqXHR);
+        },
+        complete: function () {
+            ajaxCallbacks.complete();
+        }
+    });
+}
+
+
+/**
+ * Gets a list of columns from a table and passes data to callback functions
+ * @param {string} table The table to get columns for
+ @param {AjaxCallbacks} ajaxCallbacks An AjaxCallbacks object with callback functions
+ */
+function getColumnsAjax(table, ajaxCallbacks) {
+    $.ajax({
+        type: "POST",
+        url: "handler/connection_handler.php",
+        data: {
+            'table': table,
+            'function': 'getColumns'
+        },
         dataType: "json",
         success: function (data) {
             ajaxCallbacks.success(data);

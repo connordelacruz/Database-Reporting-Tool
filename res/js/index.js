@@ -40,6 +40,7 @@ function getTables() {
     var tableLoaderDiv = $('#table-loader-div');
     tableLoaderDiv.html(loader);
 
+    // Callback functions for ajax
     var callbacks = new AjaxCallbacks();
     callbacks.success = function (data) {
         // Check if a server-side error was thrown and stop execution if so
@@ -61,6 +62,7 @@ function getTables() {
         // Hide loader
         tableLoaderDiv.html('');
     };
+
     getTablesAjax(callbacks);
 }
 
@@ -174,42 +176,38 @@ function joinColumnSelectListener() {
  */
 function getColumns(selectIndex, callbackFunction) {
     var table = selectedTables[selectIndex].name;
-    $.ajax({
-        type: "POST",
-        url: "handler/connection_handler.php",
-        data: {
-            'table': table,
-            'function': 'getColumns'
-        },
-        dataType: "json",
-        success: function (data) {
-            // if data.err is set, then display something in #error-div
-            if (data.error !== undefined) {
-                displayError(data.error);
-                // clear loader from #column-list-container
-                clearColumnSelect(false);
-            }
-            else {
-                selectedTables[selectIndex].columns = data.text;
-                // get the total number of rows and set #row-limit max
-                selectedTables[selectIndex].rowCount = data['rowCount'];
-                // TODO: extract this to callback?
-                $('#row-limit').attr({
-                    'max': selectedTables[selectIndex].rowCount,
-                    'placeholder': 'Number of rows to display (max ' + selectedTables[selectIndex].rowCount + ')'
-                });
-                // Execute callback function if defined
-                if (callbackFunction !== undefined)
-                    callbackFunction();
-            }
-        },
-        error: function (jqXHR) {
-            // If an error occurred before the server could respond, display message and stop execution
-            displayError(jqXHR.responseText, true);
+
+    // Callback functions for ajax
+    var callbacks = new AjaxCallbacks();
+    callbacks.success = function (data) {
+        // if data.err is set, then display something in #error-div
+        if (data.error !== undefined) {
+            displayError(data.error);
             // clear loader from #column-list-container
             clearColumnSelect(false);
         }
-    });
+        else {
+            selectedTables[selectIndex].columns = data.text;
+            // get the total number of rows and set #row-limit max
+            selectedTables[selectIndex].rowCount = data['rowCount'];
+            // TODO: extract this to callback?
+            $('#row-limit').attr({
+                'max': selectedTables[selectIndex].rowCount,
+                'placeholder': 'Number of rows to display (max ' + selectedTables[selectIndex].rowCount + ')'
+            });
+            // Execute callback function if defined
+            if (callbackFunction !== undefined)
+                callbackFunction();
+        }
+    };
+    callbacks.error = function (jqXHR) {
+        // If an error occurred before the server could respond, display message and stop execution
+        displayError(jqXHR.responseText, true);
+        // clear loader from #column-list-container
+        clearColumnSelect(false);
+    };
+
+    getColumnsAjax(table, callbacks);
 }
 
 
