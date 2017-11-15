@@ -82,6 +82,11 @@ include_once 'config/config.php';
                             </tr>
                             </tbody>
                         </table>
+                        <div>
+                            <button class="btn btn-block btn-default" type="button" id="join-add-table">
+                                <span class="text-success"><span class="glyphicon glyphicon-plus"></span> Add Table</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </fieldset>
