@@ -2,6 +2,8 @@
  * Functions for manipulating the UI and handling events
  */
 
+// TODO: extract rest of view functions from index.js
+
 
 /* Variables */
 
