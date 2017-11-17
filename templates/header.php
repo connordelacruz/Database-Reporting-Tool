@@ -31,15 +31,13 @@
 
     <title><?php echo isset($pageTitle) ? $pageTitle : 'Report Generator' ?></title>
 
-    <!-- Stylesheet includes Bootstrap.css + theme -->
     <link rel="stylesheet" href="res/css/global.css">
 
-    <!-- jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <!-- Bootstrap.js -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <!-- Ajax Functions -->
+
     <script src="res/js/ajax.js"></script>
+    <script src="res/js/view.js"></script>
 
     <?php
     // If there is a .js file for this page, include it
