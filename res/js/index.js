@@ -28,6 +28,8 @@ var tables;
 // Array of TableDataObjects for the currently selected tables. Indexed by the id of the select element
 var selectedTables = {};
 
+// TODO: organize state variables (object prototype?)
+
 // Current select-type (single or join)
 var selectType;
 
@@ -213,6 +215,19 @@ function getColumns(selectIndex, callbackFunction) {
     };
 
     getColumnsAjax(table, callbacks);
+}
+
+
+// TODO: document
+function buildJoinTableRow() {
+    // Initialize row and add empty column (to line up with the first row)
+    var row = $('<tr></tr>').html('<td></td>');
+    // TODO: Join type select
+    // TODO: Table select
+    // TODO: Column select (for this table)
+    // TODO: Column select (for one of the other tables)
+
+    // TODO: add listeners
 }
 
 

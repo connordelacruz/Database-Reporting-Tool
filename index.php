@@ -41,7 +41,7 @@ include_once 'config/config.php';
                     </div>
                     <div class="table-collapse collapse" id="table-join-collapse">
                         <?php // TODO: re-work markup join field markup (table is just for prototyping) ?>
-                        <table class="table table-condensed join-table">
+                        <table class="table table-condensed table-striped join-table">
                             <tbody>
                             <tr>
                                 <td class="form-group">
