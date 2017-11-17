@@ -19,17 +19,23 @@ function TableDataObject(name, columns, rowCount) {
 
 /* Variables */
 
+// Spinning icon to display while loading
+var loader = '<div class="loader"><svg class="circular" viewBox="25 25 50 50"><circle id="loader-circle" class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="10"/></svg></div>';
+
 // Array of table names from the database
 var tables;
 
 // Array of TableDataObjects for the currently selected tables. Indexed by the id of the select element
 var selectedTables = {};
 
-// Spinning icon to display while loading
-var loader = '<div class="loader"><svg class="circular" viewBox="25 25 50 50"><circle id="loader-circle" class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="10"/></svg></div>';
-
 // Current select-type (single or join)
 var selectType;
+
+// For storing and restoring state when switching between select types
+var maxRowCount = {
+    'single' : 0,
+    'join' : 0
+};
 
 /* Functions */
 
@@ -84,6 +90,7 @@ function populateTableSelects() {
     }
 
     // Add listener to single table select
+    // TODO: extract to function
     $('#table-select').change(function () {
         var tableName = $(this).find(':selected').val();
         if (tableName !== '') {
@@ -192,11 +199,7 @@ function getColumns(selectIndex, callbackFunction) {
             selectedTables[selectIndex].columns = data.text;
             // get the total number of rows and set #row-limit max
             selectedTables[selectIndex].rowCount = data['rowCount'];
-            // TODO: extract this to callback?
-            $('#row-limit').attr({
-                'max': selectedTables[selectIndex].rowCount,
-                'placeholder': 'Number of rows to display (max ' + selectedTables[selectIndex].rowCount + ')'
-            });
+
             // Execute callback function if defined
             if (callbackFunction !== undefined)
                 callbackFunction();
@@ -214,30 +217,63 @@ function getColumns(selectIndex, callbackFunction) {
 
 
 /**
- * Populates column list container with checkboxes containing column names.
+ * Set the max value and placeholder text of the row limit input. If maxRows < 1 evaluates to true, remove the max
+ * attribute and set a generic placeholder.
+ * @param maxRows Max number of rows for the row limit field
+ */
+function setRowLimit(maxRows) {
+    var rowLimitInput = $('#row-limit');
+    var attributes = {'placeholder' : 'Number of rows to display'};
+
+    if (maxRows < 1) {
+        rowLimitInput.removeAttr('max');
+    }
+    else {
+        attributes['max'] = maxRows;
+        attributes['placeholder'] += ' (max ' + maxRows + ')';
+    }
+    rowLimitInput.attr(attributes);
+    // Set global variable for restoring state
+    maxRowCount[selectType] = maxRows;
+}
+
+
+/**
+ * Populates column list container with checkboxes containing column names. Additionally, sets the max row limit to the
+ * row count of the selected table.
  * This function is called on success of getColumns().
  * @param selectIndex Index in selectedTables
  */
 function populateColumnList(selectIndex) {
     var columnListContainer = buildColumnList(selectIndex);
     $('#single-column-list-container').html(columnListContainer);
+
+    setRowLimit(selectedTables[selectIndex].rowCount);
+
     showColumnSelectPlaceholder(false);
     disableSubmit(false);
 }
 
 
 /**
- * Populate column list container with checkboxes containing columns for each table in the join
+ * Populate column list container with checkboxes containing columns for each table in the join. Additionally, keeps
+ * track of the row count of the joined table with the greatest row count and sets the max row limit accordingly.
  * @param selectIndices Array of indices into selectedTables
  */
 function populateTableJoinColumnList(selectIndices) {
     // For each table select index, build a column list
     var columnListContainer = $('<div></div>');
+    // Keep track of the row limit
+    var joinMaxRows = 0;
     $.each(selectIndices, function (i, selectIndex) {
+        if (selectedTables[selectIndex].rowCount > joinMaxRows)
+            joinMaxRows = selectedTables[selectIndex].rowCount;
         var columnList = buildColumnList(selectIndex, true);
         columnListContainer.append(columnList);
     });
     $('#join-column-list-container').html(columnListContainer);
+    setRowLimit(joinMaxRows);
+
     showColumnSelectPlaceholder(false);
     disableSubmit(false);
 }
@@ -396,7 +432,9 @@ function setSelectType(type) {
 
     // Update placeholder visibility
     refreshPlaceholderState();
-    // TODO: make sure to update row limit, too
+
+    // Set row limit max
+    setRowLimit(maxRowCount[selectType]);
 }
 
 
