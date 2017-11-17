@@ -19,9 +19,6 @@ function TableDataObject(name, columns, rowCount) {
 
 /* Variables */
 
-// Spinning icon to display while loading
-var loader = '<div class="loader"><svg class="circular" viewBox="25 25 50 50"><circle id="loader-circle" class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="10"/></svg></div>';
-
 // Array of table names from the database
 var tables;
 
@@ -232,22 +229,13 @@ function buildJoinTableRow() {
 
 
 /**
- * Set the max value and placeholder text of the row limit input. If maxRows < 1 evaluates to true, remove the max
+ * Set the max value for the row limit input and update maxRowCount
+ * @param maxRows Max number of rows for the row limit field. If maxRows < 1 evaluates to true, remove the max
  * attribute and set a generic placeholder.
- * @param maxRows Max number of rows for the row limit field
  */
-function setRowLimit(maxRows) {
-    var rowLimitInput = $('#row-limit');
-    var attributes = {'placeholder' : 'Number of rows to display'};
-
-    if (maxRows < 1) {
-        rowLimitInput.removeAttr('max');
-    }
-    else {
-        attributes['max'] = maxRows;
-        attributes['placeholder'] += ' (max ' + maxRows + ')';
-    }
-    rowLimitInput.attr(attributes);
+function setRowLimitMax(maxRows) {
+    // Update input
+    setRowLimitInputMax(maxRows);
     // Set global variable for restoring state
     maxRowCount[selectType] = maxRows;
 }
@@ -263,7 +251,7 @@ function populateColumnList(selectIndex) {
     var columnListContainer = buildColumnList(selectIndex);
     $('#single-column-list-container').html(columnListContainer);
 
-    setRowLimit(selectedTables[selectIndex].rowCount);
+    setRowLimitMax(selectedTables[selectIndex].rowCount);
 
     showColumnSelectPlaceholder(false);
     disableSubmit(false);
@@ -287,7 +275,7 @@ function populateTableJoinColumnList(selectIndices) {
         columnListContainer.append(columnList);
     });
     $('#join-column-list-container').html(columnListContainer);
-    setRowLimit(joinMaxRows);
+    setRowLimitMax(joinMaxRows);
 
     showColumnSelectPlaceholder(false);
     disableSubmit(false);
@@ -383,45 +371,6 @@ function buildColumnOptions(selectIndex) {
 
 
 /**
- * Removed column select options, display loader, and disables #generate-report. Used when a new table is selected
- * @param {boolean} [showLoader] If true, display loading icon
- */
-function clearColumnSelect(showLoader) {
-    disableSubmit(true);
-    // clear column options and display loading icon
-    var containerId = '#' + selectType + '-column-list-container';
-    $(containerId).html(showLoader ? loader : '');
-}
-
-
-/**
- * Toggle visibility of column select placeholder text
- * @param {boolean} visible If true, show placeholder text. If false, hide it
- */
-function showColumnSelectPlaceholder(visible) {
-    $('#column-select-placeholder').toggleClass('hidden', !visible);
-}
-
-
-/**
- * Check if column list for current select type is empty
- * @returns {boolean} True if no columns are present
- */
-function columnListIsEmpty() {
-    var containerId = '#' + selectType + '-column-list-container';
-    return !$.trim($(containerId).html()).length;
-}
-
-
-/**
- * Checks if column list is empty and shows placeholder if true
- */
-function refreshPlaceholderState() {
-    showColumnSelectPlaceholder(columnListIsEmpty());
-}
-
-
-/**
  * Set the selectType global variable and update UI accordingly
  * @param {string} type The select type to set it to (i.e. value of the radio button)
  */
@@ -449,7 +398,7 @@ function setSelectType(type) {
     refreshPlaceholderState();
 
     // Set row limit max
-    setRowLimit(maxRowCount[selectType]);
+    setRowLimitMax(maxRowCount[selectType]);
 }
 
 
