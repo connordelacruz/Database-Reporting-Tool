@@ -94,7 +94,7 @@ function populateTableSelects() {
         var tableName = $(this).find(':selected').val();
         if (tableName !== '') {
             // clear any existing options and show loader
-            clearColumnSelect(true);
+            clearColumnList(true);
             showColumnSelectPlaceholder(false);
             // clear any error messages previously displayed
             clearError();
@@ -136,7 +136,8 @@ function joinTableSelectListener(columnSelectId) {
         selectedTables[selectIndex] = new TableDataObject(tableName);
         // Populate column select once columns are retrieved
         var getColumnsCallback = function () {
-            var optionsString = buildColumnOptions(selectIndex);
+            var table = selectedTables[selectIndex];
+            var optionsString = buildColumnOptions(table);
             $(columnSelectId).html(optionsString)
                 .prop('disabled', false);
         };
@@ -192,7 +193,7 @@ function getColumns(selectIndex, callbackFunction) {
         if (data.error !== undefined) {
             displayError(data.error);
             // clear loader from column list container
-            clearColumnSelect(false);
+            clearColumnList(false);
         }
         else {
             selectedTables[selectIndex].columns = data.text;
@@ -208,7 +209,7 @@ function getColumns(selectIndex, callbackFunction) {
         // If an error occurred before the server could respond, display message and stop execution
         displayError(jqXHR.responseText, true);
         // clear loader from column list container
-        clearColumnSelect(false);
+        clearColumnList(false);
     };
 
     getColumnsAjax(table, callbacks);
@@ -279,23 +280,6 @@ function populateTableJoinColumnList(selectIndices) {
 
     showColumnSelectPlaceholder(false);
     disableSubmit(false);
-}
-
-
-/**
- * Generate markup for column select options
- * @param selectIndex The index into selectedTables for the table
- * @returns {string} Markup for column select options
- */
-function buildColumnOptions(selectIndex) {
-    var table = selectedTables[selectIndex];
-    var columnOptionsString = '<optgroup label="'+ table.name + '">';
-    columnOptionsString += '<option class="placeholder" value="" disabled selected>Select a column</option>';
-    $.each(table.columns, function (i, column) {
-        columnOptionsString += '<option value="' + column + '">' + column + '</option>';
-    });
-    columnOptionsString += '</optgroup>';
-    return columnOptionsString;
 }
 
 

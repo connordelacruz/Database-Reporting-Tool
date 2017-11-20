@@ -15,6 +15,22 @@ var loader = '<div class="loader"><svg class="circular" viewBox="25 25 50 50"><c
 
 
 /**
+ * Generate markup for column select options
+ * @param {TableDataObject} table The table to generate column options for
+ * @returns {string} Markup for column select options
+ */
+function buildColumnOptions(table) {
+    var columnOptionsString = '<optgroup label="'+ table.name + '">';
+    columnOptionsString += '<option class="placeholder" value="" disabled selected>Select a column</option>';
+    $.each(table.columns, function (i, column) {
+        columnOptionsString += '<option value="' + column + '">' + column + '</option>';
+    });
+    columnOptionsString += '</optgroup>';
+    return columnOptionsString;
+}
+
+
+/**
  * Generate markup for column checkbox list
  * @param {TableDataObject} table The table to generate a column list for
  * @param {boolean} [tableJoin] If true, include the name of the table and a horizontal rule at the top
@@ -87,10 +103,10 @@ function buildColumnList(table, tableJoin) {
 
 
 /**
- * Removed column select options, display loader, and disables #generate-report. Used when a new table is selected
+ * Removed column list checkboxes, display loader, and disables #generate-report. Used when a new table is selected
  * @param {boolean} [showLoader] If true, display loading icon
  */
-function clearColumnSelect(showLoader) {
+function clearColumnList(showLoader) {
     disableSubmit(true);
     // clear column options and display loading icon
     // TODO: view functions shouldn't need to know about selectType, make param?
