@@ -15,6 +15,32 @@ var loader = '<div class="loader"><svg class="circular" viewBox="25 25 50 50"><c
 
 
 /**
+ * Generate markup for table select options
+ * @param tables List of table names
+ * @returns {string} Markup for table select options
+ */
+function buildTableOptions(tables) {
+    var optionsString = '';
+    for (var i = 0; i < tables.length; i++)
+        optionsString += "<option value='" + tables[i] + "'>" + tables[i] + "</option>";
+    return optionsString;
+}
+
+
+// TODO: document
+function buildJoinTableRow() {
+    // Initialize row and add empty column (to line up with the first row)
+    var row = $('<tr></tr>').html('<td></td>');
+    // TODO: Join type select
+    // TODO: Table select
+    // TODO: Column select (for this table)
+    // TODO: Column select (for one of the other tables)
+
+    // TODO: add listeners
+}
+
+
+/**
  * Generate markup for column select options
  * @param {TableDataObject} table The table to generate column options for
  * @returns {string} Markup for column select options

@@ -83,10 +83,8 @@ function populateTableSelects() {
     var tableSelectInputs = $('.table-select-input');
 
     // Add tables to select inputs
-    for (var i = 0; i < tables.length; i++) {
-        var option = "<option value='" + tables[i] + "'>" + tables[i] + "</option>";
-        tableSelectInputs.append(option);
-    }
+    var optionsString = buildTableOptions(tables);
+    tableSelectInputs.append(optionsString);
 
     // Add listener to single table select
     // TODO: extract to function
@@ -213,19 +211,6 @@ function getColumns(selectIndex, callbackFunction) {
     };
 
     getColumnsAjax(table, callbacks);
-}
-
-
-// TODO: document
-function buildJoinTableRow() {
-    // Initialize row and add empty column (to line up with the first row)
-    var row = $('<tr></tr>').html('<td></td>');
-    // TODO: Join type select
-    // TODO: Table select
-    // TODO: Column select (for this table)
-    // TODO: Column select (for one of the other tables)
-
-    // TODO: add listeners
 }
 
 
