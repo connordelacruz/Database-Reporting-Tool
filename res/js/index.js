@@ -248,7 +248,7 @@ function setRowLimitMax(maxRows) {
  * @param selectIndex Index in selectedTables
  */
 function populateColumnList(selectIndex) {
-    var columnListContainer = buildColumnList(selectIndex);
+    var columnListContainer = buildColumnList(selectedTables[selectIndex]);
     $('#single-column-list-container').html(columnListContainer);
 
     setRowLimitMax(selectedTables[selectIndex].rowCount);
@@ -271,7 +271,7 @@ function populateTableJoinColumnList(selectIndices) {
     $.each(selectIndices, function (i, selectIndex) {
         if (selectedTables[selectIndex].rowCount > joinMaxRows)
             joinMaxRows = selectedTables[selectIndex].rowCount;
-        var columnList = buildColumnList(selectIndex, true);
+        var columnList = buildColumnList(selectedTables[selectIndex], true);
         columnListContainer.append(columnList);
     });
     $('#join-column-list-container').html(columnListContainer);
@@ -279,77 +279,6 @@ function populateTableJoinColumnList(selectIndices) {
 
     showColumnSelectPlaceholder(false);
     disableSubmit(false);
-}
-
-
-/**
- * Generate markup for column checkbox list
- * @param selectIndex The index into selectedTables for the table
- * @param {boolean} [tableJoin] If true, include the name of the table and a horizontal rule at the top
- * @returns jQuery object for the column list
- */
-function buildColumnList(selectIndex, tableJoin) {
-    var table = selectedTables[selectIndex];
-    var containerId = table.name + '-column-options-container';
-    var columnOptionsContainerString = '<div id="' + containerId + '">';
-
-    // Include table name if this is a join list
-    if (tableJoin) {
-        columnOptionsContainerString += '<b class="text-primary">' + table.name + '</b><br>';
-    }
-
-    // Add select all checkbox
-    var selectAllId = table.name + '-column-select-all';
-    var selectAllHeading = 'Select All';
-    if (tableJoin)
-        selectAllHeading += ' From ' + table.name;
-    columnOptionsContainerString += [
-        '<div class="checkbox">',
-        '<label><input type="checkbox" id="' + selectAllId + '" checked><b>' + selectAllHeading + '</b></label>',
-        '</div>'
-    ].join('');
-
-    // Build options list
-    $.each(table.columns, function (i, column) {
-        columnOptionsContainerString += '<div class="checkbox"><label><input type="checkbox" name="tables[' + table.name + '][]" class="column-option" value="' + column + '" checked>' + column + '</label></div>';
-    });
-    columnOptionsContainerString += '</div>';
-    var columnOptionsContainer = $(columnOptionsContainerString);
-
-    // Add listener to table select all button
-    var selectAllListener = function (containerId) {
-        return function () {
-            $(containerId).find('.column-option').prop('checked', $(this).prop('checked'));
-            // if nothing is checked, submit buttons should be disabled
-            disableSubmit(!$(this).prop('checked'));
-        }
-    };
-    columnOptionsContainer.find('#' + selectAllId).change(selectAllListener('#' + containerId));
-
-    // Add listeners to column checkboxes to uncheck select all if not all are selected
-    var columnOptionListener = function (containerId, selectAllId) {
-        return function () {
-            // uncheck select all if this gets unchecked
-            if ($(this).prop('checked') === false) {
-                $(selectAllId).prop('checked', false);
-                // Disable submit buttons if nothing is checked
-                if ($(containerId).find('.column-option:checked').length === 0) {
-                    disableSubmit(true);
-                }
-            }
-            // if this was checked, re-enable submit buttons
-            else {
-                disableSubmit(false);
-                // if everything else is checked, then set select all to checked
-                if ($(containerId).find('.column-option:checked').length === $(containerId).find('.column-option').length) {
-                    $(selectAllId).prop('checked', true);
-                }
-            }
-        }
-    };
-    columnOptionsContainer.find('.column-option').change(columnOptionListener('#' + containerId, '#' + selectAllId));
-
-    return columnOptionsContainer;
 }
 
 
