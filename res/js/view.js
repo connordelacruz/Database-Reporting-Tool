@@ -46,14 +46,43 @@ function buildJoinTableRow() {
     ].join('');
     row.append(joinCell);
     // TODO: Table select
+    var tableCell = [
+        '<td>',
+            '<label>Table:</label>',
+            '<select class="form-control table-select-input" name="join[0][table]" required>',
+                '<option class="placeholder" value="" disabled selected>Select a table</option>',
+            '</select>',
+        '</td>'
+    ].join('');
+    row.append(tableCell);
     // 'ON' cell
     row.append('<td><b>ON</b></td>');
     // TODO: Column select (for this table)
+    var column0Cell = [
+        '<td>',
+            '<label>Column:</label>',
+            '<select class="form-control join-column-select" name="join[0][column]" required>',
+                '<option class="placeholder" value="" disabled selected>Select a column</option>',
+            '</select>',
+        '</td>'
+    ].join('');
+    row.append(column0Cell);
     // '=' cell
     row.append('<td><b>=</b></td>');
     // TODO: Column select (for one of the other tables)
+    var column1Cell = [
+        '<td>',
+            '<label>Column:</label>',
+            '<select class="form-control join-column-select" name="join[1][column]" required>',
+                '<option class="placeholder" value="" disabled selected>Select a column</option>',
+            '</select>',
+        '</td>'
+    ].join('');
+    row.append(column1Cell);
 
     // TODO: add listeners
+
+    return row;
 }
 
 
