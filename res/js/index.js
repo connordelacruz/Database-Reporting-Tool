@@ -30,6 +30,8 @@ var selectedTables = {};
 // Current select-type (single or join)
 var selectType;
 
+// TODO: keep track of # of joined tables
+
 // For storing and restoring state when switching between select types
 var maxRowCount = {
     'single' : 0,

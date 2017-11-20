@@ -28,12 +28,29 @@ function buildTableOptions(tables) {
 
 
 // TODO: document
+// TODO: have some way to keep track of what join this is
 function buildJoinTableRow() {
     // Initialize row and add empty column (to line up with the first row)
     var row = $('<tr></tr>').html('<td></td>');
-    // TODO: Join type select
+    // Join type select
+    var joinCell = [
+        '<td>',
+            '<label>Join Type:</label>',
+            '<select class="form-control" name="join[type]" required>',
+                '<option value="inner" selected>Inner Join</option>',
+                '<option value="left">Left Join</option>',
+                '<option value="right">Right Join</option>',
+                '<option value="outer">Outer Join</option>',
+            '</select>',
+        '</td>'
+    ].join('');
+    row.append(joinCell);
     // TODO: Table select
+    // 'ON' cell
+    row.append('<td><b>ON</b></td>');
     // TODO: Column select (for this table)
+    // '=' cell
+    row.append('<td><b>=</b></td>');
     // TODO: Column select (for one of the other tables)
 
     // TODO: add listeners
