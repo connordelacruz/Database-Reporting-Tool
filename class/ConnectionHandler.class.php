@@ -268,11 +268,16 @@ class ConnectionHandler {
         // Append join string if applicable
         // TODO: extract to function and iterate through $join_data
         if ($join_data) {
-            $join_string =
+            // Iterate through joins
+            $join_string = ' ';
+            foreach ($join_data as $join) {
+            $join_string .=
                 $this->joinString(
-                    $join_data['type'],
-                    $join_data[0]['table'], $join_data[0]['column'],
-                    $join_data[1]['table'], $join_data[1]['column']);
+                    $join['type'],
+                    $join[0]['table'], $join[0]['column'],
+                    $join[1]['table'], $join[1]['column'])
+                . ' ';
+            }
             $from_string .= ' ' . $join_string;
         }
         // Build SQL query string

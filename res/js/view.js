@@ -112,6 +112,7 @@ function buildColumnOptions(table) {
  * @returns jQuery object for the column list
  */
 function buildColumnList(table, tableJoin) {
+    // TODO: ids can conflict if table is selected in more than one field
     var containerId = table.name + '-column-options-container';
     var columnOptionsContainerString = '<div id="' + containerId + '">';
 

@@ -46,13 +46,13 @@ include_once 'config/config.php';
                             <tr>
                                 <td class="form-group">
                                     <label for="join-table1-select">Table 1:</label>
-                                    <select class="form-control table-select-input" id="join-table1-select" name="join[0][table]" required>
+                                    <select class="form-control table-select-input" id="join-table1-select" name="join[0][0][table]" required>
                                         <option class="placeholder" value="" disabled selected>Select a table</option>
                                     </select>
                                 </td>
                                 <td class="form-group">
                                     <label for="join-type-select">Join Type:</label>
-                                    <select class="form-control" id="join-type-select" name="join[type]" required>
+                                    <select class="form-control" id="join-type-select" name="join[0][type]" required>
                                         <option value="inner" selected>Inner Join</option>
                                         <option value="left">Left Join</option>
                                         <option value="right">Right Join</option>
@@ -61,21 +61,21 @@ include_once 'config/config.php';
                                 </td>
                                 <td class="form-group">
                                     <label for="join-table2-select">Table 2:</label>
-                                    <select class="form-control table-select-input" id="join-table2-select" name="join[1][table]" required>
+                                    <select class="form-control table-select-input" id="join-table2-select" name="join[0][1][table]" required>
                                         <option class="placeholder" value="" disabled selected>Select a table</option>
                                     </select>
                                 </td>
                                 <td><b>ON</b></td>
                                 <td class="form-group">
                                     <label for="join-column1-select">Table 1 Column:</label>
-                                    <select class="form-control join-column-select" id="join-column1-select" name="join[0][column]" required>
+                                    <select class="form-control join-column-select" id="join-column1-select" name="join[0][0][column]" required>
                                         <option class="placeholder" value="" disabled selected>Select a column</option>
                                     </select>
                                 </td>
                                 <td><b>=</b></td>
                                 <td class="form-group">
                                     <label for="join-column2-select">Table 2 Column:</label>
-                                    <select class="form-control join-column-select" id="join-column2-select" name="join[1][column]" required>
+                                    <select class="form-control join-column-select" id="join-column2-select" name="join[0][1][column]" required>
                                         <option class="placeholder" value="" disabled selected>Select a column</option>
                                     </select>
                                 </td>
