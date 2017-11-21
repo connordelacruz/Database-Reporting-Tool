@@ -44,12 +44,14 @@ include_once 'config/config.php';
                         <table class="table table-condensed table-striped join-table">
                             <tbody id="join-table-body">
                             <tr>
-                                <td class="form-group">
+                                <td class="form-group" colspan="6">
                                     <label for="join-table1-select">Table 1:</label>
                                     <select class="form-control table-select-input" id="join-table1-select" name="join[0][0][table]" required>
                                         <option class="placeholder" value="" disabled selected>Select a table</option>
                                     </select>
                                 </td>
+                            </tr>
+                            <tr>
                                 <td class="form-group">
                                     <label for="join-type-select">Join Type:</label>
                                     <select class="form-control" id="join-type-select" name="join[0][type]" required>

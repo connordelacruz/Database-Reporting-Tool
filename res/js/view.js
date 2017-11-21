@@ -33,9 +33,7 @@ function buildJoinTableRow(joinIndex, tables) {
     // Name attributes start with join[joinIndex]
     var namePrefix = 'join[' + joinIndex + ']';
 
-    // Initialize row and add empty column (to line up with the first row)
-    // TODO: remove empty td once new layout is implemented
-    var row = $('<tr></tr>').html('<td></td>');
+    var row = $('<tr></tr>');
 
     // Join type select
     var joinCell = [
