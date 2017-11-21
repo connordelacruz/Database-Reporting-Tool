@@ -117,29 +117,48 @@ class ConnectionHandler {
     }
 
 
-    // TODO: validateColumn()
+    /**
+     * Validate a single column
+     * @param string $table The table to check
+     * @param string $column The column to check for
+     * @return string|bool The column name if valid, false if not
+     */
+    public function validateColumn($table, $column) {
+        // Get all valid column names (table is validated in getColumns)
+        $valid_columns = $this->getColumns($table);
+        // Return column if it's in $valid_columns
+        return in_array($column, $valid_columns) ? $column : false;
+    }
 
 
     /**
      * Takes an array of column names and puts quotation marks around them
-     * @param string $table Whitelisted table name
+     * @param string $table Whitelisted (and thus quoted) table name
      * @param array $columns Whitelisted column names
      * @return array The contents of $columns surrounded by quotes
      */
     public function quoteColumns($table, $columns) {
-        // Prefix with quoted table name followed by a .
-        $table_prefix = $table . '.';
         // Array to return
         $quoted_columns = [];
         foreach ($columns as $index => $column) {
-            $quoted_column = "`" . str_replace("`", "``", $column) . "`";
-            $quoted_columns[] = $table_prefix . $quoted_column;
+            $quoted_columns[] = $this->quoteColumn($table, $column);
         }
         return $quoted_columns;
     }
 
 
-    // TODO: quoteColumn()
+    /**
+     * Takes a whitelisted column and a whitelisted table and returns the quoted column prefixed by the table
+     * @param string $table Whitelisted (and thus quoted) table name
+     * @param string $column Whitelisted column name
+     * @return string String with properly quoted column prefixed by "$table."
+     */
+    public function quoteColumn($table, $column) {
+        // Prefix with quoted table name followed by a .
+        $table_prefix = $table . '.';
+        $quoted_column = "`" . str_replace("`", "``", $column) . "`";
+        return $table_prefix . $quoted_column;
+    }
 
 
     /**
@@ -204,10 +223,8 @@ class ConnectionHandler {
         $quoted_table0 = $this->validateTable($table0);
         $quoted_table1 = $this->validateTable($table1);
         // Validate and quote columns
-
-        // TODO: make a shorthand function to do this that can take a single column rather than an array
-        $quoted_column0 = $this->quoteColumns($quoted_table0, $this->validateColumns($table0, [$column0]))[0];
-        $quoted_column1 = $this->quoteColumns($quoted_table1, $this->validateColumns($table1, [$column1]))[0];
+        $quoted_column0 = $this->quoteColumn($quoted_table0, $this->validateColumn($table0, $column0));
+        $quoted_column1 = $this->quoteColumn($quoted_table1, $this->validateColumn($table1, $column1));
         // Build string
         $join_string = "$join_type_string $quoted_table1 ON $quoted_column0 = $quoted_column1";
         return $join_string;
@@ -249,6 +266,7 @@ class ConnectionHandler {
         // Table(s) to select from
         $from_string = $quoted_tables[0];
         // Append join string if applicable
+        // TODO: extract to function and iterate through $join_data
         if ($join_data) {
             $join_string =
                 $this->joinString(
