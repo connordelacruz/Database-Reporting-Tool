@@ -28,13 +28,16 @@ function buildTableOptions(tables) {
 
 
 // TODO: document
-// TODO: have some way to keep track of what join this is
-function buildJoinTableRow() {
+function buildJoinTableRow(joinIndex) {
+    // Name attributes start with join[joinIndex]
+    // TODO: implement
+    var namePrefix = 'join[' + joinIndex + ']';
+
     // Initialize row and add empty column (to line up with the first row)
     var row = $('<tr></tr>').html('<td></td>');
     // Join type select
     var joinCell = [
-        '<td>',
+        '<td class="form-group">',
             '<label>Join Type:</label>',
             '<select class="form-control" name="join[type]" required>',
                 '<option value="inner" selected>Inner Join</option>',
@@ -47,7 +50,7 @@ function buildJoinTableRow() {
     row.append(joinCell);
     // TODO: Table select
     var tableCell = [
-        '<td>',
+        '<td class="form-group">',
             '<label>Table:</label>',
             '<select class="form-control table-select-input" name="join[0][table]" required>',
                 '<option class="placeholder" value="" disabled selected>Select a table</option>',
@@ -59,7 +62,7 @@ function buildJoinTableRow() {
     row.append('<td><b>ON</b></td>');
     // TODO: Column select (for this table)
     var column0Cell = [
-        '<td>',
+        '<td class="form-group">',
             '<label>Column:</label>',
             '<select class="form-control join-column-select" name="join[0][column]" required>',
                 '<option class="placeholder" value="" disabled selected>Select a column</option>',
@@ -71,7 +74,7 @@ function buildJoinTableRow() {
     row.append('<td><b>=</b></td>');
     // TODO: Column select (for one of the other tables)
     var column1Cell = [
-        '<td>',
+        '<td class="form-group">',
             '<label>Column:</label>',
             '<select class="form-control join-column-select" name="join[1][column]" required>',
                 '<option class="placeholder" value="" disabled selected>Select a column</option>',

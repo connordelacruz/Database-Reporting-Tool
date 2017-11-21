@@ -30,7 +30,8 @@ var selectedTables = {};
 // Current select-type (single or join)
 var selectType;
 
-// TODO: keep track of # of joined tables
+// Keep track of # of joined tables for name attributes
+var joinIndex = 0;
 
 // For storing and restoring state when switching between select types
 var maxRowCount = {
@@ -173,6 +174,18 @@ function joinColumnSelectListener() {
     else {
         showColumnSelectPlaceholder(true);
     }
+}
+
+
+/**
+ * Increment joinIndex and append a row to the join table
+ */
+function addJoinTableRow() {
+    // Increment joinIndex
+    joinIndex++;
+    // Build new join row and append
+    var joinTableRow = buildJoinTableRow(joinIndex);
+    $('#join-table-body').append(joinTableRow);
 }
 
 
@@ -333,6 +346,12 @@ $(function () {
         $(this).toggleClass('placeholder', $(this).find(':selected').val() === '');
         // TODO: add listener to remove placeholder class on change
     });*/
+
+    // Add listener to the add table button
+    $('#join-add-table').click(function () {
+        event.preventDefault();
+        addJoinTableRow();
+    });
 
     // Add listener to expand/collapse advanced options
     var advOptLegend = $('#legend-advanced-options');

@@ -42,7 +42,7 @@ include_once 'config/config.php';
                     <div class="table-collapse collapse" id="table-join-collapse">
                         <?php // TODO: re-work markup join field markup (table is just for prototyping) ?>
                         <table class="table table-condensed table-striped join-table">
-                            <tbody>
+                            <tbody id="join-table-body">
                             <tr>
                                 <td class="form-group">
                                     <label for="join-table1-select">Table 1:</label>

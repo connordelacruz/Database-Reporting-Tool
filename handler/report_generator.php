@@ -34,7 +34,7 @@ $selection = $conn->getRows($tables, $join_data, $row_count);
 if ($reportType) {
 
     // TODO: DEBUGGING, REMOVE
-    //echo "<pre>" . print_r($_POST, true) . "</pre>";
+    echo "<pre>" . print_r($_POST, true) . "</pre>";
 
     // create string with <table> element for report generation
     $tableString = "<thead><tr>";
