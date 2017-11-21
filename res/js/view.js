@@ -3,6 +3,7 @@
  */
 
 // TODO: extract rest of view functions from index.js
+// TODO: convert to object/module?
 
 
 /* Variables */
@@ -28,13 +29,14 @@ function buildTableOptions(tables) {
 
 
 // TODO: document
-function buildJoinTableRow(joinIndex) {
+function buildJoinTableRow(joinIndex, tables) {
     // Name attributes start with join[joinIndex]
-    // TODO: implement
     var namePrefix = 'join[' + joinIndex + ']';
 
     // Initialize row and add empty column (to line up with the first row)
+    // TODO: remove empty td once new layout is implemented
     var row = $('<tr></tr>').html('<td></td>');
+
     // Join type select
     var joinCell = [
         '<td class="form-group">',
@@ -48,19 +50,23 @@ function buildJoinTableRow(joinIndex) {
         '</td>'
     ].join('');
     row.append(joinCell);
-    // TODO: Table select
+
+    // Table select
+    // TODO: use a more efficient way of doing this
+    var tableOptions = buildTableOptions(tables);
     var tableCell = [
         '<td class="form-group">',
             '<label>Table:</label>',
             '<select class="form-control table-select-input" name="' + namePrefix + '[0][table]" required>',
                 '<option class="placeholder" value="" disabled selected>Select a table</option>',
+                tableOptions,
             '</select>',
         '</td>'
     ].join('');
     row.append(tableCell);
     // 'ON' cell
     row.append('<td><b>ON</b></td>');
-    // TODO: Column select (for this table)
+    // Column select (for this table)
     var column0Cell = [
         '<td class="form-group">',
             '<label>Column:</label>',
@@ -72,7 +78,8 @@ function buildJoinTableRow(joinIndex) {
     row.append(column0Cell);
     // '=' cell
     row.append('<td><b>=</b></td>');
-    // TODO: Column select (for one of the other tables)
+    // Column select (for one of the other tables)
+    // TODO: have a select w/ tables used in the join?
     var column1Cell = [
         '<td class="form-group">',
             '<label>Column:</label>',
@@ -82,6 +89,8 @@ function buildJoinTableRow(joinIndex) {
         '</td>'
     ].join('');
     row.append(column1Cell);
+
+    // TODO: remove button
 
     // TODO: add listeners
 

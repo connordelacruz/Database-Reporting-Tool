@@ -184,7 +184,7 @@ function addJoinTableRow() {
     // Increment joinIndex
     joinIndex++;
     // Build new join row and append
-    var joinTableRow = buildJoinTableRow(joinIndex);
+    var joinTableRow = buildJoinTableRow(joinIndex, tables);
     $('#join-table-body').append(joinTableRow);
 }
 
