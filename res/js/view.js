@@ -39,7 +39,7 @@ function buildJoinTableRow(joinIndex) {
     var joinCell = [
         '<td class="form-group">',
             '<label>Join Type:</label>',
-            '<select class="form-control" name="join[type]" required>',
+            '<select class="form-control" name="' + namePrefix + '[type]" required>',
                 '<option value="inner" selected>Inner Join</option>',
                 '<option value="left">Left Join</option>',
                 '<option value="right">Right Join</option>',
@@ -52,7 +52,7 @@ function buildJoinTableRow(joinIndex) {
     var tableCell = [
         '<td class="form-group">',
             '<label>Table:</label>',
-            '<select class="form-control table-select-input" name="join[0][table]" required>',
+            '<select class="form-control table-select-input" name="' + namePrefix + '[0][table]" required>',
                 '<option class="placeholder" value="" disabled selected>Select a table</option>',
             '</select>',
         '</td>'
@@ -64,7 +64,7 @@ function buildJoinTableRow(joinIndex) {
     var column0Cell = [
         '<td class="form-group">',
             '<label>Column:</label>',
-            '<select class="form-control join-column-select" name="join[0][column]" required>',
+            '<select class="form-control join-column-select" name="' + namePrefix + '[0][column]" required>',
                 '<option class="placeholder" value="" disabled selected>Select a column</option>',
             '</select>',
         '</td>'
@@ -76,7 +76,7 @@ function buildJoinTableRow(joinIndex) {
     var column1Cell = [
         '<td class="form-group">',
             '<label>Column:</label>',
-            '<select class="form-control join-column-select" name="join[1][column]" required>',
+            '<select class="form-control join-column-select" name="' + namePrefix + '[1][column]" required>',
                 '<option class="placeholder" value="" disabled selected>Select a column</option>',
             '</select>',
         '</td>'
