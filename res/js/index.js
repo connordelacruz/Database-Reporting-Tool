@@ -256,8 +256,7 @@ function populateColumnList(selectIndex) {
 
     setRowLimitMax(selectedTables[selectIndex].rowCount);
 
-    showColumnSelectPlaceholder(false);
-    disableSubmit(false);
+    refreshFormState();
 }
 
 
@@ -280,8 +279,7 @@ function populateTableJoinColumnList(selectIndices) {
     $('#join-column-list-container').html(columnListContainer);
     setRowLimitMax(joinMaxRows);
 
-    showColumnSelectPlaceholder(false);
-    disableSubmit(false);
+    refreshFormState();
 }
 
 

@@ -283,6 +283,15 @@ function refreshSubmitButtonState() {
 
 
 /**
+ * Shorthand function for calling all state refresh functions
+ */
+function refreshFormState() {
+    refreshPlaceholderState();
+    refreshSubmitButtonState();
+}
+
+
+/**
  * Displays an alert in #error-div
  * @param message The message to display
  * @param isUndismissable Optional boolean. If true, no dismiss button will be appended to error. This is for instances
