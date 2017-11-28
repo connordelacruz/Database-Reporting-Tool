@@ -63,7 +63,7 @@ function buildJoinTableRow(joinIndex, tables) {
     ].join('');
     row.append(tableCell);
     // 'ON' cell
-    row.append('<td><b>ON</b></td>');
+    row.append('<td class="text-center"><b>ON</b></td>');
     // Column select (for this table)
     var column0Cell = [
         '<td class="form-group">',
@@ -75,7 +75,7 @@ function buildJoinTableRow(joinIndex, tables) {
     ].join('');
     row.append(column0Cell);
     // '=' cell
-    row.append('<td><b>=</b></td>');
+    row.append('<td class="text-center"><b>=</b></td>');
     // Column select (for one of the other tables)
     // TODO: have a select w/ tables used in the join?
     var column1Cell = [
