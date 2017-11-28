@@ -45,7 +45,7 @@ include_once 'config/config.php';
                             <tbody id="join-table-body">
                             <tr>
                                 <td class="form-group" colspan="6">
-                                    <label for="join-table1-select">Table 1:</label>
+                                    <label for="join-table1-select">Table:</label>
                                     <select class="form-control table-select-input" id="join-table1-select" name="join[0][0][table]" required>
                                         <option class="placeholder" value="" disabled selected>Select a table</option>
                                     </select>
@@ -62,21 +62,21 @@ include_once 'config/config.php';
                                     </select>
                                 </td>
                                 <td class="form-group">
-                                    <label for="join-table2-select">Table 2:</label>
+                                    <label for="join-table2-select">Table:</label>
                                     <select class="form-control table-select-input" id="join-table2-select" name="join[0][1][table]" required>
                                         <option class="placeholder" value="" disabled selected>Select a table</option>
                                     </select>
                                 </td>
                                 <td class="text-center"><b>ON</b></td>
                                 <td class="form-group">
-                                    <label for="join-column1-select">Table 1 Column:</label>
+                                    <label for="join-column1-select">Column:</label>
                                     <select class="form-control join-column-select" id="join-column1-select" name="join[0][0][column]" required>
                                         <option class="placeholder" value="" disabled selected>Select a column</option>
                                     </select>
                                 </td>
                                 <td class="text-center"><b>=</b></td>
                                 <td class="form-group">
-                                    <label for="join-column2-select">Table 2 Column:</label>
+                                    <label for="join-column2-select">Column:</label>
                                     <select class="form-control join-column-select" id="join-column2-select" name="join[0][1][column]" required>
                                         <option class="placeholder" value="" disabled selected>Select a column</option>
                                     </select>

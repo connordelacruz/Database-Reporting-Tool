@@ -255,6 +255,31 @@ function disableSubmit(setDisabled) {
 
 
 /**
+ * Determine if the form requirements are met.
+ * @returns {boolean} True if the form is valid, false if not
+ */
+function formIsValid() {
+    var isValid = true;
+    // Check enabled required fields
+    $(':input[required]:enabled').each(function() {
+        // If val is null or an empty string, set isValid to false and break
+        if ($(this).val() === null || $(this).val().length === 0)
+            return isValid = false;
+    });
+    // Check that 1 or more columns are checked
+    return isValid && $('.column-option:enabled:checked').length > 0;
+}
+
+
+/**
+ * Disable/enable submit button based on form validity
+ */
+function refreshSubmitButtonState() {
+    disableSubmit(!formIsValid());
+}
+
+
+/**
  * Displays an alert in #error-div
  * @param message The message to display
  * @param isUndismissable Optional boolean. If true, no dismiss button will be appended to error. This is for instances
