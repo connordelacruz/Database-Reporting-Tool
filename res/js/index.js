@@ -186,6 +186,8 @@ function addJoinTableRow() {
     // Build new join row and append
     var joinTableRow = buildJoinTableRow(joinIndex, tables);
     $('#join-table-body').append(joinTableRow);
+    // Update submit button state
+    refreshSubmitButtonState();
 }
 
 
@@ -307,8 +309,9 @@ function setSelectType(type) {
     $('.single-select').toggleClass('hidden', !isSelect)
         .find(':input').prop('disabled', !isSelect);
 
-    // Update placeholder visibility
+    // Update state of form elements
     refreshPlaceholderState();
+    refreshSubmitButtonState();
 
     // Set row limit max
     setRowLimitMax(maxRowCount[selectType]);

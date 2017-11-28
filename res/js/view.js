@@ -119,8 +119,9 @@ function buildColumnOptions(table) {
  * @returns jQuery object for the column list
  */
 function buildColumnList(table, tableJoin) {
-    // TODO: ids can conflict if table is selected in more than one field
-    var containerId = table.name + '-column-options-container';
+    // TODO: no longer needed once joins and single selects are merged
+    var idPrefix = table.name + (tableJoin ? '-join' : '-single');
+    var containerId = idPrefix + '-column-options-container';
     var columnOptionsContainerString = '<div id="' + containerId + '">';
 
     // Include table name if this is a join list
@@ -129,7 +130,7 @@ function buildColumnList(table, tableJoin) {
     }
 
     // Add select all checkbox
-    var selectAllId = table.name + '-column-select-all';
+    var selectAllId = idPrefix + '-column-select-all';
     var selectAllHeading = 'Select All';
     if (tableJoin)
         selectAllHeading += ' From ' + table.name;
@@ -150,9 +151,7 @@ function buildColumnList(table, tableJoin) {
     var selectAllListener = function (containerId) {
         return function () {
             $(containerId).find('.column-option').prop('checked', $(this).prop('checked'));
-            // if nothing is checked, submit buttons should be disabled
-            // TODO: factor in other column lists
-            disableSubmit(!$(this).prop('checked'));
+            refreshSubmitButtonState();
         }
     };
     columnOptionsContainer.find('#' + selectAllId).change(selectAllListener('#' + containerId));
@@ -160,23 +159,10 @@ function buildColumnList(table, tableJoin) {
     // Add listeners to column checkboxes to uncheck select all if not all are selected
     var columnOptionListener = function (containerId, selectAllId) {
         return function () {
-            // uncheck select all if this gets unchecked
-            if ($(this).prop('checked') === false) {
-                $(selectAllId).prop('checked', false);
-                // Disable submit buttons if nothing is checked
-                if ($(containerId).find('.column-option:checked').length === 0) {
-                    disableSubmit(true);
-                }
-            }
-            // if this was checked, re-enable submit buttons
-            else {
-                // TODO: factor in other column lists
-                disableSubmit(false);
-                // if everything else is checked, then set select all to checked
-                if ($(containerId).find('.column-option:checked').length === $(containerId).find('.column-option').length) {
-                    $(selectAllId).prop('checked', true);
-                }
-            }
+            // Check select all button if all column-options in this container are checked. Otherwise, uncheck it
+            $(selectAllId).prop('checked',
+                $(this).prop('checked') && $(containerId).find('.column-option:checked').length === $(containerId).find('.column-option').length);
+            refreshSubmitButtonState();
         }
     };
     columnOptionsContainer.find('.column-option').change(columnOptionListener('#' + containerId, '#' + selectAllId));
@@ -255,10 +241,19 @@ function disableSubmit(setDisabled) {
 
 
 /**
- * Determine if the form requirements are met.
+ * Determine if the form requirements are met
  * @returns {boolean} True if the form is valid, false if not
  */
 function formIsValid() {
+    return requiredInputsFilled() && columnsSelected();
+}
+
+
+/**
+ * Determine if all required (and enabled) inputs are filled
+ * @returns {boolean} True if required inputs are all filled, false if 1 or more needs to be filled
+ */
+function requiredInputsFilled() {
     var isValid = true;
     // Check enabled required fields
     $(':input[required]:enabled').each(function() {
@@ -266,8 +261,16 @@ function formIsValid() {
         if ($(this).val() === null || $(this).val().length === 0)
             return isValid = false;
     });
-    // Check that 1 or more columns are checked
-    return isValid && $('.column-option:enabled:checked').length > 0;
+    return isValid;
+}
+
+
+/**
+ * Check if 1 or more column checkboxes are selected
+ * @returns {boolean} True if 1+ columns are selected, false if none are
+ */
+function columnsSelected() {
+    return $('.column-option:enabled:checked').length > 0;
 }
 
 
