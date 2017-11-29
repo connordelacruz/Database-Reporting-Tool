@@ -36,6 +36,12 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+    <?php
+    $libFiles = glob("res/js/lib/*.js");
+    foreach ($libFiles as $file)
+        echo "<script src='$file'></script>";
+    ?>
+
     <script src="res/js/ajax.js"></script>
     <script src="res/js/view.js"></script>
 
