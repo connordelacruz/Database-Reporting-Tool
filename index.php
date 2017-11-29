@@ -45,20 +45,38 @@ include_once 'config/config.php';
                         <button type="button" class="btn btn-block btn-info" id="join-modal-button" data-toggle="modal" data-target="#join-modal">
                             Join Tables
                         </button>
-                        <div class="modal fade" id="join-modal" role="dialog">
+                        <div class="modal multi-step fade" id="join-modal" role="dialog">
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                                     </div>
-                                    <div class="modal-body">
+                                    <div class="modal-body step step-1">
                                         <fieldset id="join-table-list">
                                             <legend>1. Select Tables to Join</legend>
                                             <!-- TODO: dual list box -->
                                             <p><i>This is where the form will go...</i></p>
                                         </fieldset>
                                     </div>
+                                    <div class="modal-body step step-2">
+                                        <fieldset id="join-table-order">
+                                            <!-- TODO: implement and explain. Also, maybe this can be done in step 1? -->
+                                            <legend>2. Order Tables</legend>
+                                            <p><i>More fun and cool placeholder stuff</i></p>
+                                        </fieldset>
+                                    </div>
+                                    <div class="modal-body step step-3">
+                                        <fieldset id="join-on-fields">
+                                            <!-- TODO: implement (and come up with a more eloquent title?) -->
+                                            <legend>3. Select Fields to Join On</legend>
+                                            <p><i>Look at all these fields!!</i></p>
+                                        </fieldset>
+                                    </div>
                                     <div class="modal-footer">
+                                        <!--
+                                        TODO: add next and back buttons for each step
+                                        see: https://github.com/ngzhian/multi-step-modal#quick-start
+                                        -->
                                         <button type="button" class="btn btn-primary" id="join-modal-next">
                                             Next <span class="glyphicon glyphicon-menu-right"></span>
                                         </button>
