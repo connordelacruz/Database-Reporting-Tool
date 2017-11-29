@@ -32,6 +32,7 @@ function buildTableOptions(tables) {
 function buildJoinTableRow(joinIndex, tables) {
     // Name attributes start with join[joinIndex]
     var namePrefix = 'join[' + joinIndex + ']';
+    // TODO: need ids as well
 
     var row = $('<tr></tr>');
 
@@ -280,6 +281,9 @@ function columnsSelected() {
 function refreshSubmitButtonState() {
     disableSubmit(!formIsValid());
 }
+
+
+// TODO: make similar refresh state function for add table button
 
 
 /**
