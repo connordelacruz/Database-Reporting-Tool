@@ -40,6 +40,33 @@ include_once 'config/config.php';
                         </label>
                     </div>
                     <div class="table-collapse collapse" id="table-join-collapse">
+
+                        <?php // TODO: Implement new join ui ?>
+                        <button type="button" class="btn btn-block btn-info" id="join-modal-button" data-toggle="modal" data-target="#join-modal">
+                            Join Tables
+                        </button>
+                        <div class="modal fade" id="join-modal" role="dialog">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <fieldset id="join-table-list">
+                                            <legend>1. Select Tables to Join</legend>
+                                            <!-- TODO: dual list box -->
+                                            <p><i>This is where the form will go...</i></p>
+                                        </fieldset>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" id="join-modal-next">
+                                            Next <span class="glyphicon glyphicon-menu-right"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <?php // TODO: re-work markup join field markup (table is just for prototyping) ?>
                         <table class="table table-condensed table-striped join-table">
                             <tbody id="join-table-body">
