@@ -212,7 +212,8 @@ include_once 'config/config.php';
     <footer class="well-lg"></footer>
 </div>
 
-<?php // Import multi-step modal js ?>
+<?php // Import page-specific js libraries ?>
 <script src="res/js/lib/multi-step-modal.js"></script>
+<script src="res/js/lib/jquery.bootstrap-duallistbox.min.js"></script>
 </body>
 </html>
