@@ -2474,4 +2474,7 @@ table.join-table tbody tr td b { font-size: 16px; }
 
 .bootstrap-duallistbox-container.moveonselect .moveall, .bootstrap-duallistbox-container.moveonselect .removeall { width: 100%; }
 
+/* Custom */
+.bootstrap-duallistbox-container.noallbuttons .moveall, .bootstrap-duallistbox-container.noallbuttons .removeall { display: none; }
+
 /*# sourceMappingURL=global.css.map */

@@ -55,7 +55,13 @@ include_once 'config/config.php';
                                         <fieldset id="join-table-list">
                                             <legend>1. Select Tables to Join</legend>
                                             <!-- TODO: dual list box -->
-                                            <p><i>This is where the form will go...</i></p>
+                                            <select multiple id="join-table-duallist" name="join-table-duallist[]">
+                                                <option value="0">Test 0</option>
+                                                <option value="1">Test 1</option>
+                                                <option value="2">Test 2</option>
+                                                <option value="3">Test 3</option>
+                                                <option value="4">Test 4</option>
+                                            </select>
                                         </fieldset>
                                     </div>
                                     <div class="modal-body step step-2" data-step="2">
@@ -77,10 +83,6 @@ include_once 'config/config.php';
                                         <button type="button" class="btn btn-default pull-left" id="join-modal-cancel" data-dismiss="modal">
                                             <span class="glyphicon glyphicon-remove"></span> Cancel
                                         </button>
-                                        <!--
-                                        TODO: add next and back buttons for each step
-                                        see: https://github.com/ngzhian/multi-step-modal#quick-start
-                                        -->
                                         <?php // Step 1 ?>
                                         <button type="button" class="btn btn-primary step step-1" id="join-modal-next-1" data-step="2">
                                             Next <span class="glyphicon glyphicon-menu-right"></span>
@@ -214,6 +216,6 @@ include_once 'config/config.php';
 
 <?php // Import page-specific js libraries ?>
 <script src="res/js/lib/multi-step-modal.js"></script>
-<script src="res/js/lib/jquery.bootstrap-duallistbox.min.js"></script>
+<script src="res/js/lib/jquery.bootstrap-duallistbox.js"></script>
 </body>
 </html>

@@ -356,6 +356,10 @@ $(function () {
         });
     });
 
+    // Initialize dual listbox
+    var joinTableDualList = $('#join-table-duallist').bootstrapDualListbox();
+    // TODO: Hide add/remove all buttons
+
     // Add listener to the add table button
     $('#join-add-table').click(function () {
         event.preventDefault();

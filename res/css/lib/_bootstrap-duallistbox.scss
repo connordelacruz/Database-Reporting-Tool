@@ -85,3 +85,13 @@
 .bootstrap-duallistbox-container.moveonselect .removeall {
   width: 100%;
 }
+
+
+/* Custom */
+
+// Hide (re)move all buttons
+.bootstrap-duallistbox-container.noallbuttons {
+  .moveall, .removeall {
+    display: none;
+  }
+}
