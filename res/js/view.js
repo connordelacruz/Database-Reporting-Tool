@@ -28,6 +28,16 @@ function buildTableOptions(tables) {
 }
 
 
+/**
+ * Have a multi-step modal to the specified step
+ * @param {string} modalId id of the multi-step modal
+ * @param step The step to go to
+ */
+function modalStep(modalId, step) {
+    $(modalId).trigger('next.m.' + step);
+}
+
+
 // TODO: document
 function buildJoinTableRow(joinIndex, tables) {
     // Name attributes start with join[joinIndex]

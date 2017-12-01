@@ -42,30 +42,30 @@ include_once 'config/config.php';
                     <div class="table-collapse collapse" id="table-join-collapse">
 
                         <?php // TODO: Implement new join ui ?>
+                        <div id="join-details-container">
+                            <!-- TODO: display current join or placeholder -->
+                        </div>
                         <button type="button" class="btn btn-block btn-info" id="join-modal-button" data-toggle="modal" data-target="#join-modal">
                             Join Tables
                         </button>
-                        <div class="modal multi-step fade" id="join-modal" role="dialog">
+                        <div class="modal multi-step fade" id="join-modal" role="dialog" data-backdrop="static" data-keyboard="false">
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    </div>
-                                    <div class="modal-body step step-1">
+                                    <div class="modal-body step step-1" data-step="1">
                                         <fieldset id="join-table-list">
                                             <legend>1. Select Tables to Join</legend>
                                             <!-- TODO: dual list box -->
                                             <p><i>This is where the form will go...</i></p>
                                         </fieldset>
                                     </div>
-                                    <div class="modal-body step step-2">
+                                    <div class="modal-body step step-2" data-step="2">
                                         <fieldset id="join-table-order">
                                             <!-- TODO: implement and explain. Also, maybe this can be done in step 1? -->
                                             <legend>2. Order Tables</legend>
                                             <p><i>More fun and cool placeholder stuff</i></p>
                                         </fieldset>
                                     </div>
-                                    <div class="modal-body step step-3">
+                                    <div class="modal-body step step-3" data-step="3">
                                         <fieldset id="join-on-fields">
                                             <!-- TODO: implement (and come up with a more eloquent title?) -->
                                             <legend>3. Select Fields to Join On</legend>
@@ -73,12 +73,31 @@ include_once 'config/config.php';
                                         </fieldset>
                                     </div>
                                     <div class="modal-footer">
+                                        <!-- TODO: add listener that reverts changes -->
+                                        <button type="button" class="btn btn-default pull-left" id="join-modal-cancel" data-dismiss="modal">
+                                            <span class="glyphicon glyphicon-remove"></span> Cancel
+                                        </button>
                                         <!--
                                         TODO: add next and back buttons for each step
                                         see: https://github.com/ngzhian/multi-step-modal#quick-start
                                         -->
-                                        <button type="button" class="btn btn-primary" id="join-modal-next">
+                                        <?php // Step 1 ?>
+                                        <button type="button" class="btn btn-primary step step-1" id="join-modal-next-1" data-step="2">
                                             Next <span class="glyphicon glyphicon-menu-right"></span>
+                                        </button>
+                                        <?php // Step 2 ?>
+                                        <button type="button" class="btn btn-default step step-2" id="join-modal-back-2" data-step="1">
+                                            <span class="glyphicon glyphicon-menu-left"></span> Back
+                                        </button>
+                                        <button type="button" class="btn btn-primary step step-2" id="join-modal-next-2" data-step="3">
+                                            Next <span class="glyphicon glyphicon-menu-right"></span>
+                                        </button>
+                                        <?php // Step 3 ?>
+                                        <button type="button" class="btn btn-default step step-3" id="join-modal-back-3" data-step="2">
+                                            <span class="glyphicon glyphicon-menu-left"></span> Back
+                                        </button>
+                                        <button type="button" class="btn btn-success step step-3" id="join-modal-submit">
+                                            Submit <span class="glyphicon glyphicon-ok"></span>
                                         </button>
                                     </div>
                                 </div>
@@ -193,5 +212,7 @@ include_once 'config/config.php';
     <footer class="well-lg"></footer>
 </div>
 
+<?php // Import multi-step modal js ?>
+<script src="res/js/lib/multi-step-modal.js"></script>
 </body>
 </html>

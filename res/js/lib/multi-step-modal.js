@@ -113,7 +113,7 @@
                 //Bootstrap 2.3.2
                 $modal.on('hidden', function () {
                     reset();
-                    updateProgress(1, total_num_steps);
+                    // updateProgress(1, total_num_steps); // Reset to step 1 on close
                     $modal.find('.step-1').show();
                 })
                 //Bootstrap 3

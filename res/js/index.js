@@ -348,6 +348,14 @@ $(function () {
         // TODO: add listener to remove placeholder class on change
     });*/
 
+    // Add listeners to multi-step modal buttons
+    var joinModal = $('#join-modal');
+    joinModal.find('button.step').each(function () {
+        $(this).click(function () {
+            modalStep(joinModal, $(this).data('step'));
+        });
+    });
+
     // Add listener to the add table button
     $('#join-add-table').click(function () {
         event.preventDefault();
