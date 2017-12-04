@@ -362,7 +362,14 @@ $(function () {
     });
 
     // Initialize dual listbox
-    var joinTableDualList = $('#join-table-duallist').bootstrapDualListbox({hideMoveAll: true});
+    $('#join-table-duallist').bootstrapDualListbox({
+        selectedListLabel: 'Selected:',
+        nonSelectedListLabel: 'Table List:',
+        hideMoveAll: true,
+        selectorMinimalHeight: 200,
+        infoText: '',
+        infoTextEmpty: ''
+    });
 
     // Add listener to the add table button
     $('#join-add-table').click(function () {

@@ -20,7 +20,7 @@
             nonSelectedFilter: '',                                                              // string, filter the non selected options
             selectedFilter: '',                                                                 // string, filter the selected options
             infoText: 'Showing all {0}',                                                        // text when all options are visible / false for no info text
-            infoTextFiltered: '<span class="label label-warning">Filtered</span> {0} from {1}', // when not all of the options are visible due to the filter
+            infoTextFiltered: '<span class="label label-info">Filtered</span> {0} from {1}', // when not all of the options are visible due to the filter
             infoTextEmpty: 'Empty list',                                                        // when there are no options present in the list
             filterOnValues: false,                                                              // filter by selector's values, boolean
             sortByInputOrder: false,
@@ -84,7 +84,7 @@
     }
 
     function refreshInfo(dualListbox) {
-        if (!dualListbox.settings.infoText) {
+        if (dualListbox.settings.infoText === false) {
             return;
         }
 

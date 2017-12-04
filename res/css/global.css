@@ -2446,7 +2446,7 @@ table.join-table tbody tr td b { font-size: 16px; }
 /* Bootstrap Duallistbox - v3.0.6 A responsive dual listbox widget optimized for Twitter Bootstrap. It works on all modern browsers and on touch devices. http://www.virtuosoft.eu/code/bootstrap-duallistbox/  Made by István Ujj-Mészáros Under Apache License v2.0 License */
 .bootstrap-duallistbox-container .buttons { width: 100%; margin-bottom: -1px; }
 
-.bootstrap-duallistbox-container label { display: block; }
+.bootstrap-duallistbox-container label { display: block; font-weight: bold; }
 
 .bootstrap-duallistbox-container .info { display: inline-block; margin-bottom: 5px; font-size: 11px; }
 
@@ -2458,7 +2458,7 @@ table.join-table tbody tr td b { font-size: 16px; }
 
 .bootstrap-duallistbox-container .btn-group .btn { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
 
-.bootstrap-duallistbox-container select { border-top-left-radius: 0; border-top-right-radius: 0; }
+.bootstrap-duallistbox-container select { font-size: 16px; border-top-left-radius: 0; border-top-right-radius: 0; }
 
 .bootstrap-duallistbox-container .moveall, .bootstrap-duallistbox-container .removeall { width: 40%; }
 
