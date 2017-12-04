@@ -39,6 +39,7 @@ var maxRowCount = {
     'join' : 0
 };
 
+
 /* Functions */
 
 /**
@@ -111,6 +112,7 @@ function populateTableSelects() {
     });
 
     // Add listener to join table selects
+    // TODO: remove once modal is implemented
     var table1Select = $('#join-table1-select');
     table1Select.change(joinTableSelectListener('#join-column1-select'));
     var table2Select = $('#join-table2-select');
@@ -118,6 +120,9 @@ function populateTableSelects() {
 
     // Add listeners to join column selects
     $('.join-column-select').change(joinColumnSelectListener);
+
+    // Refresh dual listbox for joins
+    $('#join-table-duallist').bootstrapDualListbox('refresh');
 
     // Enable radio buttons and select single table as default
     $('input[name="select-type"]').prop('disabled', false);
@@ -357,8 +362,7 @@ $(function () {
     });
 
     // Initialize dual listbox
-    var joinTableDualList = $('#join-table-duallist').bootstrapDualListbox();
-    // TODO: Hide add/remove all buttons
+    var joinTableDualList = $('#join-table-duallist').bootstrapDualListbox({hideMoveAll: true});
 
     // Add listener to the add table button
     $('#join-add-table').click(function () {

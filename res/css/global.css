@@ -2475,6 +2475,7 @@ table.join-table tbody tr td b { font-size: 16px; }
 .bootstrap-duallistbox-container.moveonselect .moveall, .bootstrap-duallistbox-container.moveonselect .removeall { width: 100%; }
 
 /* Custom */
-.bootstrap-duallistbox-container.noallbuttons .moveall, .bootstrap-duallistbox-container.noallbuttons .removeall { display: none; }
+.bootstrap-duallistbox-container.hidemoveall .moveall, .bootstrap-duallistbox-container.hidemoveall .removeall { display: none; }
+.bootstrap-duallistbox-container.hidemoveall .move, .bootstrap-duallistbox-container.hidemoveall .remove { width: 100%; }
 
 /*# sourceMappingURL=global.css.map */

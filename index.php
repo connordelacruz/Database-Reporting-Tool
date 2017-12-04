@@ -55,12 +55,8 @@ include_once 'config/config.php';
                                         <fieldset id="join-table-list">
                                             <legend>1. Select Tables to Join</legend>
                                             <!-- TODO: dual list box -->
-                                            <select multiple id="join-table-duallist" name="join-table-duallist[]">
-                                                <option value="0">Test 0</option>
-                                                <option value="1">Test 1</option>
-                                                <option value="2">Test 2</option>
-                                                <option value="3">Test 3</option>
-                                                <option value="4">Test 4</option>
+                                            <label for="join-table-duallist" class="sr-only">Select Tables to Join</label>
+                                            <select multiple class="table-select-input" id="join-table-duallist" name="join-table-duallist[]">
                                             </select>
                                         </fieldset>
                                     </div>
