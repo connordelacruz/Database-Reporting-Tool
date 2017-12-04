@@ -362,6 +362,7 @@ $(function () {
     });
 
     // Initialize dual listbox
+    // TODO: enable next button when 2+ tables selected
     $('#join-table-duallist').bootstrapDualListbox({
         selectedListLabel: 'Selected:',
         nonSelectedListLabel: 'Table List:',
@@ -372,7 +373,6 @@ $(function () {
     });
 
     // Initialize sortable
-    // TODO: move this to after selecting tables? (may only need to call sortable())
     sortable('#join-table-order', {
         placeholder: '<li class="list-group-item active"></li>',
         forcePlaceholderSize: true
@@ -382,6 +382,12 @@ $(function () {
     $('#join-add-table').click(function () {
         event.preventDefault();
         addJoinTableRow();
+    });
+
+    // Add listeners to join modal buttons
+    // First Next button
+    $('#join-modal-next-1').click(function () {
+        updateJoinTableOrderList($('#join-table-duallist').val());
     });
 
     // Add listener to expand/collapse advanced options
