@@ -60,15 +60,15 @@ include_once 'config/config.php';
                                     </div>
                                     <div class="modal-body step step-2" data-step="2">
                                         <fieldset>
-                                            <!-- TODO: implement and explain. Also, maybe this can be done in step 1? -->
                                             <legend>2. Order Tables</legend>
+                                            <!-- TODO: instructions (i.e. click and drag) -->
                                             <ul class="list-group sortable" id="join-table-order">
                                                 <li class="list-group-item">Select 2 or more tables to continue.</li>
                                             </ul>
                                         </fieldset>
                                     </div>
                                     <div class="modal-body step step-3" data-step="3">
-                                        <fieldset id="join-on-fields">
+                                        <fieldset>
                                             <!-- TODO: implement (and come up with a more eloquent title?) -->
                                             <legend>3. Select Fields to Join On</legend>
                                             <p><i>Look at all these fields!!</i></p>
