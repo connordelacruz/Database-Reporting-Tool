@@ -38,6 +38,32 @@ function modalStep(modalId, step) {
 }
 
 
+/**
+ * Generate markup for join table order list
+ * @param tables List of selected tables
+ * @returns {string} Markup for join table order list
+ */
+function buildJoinTableOrderList(tables) {
+    var listItemsString = '';
+    $.each(tables, function (i, table) {
+        listItemsString += '<li class="list-group-item" data-table="' + table + '">' + table + '</li>';
+    });
+    return listItemsString;
+}
+
+
+/**
+ * Update contents of join table order list
+ * @param tables List of selected tables
+ */
+function updateJoinTableOrderList(tables) {
+    var listItems = buildJoinTableOrderList(tables);
+    $('#join-table-order').html(listItems);
+    // Refresh sortable
+    sortable('#join-table-order');
+}
+
+
 // TODO: document
 function buildJoinTableRow(joinIndex, tables) {
     // Name attributes start with join[joinIndex]

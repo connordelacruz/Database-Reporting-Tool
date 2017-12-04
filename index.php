@@ -52,22 +52,18 @@ include_once 'config/config.php';
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
                                     <div class="modal-body step step-1" data-step="1">
-                                        <fieldset id="join-table-list">
+                                        <fieldset>
                                             <legend>1. Select Tables to Join</legend>
                                             <label for="join-table-duallist" class="sr-only">Select Tables to Join</label>
                                             <select multiple class="table-select-input" id="join-table-duallist" name="join-table-duallist[]"></select>
                                         </fieldset>
                                     </div>
                                     <div class="modal-body step step-2" data-step="2">
-                                        <fieldset id="join-table-order">
+                                        <fieldset>
                                             <!-- TODO: implement and explain. Also, maybe this can be done in step 1? -->
                                             <legend>2. Order Tables</legend>
                                             <ul class="list-group sortable" id="join-table-order">
-                                                <li class="list-group-item">Item 1</li>
-                                                <li class="list-group-item">Item 2</li>
-                                                <li class="list-group-item">Item 3</li>
-                                                <li class="list-group-item">Item 4</li>
-                                                <li class="list-group-item">Item 5</li>
+                                                <li class="list-group-item">Select 2 or more tables to continue.</li>
                                             </ul>
                                         </fieldset>
                                     </div>

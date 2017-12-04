@@ -372,6 +372,7 @@ $(function () {
     });
 
     // Initialize sortable
+    // TODO: move this to after selecting tables? (may only need to call sortable())
     sortable('#join-table-order', {
         placeholder: '<li class="list-group-item active"></li>',
         forcePlaceholderSize: true

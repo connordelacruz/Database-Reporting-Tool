@@ -1,0 +1,11 @@
+/* Styling for .sortable elements */
+
+.list-group.sortable {
+  .list-group-item:hover {
+    color: $list-group-link-hover-color;
+    background-color: $list-group-hover-bg;
+    cursor: grab;
+    cursor: -webkit-grab;
+    cursor: -moz-grab;
+  }
+}

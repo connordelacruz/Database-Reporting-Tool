@@ -2478,4 +2478,7 @@ table.join-table tbody tr td b { font-size: 16px; }
 .bootstrap-duallistbox-container.hidemoveall .moveall, .bootstrap-duallistbox-container.hidemoveall .removeall { display: none; }
 .bootstrap-duallistbox-container.hidemoveall .move, .bootstrap-duallistbox-container.hidemoveall .remove { width: 100%; }
 
+/* Styling for .sortable elements */
+.list-group.sortable .list-group-item:hover { color: #555; background-color: #f5f5f5; cursor: grab; cursor: -webkit-grab; cursor: -moz-grab; }
+
 /*# sourceMappingURL=global.css.map */
