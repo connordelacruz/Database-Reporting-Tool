@@ -373,7 +373,8 @@ $(function () {
 
     // Initialize sortable
     sortable('#join-table-order', {
-        placeholder: '<li class="list-group-item active"></li>'
+        placeholder: '<li class="list-group-item active"></li>',
+        forcePlaceholderSize: true
     });
 
     // Add listener to the add table button
