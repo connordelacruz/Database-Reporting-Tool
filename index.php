@@ -62,7 +62,13 @@ include_once 'config/config.php';
                                         <fieldset id="join-table-order">
                                             <!-- TODO: implement and explain. Also, maybe this can be done in step 1? -->
                                             <legend>2. Order Tables</legend>
-                                            <p><i>More fun and cool placeholder stuff</i></p>
+                                            <ul class="list-group sortable" id="join-table-order">
+                                                <li class="list-group-item">Item 1</li>
+                                                <li class="list-group-item">Item 2</li>
+                                                <li class="list-group-item">Item 3</li>
+                                                <li class="list-group-item">Item 4</li>
+                                                <li class="list-group-item">Item 5</li>
+                                            </ul>
                                         </fieldset>
                                     </div>
                                     <div class="modal-body step step-3" data-step="3">
@@ -211,5 +217,6 @@ include_once 'config/config.php';
 <?php // Import page-specific js libraries ?>
 <script src="res/js/lib/multi-step-modal.js"></script>
 <script src="res/js/lib/jquery.bootstrap-duallistbox.js"></script>
+<script src="res/js/lib/html.sortable.js"></script>
 </body>
 </html>

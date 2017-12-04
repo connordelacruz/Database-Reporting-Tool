@@ -371,6 +371,11 @@ $(function () {
         infoTextEmpty: ''
     });
 
+    // Initialize sortable
+    sortable('#join-table-order', {
+        placeholder: '<li class="list-group-item active"></li>'
+    });
+
     // Add listener to the add table button
     $('#join-add-table').click(function () {
         event.preventDefault();
