@@ -46,7 +46,7 @@ function modalStep(modalId, step) {
 function buildJoinTableOrderList(tables) {
     var listItemsString = '';
     $.each(tables, function (i, table) {
-        listItemsString += '<li class="list-group-item" data-table="' + table + '">' + table + '</li>';
+        listItemsString += '<li class="list-group-item table-order-item" data-table="' + table + '">' + table + '</li>';
     });
     return listItemsString;
 }
@@ -61,6 +61,19 @@ function updateJoinTableOrderList(tables) {
     $('#join-table-order').html(listItems);
     // Refresh sortable
     sortable('#join-table-order');
+}
+
+
+/**
+ * Returns an array of tables to join in the order specified in the join table order list
+ * @returns {Array} Array of table names in the order they should be joined
+ */
+function getJoinTableOrder() {
+    var orderedTables = [];
+    $('#join-table-order').find('.table-order-item').each(function(i) {
+        orderedTables[i] = $(this).data('table');
+    });
+    return orderedTables;
 }
 
 
