@@ -25,7 +25,10 @@ option.placeholder {
   display: none;
 }
 
-//
+/* Text Input */
+.join-table-panel input[type="text"] {
+  font-size: $font-size-base;
+}
 
 /* Checkbox */
 

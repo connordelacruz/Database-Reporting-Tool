@@ -71,7 +71,44 @@ include_once 'config/config.php';
                                         <fieldset>
                                             <!-- TODO: implement (and come up with a more eloquent title?) -->
                                             <legend>3. Select Fields to Join On</legend>
-                                            <p><i>Look at all these fields!!</i></p>
+                                            <div class="panel panel-default join-table-panel">
+                                                <div class="panel-body">
+                                                    <table class="table table-condensed join-table">
+                                                        <tbody>
+                                                        <tr>
+                                                            <td class="form-group" colspan="6">
+                                                                <input type="text" class="form-control" value="table0" readonly/>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="form-group">
+                                                                <select class="form-control" id="join-type-select" name="join[0][type]" required>
+                                                                    <option value="inner" selected>Inner Join</option>
+                                                                    <option value="left">Left Join</option>
+                                                                    <option value="right">Right Join</option>
+                                                                    <option value="outer">Outer Join</option>
+                                                                </select>
+                                                            </td>
+                                                            <td class="form-group">
+                                                                <input type="text" class="form-control" value="table1" readonly/>
+                                                            </td>
+                                                            <td class="text-center"><b>ON</b></td>
+                                                            <td class="form-group">
+                                                                <select class="form-control join-column-select" name="join[0][0][column]" required>
+                                                                    <option class="placeholder" value="" disabled selected>Select a column</option>
+                                                                </select>
+                                                            </td>
+                                                            <td class="text-center"><b>=</b></td>
+                                                            <td class="form-group">
+                                                                <select class="form-control join-column-select" name="join[0][1][column]" required>
+                                                                    <option class="placeholder" value="" disabled selected>Select a column</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
                                         </fieldset>
                                     </div>
                                     <div class="modal-footer">

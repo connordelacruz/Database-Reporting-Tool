@@ -2430,6 +2430,9 @@ select.placeholder option, select.form-control.placeholder option { color: #666;
 
 option.placeholder { display: none; }
 
+/* Text Input */
+.join-table-panel input[type="text"] { font-size: 13px; }
+
 /* Checkbox */
 div.checkbox, div.radio { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
 
