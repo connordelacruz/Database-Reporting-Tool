@@ -23,15 +23,16 @@ function TableDataObject(name, columns, rowCount) {
 var tables;
 
 // Array of TableDataObjects for the currently selected tables. Indexed by the id of the select element
+// TODO: find a better way to do this, indexing by id is not ideal in reworked system
 var selectedTables = {};
+
+// Array of TableDataObjects for the currently selected tables to be joined.
+var joinTables = {};
 
 // TODO: organize state variables (object prototype?)
 
 // Current select-type (single or join)
 var selectType;
-
-// Keep track of # of joined tables for name attributes
-var joinIndex = 0;
 
 // For storing and restoring state when switching between select types
 var maxRowCount = {
@@ -111,13 +112,6 @@ function populateTableSelects() {
         }
     });
 
-    // Add listener to join table selects
-    // TODO: remove once modal is implemented
-    var table1Select = $('#join-table1-select');
-    table1Select.change(joinTableSelectListener('#join-column1-select'));
-    var table2Select = $('#join-table2-select');
-    table2Select.change(joinTableSelectListener('#join-column2-select'));
-
     // Add listeners to join column selects
     $('.join-column-select').change(joinColumnSelectListener);
 
@@ -183,20 +177,6 @@ function joinColumnSelectListener() {
 
 
 /**
- * Increment joinIndex and append a row to the join table
- */
-function addJoinTableRow() {
-    // Increment joinIndex
-    joinIndex++;
-    // Build new join row and append
-    var joinTableRow = buildJoinTableRow(joinIndex, tables);
-    $('#join-table-body').append(joinTableRow);
-    // Update submit button state
-    refreshSubmitButtonState();
-}
-
-
-/**
  * Gets a list of columns from the table and calls populateColumnList() on success.
  * If the table is not valid, then connection_handler.php sets data.error. If data.error is defined, then an error
  * message is displayed and populateColumnList() is not called.
@@ -234,6 +214,8 @@ function getColumns(selectIndex, callbackFunction) {
 
     getColumnsAjax(table, callbacks);
 }
+
+// TODO: getColumnsBatch function that takes multiple tables for joins
 
 
 /**
@@ -378,16 +360,14 @@ $(function () {
         forcePlaceholderSize: true
     });
 
-    // Add listener to the add table button
-    $('#join-add-table').click(function () {
-        event.preventDefault();
-        addJoinTableRow();
-    });
-
     // Add listeners to join modal buttons
     // First Next button
     $('#join-modal-next-1').click(function () {
         updateJoinTableOrderList($('#join-table-duallist').val());
+    });
+    // Second Next button
+    $('#join-modal-next-2').click(function () {
+        updateJoinTable(getJoinTableOrder());
     });
 
     // Add listener to expand/collapse advanced options

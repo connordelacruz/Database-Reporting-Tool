@@ -66,23 +66,38 @@ function updateJoinTableOrderList(tables) {
 
 /**
  * Returns an array of tables to join in the order specified in the join table order list
- * @returns {Array} Array of table names in the order they should be joined
+ * @returns {Array} Array of TableDataObjects in the order they should be joined
  */
 function getJoinTableOrder() {
     var orderedTables = [];
     $('#join-table-order').find('.table-order-item').each(function(i) {
-        orderedTables[i] = $(this).data('table');
+        orderedTables[i] = new TableDataObject($(this).data('table'));
     });
     return orderedTables;
 }
 
 
+/**
+ * Update contents of join table
+ * @param tables List of TableDataObjects in the order they should be joined
+ */
+function updateJoinTable(tables) {
+    var joinTableBody = $('#join-table-body');
+    // Insert first row
+    joinTableBody.html(buildInitialJoinTableRow(tables[0]));
+
+    // Keep track of optgroup markup for tables already joined
+    var joinedTableColumnOptions = buildColumnOptions(tables[0]);
+    // Build subsequent rows for the rest of the tables
+}
+
+
 // TODO: document
-// TODO: re-work for new system
-function buildJoinTableRow(joinIndex, tables) {
+function buildJoinTableRow(joinIndex, table, tableColumnOptions, joinedTableColumnOptions) {
+
     // Name attributes start with join[joinIndex]
     var namePrefix = 'join[' + joinIndex + ']';
-    // TODO: need ids as well
+    // TODO: need ids as well?
 
     var row = $('<tr></tr>');
 
@@ -100,16 +115,11 @@ function buildJoinTableRow(joinIndex, tables) {
     ].join('');
     row.append(joinCell);
 
-    // Table select
-    // TODO: use a more efficient way of doing this
-    var tableOptions = buildTableOptions(tables);
+    // Table being joined
     var tableCell = [
         '<td class="form-group">',
             '<label>Table:</label>',
-            '<select class="form-control table-select-input" name="' + namePrefix + '[0][table]" required>',
-                '<option class="placeholder" value="" disabled selected>Select a table</option>',
-                tableOptions,
-            '</select>',
+            '<input type="text" class="form-control" name="' + namePrefix + '[0][table]" value="' + table + '" readonly required>',
         '</td>'
     ].join('');
     row.append(tableCell);
@@ -121,6 +131,7 @@ function buildJoinTableRow(joinIndex, tables) {
             '<label>Column:</label>',
             '<select class="form-control join-column-select" name="' + namePrefix + '[0][column]" required>',
                 '<option class="placeholder" value="" disabled selected>Select a column</option>',
+                tableColumnOptions,
             '</select>',
         '</td>'
     ].join('');
@@ -128,30 +139,53 @@ function buildJoinTableRow(joinIndex, tables) {
     // '=' cell
     row.append('<td class="text-center"><b>=</b></td>');
     // Column select (for one of the other tables)
-    // TODO: have a select w/ tables used in the join?
+    // Includes hidden input storing form data for the table containing the selected column
     var column1Cell = [
         '<td class="form-group">',
             '<label>Column:</label>',
             '<select class="form-control join-column-select" name="' + namePrefix + '[1][column]" required>',
                 '<option class="placeholder" value="" disabled selected>Select a column</option>',
+                joinedTableColumnOptions,
             '</select>',
+            '<input type="hidden" name="' + namePrefix + '[1][table]" value="">',
         '</td>'
     ].join('');
     row.append(column1Cell);
 
-    // TODO: add listeners?
+    // When column from joined table is selected, update hidden input with table name
+    row.find('select[name="' + namePrefix + '[1][column]"]').change(function () {
+        var table1 = $(this).find(':selected').parent().data('table');
+        $('name="' + namePrefix + '[1][table]"').val(table);
+    });
 
     return row;
 }
 
 
 /**
- * Generate markup for column select options
+ * Generate markup for the first row in the join table
+ * @param {string} table Name of the table
+ * @returns {string} Markup for initial join table row
+ */
+function buildInitialJoinTableRow(table) {
+    return [
+        '<tr>',
+            '<td class="form-group" colspan="6">',
+                '<label>Table:</label>',
+                '<input type="text" class="form-control" value="' + table + '" readonly required>',
+            '</td>',
+        '</tr>'
+    ].join('');
+}
+
+
+/**
+ * Generate markup for column select options. Contains data-table attribute containing the name of the table
  * @param {TableDataObject} table The table to generate column options for
  * @returns {string} Markup for column select options
  */
 function buildColumnOptions(table) {
-    var columnOptionsString = '<optgroup label="'+ table.name + '">';
+    var columnOptionsString = '<optgroup label="'+ table.name + '" data-table="'+ table.name + '">';
     columnOptionsString += '<option class="placeholder" value="" disabled selected>Select a column</option>';
     $.each(table.columns, function (i, column) {
         columnOptionsString += '<option value="' + column + '">' + column + '</option>';

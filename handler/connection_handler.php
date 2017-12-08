@@ -34,6 +34,14 @@ try {
             $data['text'] = $conn->getColumns($table);
             $data['rowCount'] = $conn->countRows($table);
             break;
+
+        case ('getColumnsBatch'):
+            $tables = $_POST['tables'];
+            // return column names and total number of rows
+            $data['text'] = $conn->getColumns($tables);
+            // TODO: batch row count
+            //$data['rowCount'] = $conn->countRows($tables);
+            break;
     }
 
     // ensure that database connection is closed

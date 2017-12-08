@@ -189,6 +189,21 @@ class ConnectionHandler {
 
 
     /**
+     * Takes an array of table names and returns an array mapping table names to arrays of column names in that table
+     * @param array $tables Array of table names
+     * @return array Array mapping table names to arrays of column names in that table
+     * @throws Exception
+     */
+    public function getColumnsBatch($tables) {
+        $table_data = [];
+        foreach ($tables as $table) {
+            $table_data[$table] = $this->getColumns($table);
+        }
+        return $table_data;
+    }
+
+
+    /**
      * Counts the rows in a given table (after ensuring it's whitelisted)
      * @param string $table Name of the table to check
      * @return int The number of rows in $table
