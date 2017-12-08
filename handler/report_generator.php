@@ -4,6 +4,7 @@
  * @author Connor de la Cruz
  */
 
+try {
 $siteRoot = $_SERVER['DOCUMENT_ROOT'] . '/reports';
 include_once "$siteRoot/class/autoloader.php";
 // Ensure config file exists before including it
@@ -104,3 +105,9 @@ else {
 
 // ensure that database connection is closed
 $conn->closeConnection();
+}
+catch (Exception $e) {
+    $error = $e->getMessage();
+    echo "<div class='alert alert-danger'>$error</div>";
+    exit();
+}

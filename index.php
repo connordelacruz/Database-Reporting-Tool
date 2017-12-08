@@ -90,7 +90,7 @@ include_once 'config/config.php';
                                                                 </select>
                                                             </td>
                                                             <td class="form-group">
-                                                                <input type="text" class="form-control" name="join[0][1][table]"value="table1" readonly required/>
+                                                                <input type="text" class="form-control" name="join[0][1][table]" value="table1" readonly required/>
                                                             </td>
                                                             <td class="text-center"><b>ON</b></td>
                                                             <td class="form-group">

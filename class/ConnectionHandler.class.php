@@ -107,6 +107,7 @@ class ConnectionHandler {
      * @param string $table The table to check
      * @param array $columns Column selection to validate
      * @return array Valid column names
+     * @throws Exception
      */
     public function validateColumns($table, $columns) {
         // Get all valid column names (table is validated in getColumns)
@@ -122,6 +123,7 @@ class ConnectionHandler {
      * @param string $table The table to check
      * @param string $column The column to check for
      * @return string|bool The column name if valid, false if not
+     * @throws Exception
      */
     public function validateColumn($table, $column) {
         // Get all valid column names (table is validated in getColumns)
@@ -165,6 +167,7 @@ class ConnectionHandler {
      * Get the column names for the specified table after ensuring it's whitelisted
      * @param string $table The table to check for in the whitelist and retrieve column names
      * @return array The names of the columns for the specified table
+     * @throws Exception
      */
     public function getColumns($table) {
         // check whitelist for $table
@@ -189,6 +192,7 @@ class ConnectionHandler {
      * Counts the rows in a given table (after ensuring it's whitelisted)
      * @param string $table Name of the table to check
      * @return int The number of rows in $table
+     * @throws Exception
      */
     function countRows($table) {
         // the count to return
@@ -213,6 +217,7 @@ class ConnectionHandler {
      * @param string $table1 The name of the second table to join
      * @param string $column1 The column from table1 to join on
      * @return string Formatted join string
+     * @throws Exception
      */
     function joinString($join_type, $table0, $column0, $table1, $column1) {
         // Validate $join_type
@@ -238,6 +243,7 @@ class ConnectionHandler {
      * selected. Defaults to false if unspecified.
      * @param int $row_count (Optional) the number of rows to display
      * @return array The resulting table selection
+     * @throws Exception
      */
     public function getRows($tables, $join_data = false, $row_count = 0) {
 
