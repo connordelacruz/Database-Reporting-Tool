@@ -129,6 +129,7 @@ function populateTableSelects() {
  * @param columnSelectId id of the corresponding column select
  * @returns {Function} onchange listener for the table select
  */
+// TODO: re-work
 function joinTableSelectListener(columnSelectId) {
     return function () {
         var tableName = $(this).find(':selected').val();
@@ -344,7 +345,6 @@ $(function () {
     });
 
     // Initialize dual listbox
-    // TODO: enable next button when 2+ tables selected
     $('#join-table-duallist').bootstrapDualListbox({
         selectedListLabel: 'Selected:',
         nonSelectedListLabel: 'Table List:',
@@ -352,6 +352,8 @@ $(function () {
         selectorMinimalHeight: 200,
         infoText: '',
         infoTextEmpty: ''
+    }).change(function () {
+        $('#join-modal-next-1').prop('disabled', $(this).val().length < 2);
     });
 
     // Initialize sortable
@@ -360,11 +362,11 @@ $(function () {
         forcePlaceholderSize: true
     });
 
-    // Add listeners to join modal buttons
+    // Add listeners and initial configurations to join modal buttons
     // First Next button
     $('#join-modal-next-1').click(function () {
         updateJoinTableOrderList($('#join-table-duallist').val());
-    });
+    }).prop('disabled', true); // TODO FIXME: something is re-enabling this on load, figure it out
     // Second Next button
     $('#join-modal-next-2').click(function () {
         updateJoinTable(getJoinTableOrder());
