@@ -84,11 +84,12 @@ function getJoinTableOrder() {
 function updateJoinTable(tables) {
     var joinTableBody = $('#join-table-body');
     // Insert first row
-    joinTableBody.html(buildInitialJoinTableRow(tables[0]));
+    joinTableBody.html(buildInitialJoinTableRow(tables[0].name));
 
     // Keep track of optgroup markup for tables already joined
     var joinedTableColumnOptions = buildColumnOptions(tables[0]);
     // Build subsequent rows for the rest of the tables
+    // TODO: finish
 }
 
 
@@ -97,7 +98,6 @@ function buildJoinTableRow(joinIndex, table, tableColumnOptions, joinedTableColu
 
     // Name attributes start with join[joinIndex]
     var namePrefix = 'join[' + joinIndex + ']';
-    // TODO: need ids as well?
 
     var row = $('<tr></tr>');
 
@@ -114,6 +114,8 @@ function buildJoinTableRow(joinIndex, table, tableColumnOptions, joinedTableColu
         '</td>'
     ].join('');
     row.append(joinCell);
+
+    // TODO: add ids for form elements
 
     // Table being joined
     var tableCell = [
