@@ -74,10 +74,10 @@ include_once 'config/config.php';
                                             <div class="panel panel-default join-table-panel">
                                                 <div class="panel-body">
                                                     <table class="table table-condensed join-table">
-                                                        <tbody>
+                                                        <tbody id="join-table-body">
                                                         <tr>
                                                             <td class="form-group" colspan="6">
-                                                                <input type="text" class="form-control" value="table0" readonly/>
+                                                                <input type="text" class="form-control" name="join[0][0][table]" value="table0" readonly required/>
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -90,7 +90,7 @@ include_once 'config/config.php';
                                                                 </select>
                                                             </td>
                                                             <td class="form-group">
-                                                                <input type="text" class="form-control" value="table1" readonly/>
+                                                                <input type="text" class="form-control" name="join[0][1][table]"value="table1" readonly required/>
                                                             </td>
                                                             <td class="text-center"><b>ON</b></td>
                                                             <td class="form-group">
@@ -137,56 +137,6 @@ include_once 'config/config.php';
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <?php // TODO: re-work markup join field markup (table is just for prototyping) ?>
-                        <table class="table table-condensed table-striped join-table">
-                            <tbody id="join-table-body">
-                            <tr>
-                                <td class="form-group" colspan="6">
-                                    <label for="join-table1-select">Table:</label>
-                                    <select class="form-control table-select-input" id="join-table1-select" name="join[0][0][table]" required>
-                                        <option class="placeholder" value="" disabled selected>Select a table</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="form-group">
-                                    <label for="join-type-select">Join Type:</label>
-                                    <select class="form-control" id="join-type-select" name="join[0][type]" required>
-                                        <option value="inner" selected>Inner Join</option>
-                                        <option value="left">Left Join</option>
-                                        <option value="right">Right Join</option>
-                                        <option value="outer">Outer Join</option>
-                                    </select>
-                                </td>
-                                <td class="form-group">
-                                    <label for="join-table2-select">Table:</label>
-                                    <select class="form-control table-select-input" id="join-table2-select" name="join[0][1][table]" required>
-                                        <option class="placeholder" value="" disabled selected>Select a table</option>
-                                    </select>
-                                </td>
-                                <td class="text-center"><b>ON</b></td>
-                                <td class="form-group">
-                                    <label for="join-column1-select">Column:</label>
-                                    <select class="form-control join-column-select" id="join-column1-select" name="join[0][0][column]" required>
-                                        <option class="placeholder" value="" disabled selected>Select a column</option>
-                                    </select>
-                                </td>
-                                <td class="text-center"><b>=</b></td>
-                                <td class="form-group">
-                                    <label for="join-column2-select">Column:</label>
-                                    <select class="form-control join-column-select" id="join-column2-select" name="join[0][1][column]" required>
-                                        <option class="placeholder" value="" disabled selected>Select a column</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        <div>
-                            <button class="btn btn-block btn-default" type="button" id="join-add-table">
-                                <span class="text-success"><span class="glyphicon glyphicon-plus"></span> Add Table</span>
-                            </button>
                         </div>
                     </div>
                 </div>

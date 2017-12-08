@@ -78,6 +78,7 @@ function getJoinTableOrder() {
 
 
 // TODO: document
+// TODO: re-work for new system
 function buildJoinTableRow(joinIndex, tables) {
     // Name attributes start with join[joinIndex]
     var namePrefix = 'join[' + joinIndex + ']';
@@ -138,9 +139,7 @@ function buildJoinTableRow(joinIndex, tables) {
     ].join('');
     row.append(column1Cell);
 
-    // TODO: remove button
-
-    // TODO: add listeners
+    // TODO: add listeners?
 
     return row;
 }

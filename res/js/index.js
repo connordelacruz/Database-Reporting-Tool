@@ -374,7 +374,7 @@ $(function () {
 
     // Initialize sortable
     sortable('#join-table-order', {
-        placeholder: '<li class="list-group-item active"></li>',
+        placeholder: '<li class="list-group-item sortable-placeholder"></li>',
         forcePlaceholderSize: true
     });
 
