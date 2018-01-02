@@ -369,6 +369,7 @@ $(function () {
     }).prop('disabled', true); // TODO FIXME: something is re-enabling this on load, figure it out
     // Second Next button
     $('#join-modal-next-2').click(function () {
+        // TODO: get columns for each table first
         updateJoinTable(getJoinTableOrder());
     });
 

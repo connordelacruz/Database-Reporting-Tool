@@ -89,7 +89,14 @@ function updateJoinTable(tables) {
     // Keep track of optgroup markup for tables already joined
     var joinedTableColumnOptions = buildColumnOptions(tables[0]);
     // Build subsequent rows for the rest of the tables
-    // TODO: finish
+    for (var i = 1; i < tables.length; i++) {
+        var table = tables[i];
+        var tableColumnOptions = buildColumnOptions(table);
+        // Append row for this table
+        joinTableBody.append(buildJoinTableRow(i, table.name, tableColumnOptions, joinedTableColumnOptions));
+        // Add column options string to joinedTableColumnOptions
+        joinedTableColumnOptions += tableColumnOptions;
+    }
 }
 
 
