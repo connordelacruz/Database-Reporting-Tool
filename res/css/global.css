@@ -733,9 +733,9 @@ a.text-warning:hover, a.text-warning:focus { color: #cc7a00; }
 
 a.text-danger:hover, a.text-danger:focus { color: #ea1c0d; }
 
-.bg-primary { color: #fff; }
+.bg-primary, .bootstrap-duallistbox-container select option:hover, .bootstrap-duallistbox-container select[multiple] option:hover, .bootstrap-duallistbox-container select.form-control option:hover, .bootstrap-duallistbox-container select[multiple].form-control option:hover { color: #fff; }
 
-.bg-primary { background-color: #2196F3; }
+.bg-primary, .bootstrap-duallistbox-container select option:hover, .bootstrap-duallistbox-container select[multiple] option:hover, .bootstrap-duallistbox-container select.form-control option:hover, .bootstrap-duallistbox-container select[multiple].form-control option:hover { background-color: #2196F3; }
 
 a.bg-primary:hover, a.bg-primary:focus { background-color: #0c7cd5; }
 
@@ -2461,7 +2461,8 @@ table.join-table tbody tr td b { font-size: 16px; }
 
 .bootstrap-duallistbox-container .btn-group .btn { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
 
-.bootstrap-duallistbox-container select { font-size: 16px; border-top-left-radius: 0; border-top-right-radius: 0; }
+.bootstrap-duallistbox-container select, .bootstrap-duallistbox-container select[multiple], .bootstrap-duallistbox-container select.form-control, .bootstrap-duallistbox-container select[multiple].form-control { font-size: 16px; background: #fff none; border: none; border-radius: 2px; -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3); box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3); }
+.bootstrap-duallistbox-container select option, .bootstrap-duallistbox-container select[multiple] option, .bootstrap-duallistbox-container select.form-control option, .bootstrap-duallistbox-container select[multiple].form-control option { cursor: pointer; -moz-transition: background-color 0.2s, color 0.2s; -o-transition: background-color 0.2s, color 0.2s; -webkit-transition: background-color 0.2s, color 0.2s; transition: background-color 0.2s, color 0.2s; }
 
 .bootstrap-duallistbox-container .moveall, .bootstrap-duallistbox-container .removeall { width: 40%; }
 
@@ -2486,7 +2487,7 @@ table.join-table tbody tr td b { font-size: 16px; }
 
 .list-group-item.sortable-placeholder { background-color: rgba(33, 150, 243, 0.5); border-color: #2196F3; margin: 10px 0; }
 
-.table-order-item { margin: 10px 0; }
+.table-order-item { border: none; border-radius: 2px; -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3); box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3); margin: 10px 0; }
 .table-order-item:first-child { margin-top: 0; }
 .table-order-item:last-child { margin-bottom: 0; }
 

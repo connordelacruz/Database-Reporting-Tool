@@ -43,10 +43,23 @@
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
-.bootstrap-duallistbox-container select {
-  font-size: 16px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
+.bootstrap-duallistbox-container{
+  select, select[multiple],
+  select.form-control, select[multiple].form-control {
+    font-size: 16px;
+    background: #fff none;
+    border: none;
+    border-radius: 2px;
+    @include box-shadow(0 1px 4px rgba(0,0,0,.3));
+    // duallist options
+    option {
+      cursor: pointer;
+      @include transition(background-color 0.2s, color 0.2s);
+      &:hover {
+        @extend .bg-primary;
+      }
+    }
+  }
 }
 
 .bootstrap-duallistbox-container .moveall,
