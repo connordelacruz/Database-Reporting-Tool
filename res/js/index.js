@@ -343,6 +343,10 @@ $(function () {
             modalStep(joinModal, $(this).data('step'));
         });
     });
+    joinModal.on('show.bs.modal', function () {
+        // Refresh disabled state of step 1 next button
+        $('#join-modal-next-1').prop('disabled', $('#join-table-duallist').change());
+    });
 
     // Initialize dual listbox
     $('#join-table-duallist').bootstrapDualListbox({
@@ -366,7 +370,7 @@ $(function () {
     // First Next button
     $('#join-modal-next-1').click(function () {
         updateJoinTableOrderList($('#join-table-duallist').val());
-    }).prop('disabled', true); // TODO FIXME: something is re-enabling this on load, figure it out
+    });
     // Second Next button
     $('#join-modal-next-2').click(function () {
         // TODO: get columns for each table first

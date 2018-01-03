@@ -38,7 +38,7 @@ try {
         case ('getColumnsBatch'):
             $tables = $_POST['tables'];
             // return column names and total number of rows
-            $data['text'] = $conn->getColumns($tables);
+            $data['text'] = $conn->getColumnsBatch($tables);
             // TODO: batch row count
             //$data['rowCount'] = $conn->countRows($tables);
             break;
