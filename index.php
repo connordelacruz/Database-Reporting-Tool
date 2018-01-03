@@ -54,14 +54,16 @@ include_once 'config/config.php';
                                     <div class="modal-body step step-1" data-step="1">
                                         <fieldset>
                                             <legend>1. Select Tables to Join</legend>
-                                            <label for="join-table-duallist" class="sr-only">Select Tables to Join</label>
+                                            <label for="join-table-duallist" class="control-label">Select 2 or more tables to continue:</label>
                                             <select multiple class="table-select-input" id="join-table-duallist" name="join-table-duallist[]"></select>
                                         </fieldset>
                                     </div>
                                     <div class="modal-body step step-2" data-step="2">
                                         <fieldset>
                                             <legend>2. Order Tables</legend>
-                                            <!-- TODO: instructions (i.e. click and drag) -->
+                                            <label class="control-label" for="join-table-order">
+                                                Click and drag the tables to arrange them in the order they'll be joined:
+                                            </label>
                                             <ul class="list-group sortable" id="join-table-order">
                                                 <li class="list-group-item">Select 2 or more tables to continue.</li>
                                             </ul>
@@ -71,6 +73,7 @@ include_once 'config/config.php';
                                         <fieldset>
                                             <!-- TODO: implement (and come up with a more eloquent title?) -->
                                             <legend>3. Select Fields to Join On</legend>
+                                            <label class="control-label">Select the fields to join on and join types:</label>
                                             <div class="panel panel-default join-table-panel">
                                                 <div class="panel-body">
                                                     <table class="table table-condensed join-table">
