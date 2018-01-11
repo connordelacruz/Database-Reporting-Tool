@@ -72,3 +72,30 @@ function getColumnsAjax(table, ajaxCallbacks) {
         }
     });
 }
+
+
+/**
+ * Gets a list of columns from a table and passes data to callback functions
+ * @param tables List of tables to get columns for
+ @param {AjaxCallbacks} ajaxCallbacks An AjaxCallbacks object with callback functions
+ */
+function getColumnsBatchAjax(tables, ajaxCallbacks) {
+    $.ajax({
+        type: "POST",
+        url: "handler/connection_handler.php",
+        data: {
+            'tables': tables,
+            'function': 'getColumnsBatch'
+        },
+        dataType: "json",
+        success: function (data) {
+            ajaxCallbacks.success(data);
+        },
+        error: function (jqXHR) {
+            ajaxCallbacks.error(jqXHR);
+        },
+        complete: function () {
+            ajaxCallbacks.complete();
+        }
+    });
+}

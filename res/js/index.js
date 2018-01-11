@@ -216,7 +216,44 @@ function getColumns(selectIndex, callbackFunction) {
     getColumnsAjax(table, callbacks);
 }
 
-// TODO: getColumnsBatch function that takes multiple tables for joins
+
+
+
+/**
+ * TODO: docment
+ * @param callbackFunction Function to call on success (i.e. function to populate column list)
+ */
+function getColumnsBatch(callbackFunction) {
+    var tableNames = [];
+    $.each(joinTables, function (i, table) {
+        tableNames[i] = table.name;
+    });
+
+    // Callback functions for ajax
+    var callbacks = new AjaxCallbacks();
+    callbacks.success = function (data) {
+        // if data.err is set, then display something in #error-div
+        if (data.error !== undefined) {
+            displayError(data.error);
+        }
+        else {
+            $.each(joinTables, function (i, table) {
+                joinTables[i].columns = data[table.name]['columns'];
+                joinTables[i].rowCount = data[table.name]['rowCount'];
+            });
+
+            // Execute callback function if defined
+            if (callbackFunction !== undefined)
+                callbackFunction();
+        }
+    };
+    callbacks.error = function (jqXHR) {
+        // If an error occurred before the server could respond, display message and stop execution
+        displayError(jqXHR.responseText, true);
+    };
+
+    getColumnsBatchAjax(tableNames, callbacks);
+}
 
 
 /**
@@ -373,8 +410,13 @@ $(function () {
     });
     // Second Next button
     $('#join-modal-next-2').click(function () {
-        // TODO: get columns for each table first
-        updateJoinTable(getJoinTableOrder());
+        // Update global variable with table order and get columns
+        joinTables = getJoinTableOrder();
+        // Update join table on success
+        var getColumnsBatchCallback = function () {
+            updateJoinTable(joinTables);
+        };
+        getColumnsBatch(getColumnsBatchCallback);
     });
 
     // Add listener to expand/collapse advanced options

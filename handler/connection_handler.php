@@ -23,6 +23,8 @@ try {
     // Determine what function to perform based on query
     switch ($function) {
 
+        // TODO: make ['text'] more informative for each case
+
         case ('getTables'):
             // Retrieve list of tables
             $data['text'] = $conn->getTables();
@@ -38,9 +40,10 @@ try {
         case ('getColumnsBatch'):
             $tables = $_POST['tables'];
             // return column names and total number of rows
-            $data['text'] = $conn->getColumnsBatch($tables);
-            // TODO: batch row count
-            //$data['rowCount'] = $conn->countRows($tables);
+            foreach ($tables as $table) {
+                $data[$table]['columns'] = $conn->getColumns($table);
+                $data[$table]['rowCount'] = $conn->countRows($table);
+            }
             break;
     }
 
