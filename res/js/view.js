@@ -164,7 +164,7 @@ function buildJoinTableRow(joinIndex, table, tableColumnOptions, joinedTableColu
     // When column from joined table is selected, update hidden input with table name
     row.find('select[name="' + namePrefix + '[1][column]"]').change(function () {
         var table1 = $(this).find(':selected').parent().data('table');
-        $('name="' + namePrefix + '[1][table]"').val(table);
+        $('input[name="' + namePrefix + '[1][table]"]').val(table);
     });
 
     return row;
