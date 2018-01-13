@@ -39,6 +39,24 @@ function modalStep(modalId, step) {
 
 
 /**
+ * Shorthand function for setting the disabled/enabled state of all join modal footer buttons
+ * @param {boolean} setDisabled Value to set the disabled property to
+ */
+function disableJoinModalButtons(setDisabled) {
+    $('#join-modal-footer').find('button').prop('disabled', setDisabled);
+}
+
+
+/**
+ * Shorthand function for setting the disabled/enabled state of all
+ * @param {boolean} setDisabled Value to set the disabled property to
+ */
+function disableJoinModalSubmit(setDisabled) {
+    $('#join-modal-submit').prop('disabled', setDisabled);
+}
+
+
+/**
  * Generate markup for join table order list
  * @param tables List of selected tables
  * @returns {string} Markup for join table order list
@@ -83,6 +101,7 @@ function getJoinTableOrder() {
  */
 function updateJoinTable(tables) {
     var joinTableBody = $('#join-table-body');
+
     // Insert first row
     joinTableBody.html(buildInitialJoinTableRow(tables[0].name));
 
@@ -97,6 +116,9 @@ function updateJoinTable(tables) {
         // Add column options string to joinedTableColumnOptions
         joinedTableColumnOptions += tableColumnOptions;
     }
+
+    // Add listeners to join column selects
+    joinTableBody.find('.join-column-select').change(joinColumnSelectListener);
 }
 
 
@@ -128,7 +150,7 @@ function buildJoinTableRow(joinIndex, table, tableColumnOptions, joinedTableColu
     var tableCell = [
         '<td class="form-group">',
             '<label>Table:</label>',
-            '<input type="text" class="form-control" name="' + namePrefix + '[0][table]" value="' + table + '" readonly required>',
+            '<input type="text" class="form-control table-input" name="' + namePrefix + '[0][table]" value="' + table + '" readonly required>',
         '</td>'
     ].join('');
     row.append(tableCell);
@@ -164,7 +186,7 @@ function buildJoinTableRow(joinIndex, table, tableColumnOptions, joinedTableColu
     // When column from joined table is selected, update hidden input with table name
     row.find('select[name="' + namePrefix + '[1][column]"]').change(function () {
         var table1 = $(this).find(':selected').parent().data('table');
-        $('input[name="' + namePrefix + '[1][table]"]').val(table);
+        $('input[name="' + namePrefix + '[1][table]"]').val(table1);
     });
 
     return row;
@@ -181,7 +203,7 @@ function buildInitialJoinTableRow(table) {
         '<tr>',
             '<td class="form-group" colspan="6">',
                 '<label>Table:</label>',
-                '<input type="text" class="form-control" value="' + table + '" readonly required>',
+                '<input type="text" class="form-control table-input" value="' + table + '" readonly required>',
             '</td>',
         '</tr>'
     ].join('');

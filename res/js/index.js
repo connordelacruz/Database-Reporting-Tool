@@ -112,9 +112,6 @@ function populateTableSelects() {
         }
     });
 
-    // Add listeners to join column selects
-    $('.join-column-select').change(joinColumnSelectListener);
-
     // Refresh dual listbox for joins
     $('#join-table-duallist').bootstrapDualListbox('refresh');
 
@@ -125,38 +122,13 @@ function populateTableSelects() {
 
 
 /**
- * Generates an onchange listener function for a join table select
- * @param columnSelectId id of the corresponding column select
- * @returns {Function} onchange listener for the table select
- */
-// TODO: re-work
-function joinTableSelectListener(columnSelectId) {
-    return function () {
-        var tableName = $(this).find(':selected').val();
-        var selectIndex = $(this).attr('id');
-        selectedTables[selectIndex] = new TableDataObject(tableName);
-        // Populate column select once columns are retrieved
-        var getColumnsCallback = function () {
-            var table = selectedTables[selectIndex];
-            var optionsString = buildColumnOptions(table);
-            $(columnSelectId).html(optionsString)
-                .prop('disabled', false);
-        };
-        // Get columns for selected table
-        getColumns(selectIndex, getColumnsCallback);
-    }
-}
-
-
-/**
  * onchange listener function for join column selects.
  * Checks to see if all required fields for a join are filled. If they are,
  * populate column list
  */
-// TODO: Use a submit button instead of ajax? it may get messy with 3+ tables
 function joinColumnSelectListener() {
     // If all required fields for join are filled, populate column list
-    var joinFields = $('#table-join-collapse').find('select:required');
+    var joinFields = $('#join-table-body').find('select:required');
     var fieldsValidated = true;
     joinFields.each(function () {
         if ($(this).find(':selected').val() === '') {
@@ -164,11 +136,7 @@ function joinColumnSelectListener() {
         }
     });
     if (fieldsValidated) {
-        // Retrieve an array of table select input ids (used as indices in selectedTables)
-        var selectIndices = joinFields.filter('.table-select-input')
-            .map(function() { return this.id }).get();
-        // TODO: show loader
-        populateTableJoinColumnList(selectIndices);
+        disableJoinModalSubmit(false);
     }
     // else show placeholder in column list container
     else {
@@ -288,17 +256,16 @@ function populateColumnList(selectIndex) {
 /**
  * Populate column list container with checkboxes containing columns for each table in the join. Additionally, keeps
  * track of the row count of the joined table with the greatest row count and sets the max row limit accordingly.
- * @param selectIndices Array of indices into selectedTables
  */
-function populateTableJoinColumnList(selectIndices) {
+function populateTableJoinColumnList() {
     // For each table select index, build a column list
     var columnListContainer = $('<div></div>');
     // Keep track of the row limit
     var joinMaxRows = 0;
-    $.each(selectIndices, function (i, selectIndex) {
-        if (selectedTables[selectIndex].rowCount > joinMaxRows)
-            joinMaxRows = selectedTables[selectIndex].rowCount;
-        var columnList = buildColumnList(selectedTables[selectIndex], true);
+    $.each(joinTables, function (i, table) {
+        if (table.rowCount > joinMaxRows)
+            joinMaxRows = table.rowCount;
+        var columnList = buildColumnList(table, true);
         columnListContainer.append(columnList);
     });
     $('#join-column-list-container').html(columnListContainer);
@@ -410,13 +377,25 @@ $(function () {
     });
     // Second Next button
     $('#join-modal-next-2').click(function () {
+        event.preventDefault();
+        disableJoinModalButtons(true);
         // Update global variable with table order and get columns
         joinTables = getJoinTableOrder();
         // Update join table on success
         var getColumnsBatchCallback = function () {
             updateJoinTable(joinTables);
+            disableJoinModalButtons(false);
+            // Fields will need to be filled after this, so submit should be disabled
+            disableJoinModalSubmit(true);
+            modalStep('#join-modal', 3);
         };
         getColumnsBatch(getColumnsBatchCallback);
+    });
+    // Submit button
+    $('#join-modal-submit').click(function () {
+        $('#join-modal').modal('hide');
+        // TODO: show loader
+        populateTableJoinColumnList();
     });
 
     // Add listener to expand/collapse advanced options
