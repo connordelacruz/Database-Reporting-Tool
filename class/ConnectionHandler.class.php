@@ -211,10 +211,10 @@ class ConnectionHandler {
     /**
      * Returns a string in the format 'JOIN table1 ON table0.column0 = table1.column1'
      * @param string $join_type A valid index into JOIN_TYPES. Defaults to JOIN if it's not a valid key
-     * @param string $table0 The name of the first table to join. This function assumes we're appending to a SELECT
-     * statement, so it does not include 'FROM table0' in the returned string
+     * @param string $table0 The name of the table that is getting joined.
      * @param string $column0 The column from table0 to join on
-     * @param string $table1 The name of the second table to join
+     * @param string $table1 The name of the table with the column table0 is getting joined on. This table should have been
+     * previously joined in this statement and is simply needed for identifying the column.
      * @param string $column1 The column from table1 to join on
      * @return string Formatted join string
      * @throws Exception
@@ -231,7 +231,7 @@ class ConnectionHandler {
         $quoted_column0 = $this->quoteColumn($quoted_table0, $this->validateColumn($table0, $column0));
         $quoted_column1 = $this->quoteColumn($quoted_table1, $this->validateColumn($table1, $column1));
         // Build string
-        $join_string = "$join_type_string $quoted_table1 ON $quoted_column0 = $quoted_column1";
+        $join_string = "$join_type_string $quoted_table0 ON $quoted_column1 = $quoted_column0";
         return $join_string;
     }
 

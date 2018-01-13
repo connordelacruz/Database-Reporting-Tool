@@ -14,7 +14,7 @@ try {
 
 
     // TODO: DEBUGGING, REMOVE
-    echo "<pre>" . print_r($_POST, true) . "</pre>";
+    //echo "<pre>" . print_r($_POST, true) . "</pre>";
 
     // get POST data
     $select_type = $_POST['select-type'];
