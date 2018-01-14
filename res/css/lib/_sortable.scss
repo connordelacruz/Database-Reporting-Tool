@@ -28,10 +28,4 @@ $sortable-list-group-placeholder-border: $list-group-active-border;
   @include box-shadow(0 1px 4px rgba(0,0,0,.3));
   // Add margin between items for smoother drag and drop
   margin: $sortable-list-group-margin;
-  &:first-child {
-    margin-top: 0;
-  }
-  &:last-child {
-    margin-bottom: 0;
-  }
 }
