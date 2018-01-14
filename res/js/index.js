@@ -22,11 +22,10 @@ function TableDataObject(name, columns, rowCount) {
 // Array of table names from the database
 var tables;
 
-// Array of TableDataObjects for the currently selected tables. Indexed by the id of the select element
-// TODO: find a better way to do this, indexing by id is not ideal in reworked system
-var selectedTables = {};
+// TableDataObject for currently selected table
+var selectedTable;
 
-// Array of TableDataObjects for the currently selected tables to be joined.
+// Array of TableDataObjects for the currently selected tables to be joined
 var joinTables = {};
 
 // TODO: organize state variables (object prototype?)
@@ -92,25 +91,7 @@ function populateTableSelects() {
     tableSelectInputs.append(optionsString);
 
     // Add listener to single table select
-    // TODO: extract to function
-    $('#table-select').change(function () {
-        var tableName = $(this).find(':selected').val();
-        if (tableName !== '') {
-            // clear any existing options and show loader
-            clearColumnList(true);
-            showColumnSelectPlaceholder(false);
-            // clear any error messages previously displayed
-            clearError();
-            var selectIndex = $(this).attr('id');
-            selectedTables[selectIndex] = new TableDataObject(tableName);
-
-            // Populate column list once columns are retrieved
-            var getColumnsCallback = function () {
-                populateColumnList(selectIndex);
-            };
-            getColumns(selectIndex, getColumnsCallback);
-        }
-    });
+    $('#table-select').change(singleTableSelectListener);
 
     // Refresh dual listbox for joins
     $('#join-table-duallist').bootstrapDualListbox('refresh');
@@ -118,6 +99,28 @@ function populateTableSelects() {
     // Enable radio buttons and select single table as default
     $('input[name="select-type"]').prop('disabled', false);
     $('#select-table-radio').prop('checked', true).change();
+}
+
+
+/**
+ * onchange event listener function for the single table select
+ */
+function singleTableSelectListener() {
+    var tableName = $(this).find(':selected').val();
+    if (tableName !== '') {
+        // clear any existing options and show loader
+        clearColumnList(true);
+        showColumnSelectPlaceholder(false);
+        // clear any error messages previously displayed
+        clearError();
+        selectedTable = new TableDataObject(tableName);
+
+        // Populate column list once columns are retrieved
+        var getColumnsCallback = function () {
+            populateColumnList();
+        };
+        getColumns(getColumnsCallback);
+    }
 }
 
 
@@ -149,11 +152,10 @@ function joinColumnSelectListener() {
  * Gets a list of columns from the table and calls populateColumnList() on success.
  * If the table is not valid, then connection_handler.php sets data.error. If data.error is defined, then an error
  * message is displayed and populateColumnList() is not called.
- * @param selectIndex Index in selectedTables
  * @param callbackFunction Function to call on success (i.e. function to populate column list)
  */
-function getColumns(selectIndex, callbackFunction) {
-    var table = selectedTables[selectIndex].name;
+function getColumns(callbackFunction) {
+    var table = selectedTable.name;
 
     // Callback functions for ajax
     var callbacks = new AjaxCallbacks();
@@ -165,9 +167,9 @@ function getColumns(selectIndex, callbackFunction) {
             clearColumnList(false);
         }
         else {
-            selectedTables[selectIndex].columns = data.text;
+            selectedTable.columns = data.text;
             // get the total number of rows and set #row-limit max
-            selectedTables[selectIndex].rowCount = data['rowCount'];
+            selectedTable.rowCount = data['rowCount'];
 
             // Execute callback function if defined
             if (callbackFunction !== undefined)
@@ -241,13 +243,12 @@ function setRowLimitMax(maxRows) {
  * Populates column list container with checkboxes containing column names. Additionally, sets the max row limit to the
  * row count of the selected table.
  * This function is called on success of getColumns().
- * @param selectIndex Index in selectedTables
  */
-function populateColumnList(selectIndex) {
-    var columnListContainer = buildColumnList(selectedTables[selectIndex]);
+function populateColumnList() {
+    var columnListContainer = buildColumnList(selectedTable);
     $('#single-column-list-container').html(columnListContainer);
 
-    setRowLimitMax(selectedTables[selectIndex].rowCount);
+    setRowLimitMax(selectedTable.rowCount);
 
     refreshFormState();
 }

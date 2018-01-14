@@ -263,7 +263,6 @@ function buildColumnOptions(table) {
  * @returns jQuery object for the column list
  */
 function buildColumnList(table, tableJoin) {
-    // TODO: no longer needed once joins and single selects are merged
     var idPrefix = table.name + (tableJoin ? '-join' : '-single');
     var containerId = idPrefix + '-column-options-container';
     var columnOptionsContainerString = '<div id="' + containerId + '">';
@@ -424,9 +423,6 @@ function columnsSelected() {
 function refreshSubmitButtonState() {
     disableSubmit(!formIsValid());
 }
-
-
-// TODO: make similar refresh state function for add table button
 
 
 /**
