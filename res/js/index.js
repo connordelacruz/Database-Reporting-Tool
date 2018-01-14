@@ -149,7 +149,7 @@ function joinColumnSelectListener() {
 
 
 /**
- * Gets a list of columns from the table and calls populateColumnList() on success.
+ * Gets a list of columns from the table and calls callbackFunction on success.
  * If the table is not valid, then connection_handler.php sets data.error. If data.error is defined, then an error
  * message is displayed and populateColumnList() is not called.
  * @param callbackFunction Function to call on success (i.e. function to populate column list)
@@ -190,7 +190,7 @@ function getColumns(callbackFunction) {
 
 
 /**
- * TODO: docment
+ * Gets a list of columns and row counts for each table in joinTables and calls callbackFunction on success
  * @param callbackFunction Function to call on success (i.e. function to populate column list)
  */
 function getColumnsBatch(callbackFunction) {
