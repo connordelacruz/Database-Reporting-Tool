@@ -394,6 +394,7 @@ $(function () {
     // Submit button
     $('#join-modal-submit').click(function () {
         $('#join-modal').modal('hide');
+        updateJoinTableDetails(joinTables);
         // TODO: show loader
         populateTableJoinColumnList();
     });

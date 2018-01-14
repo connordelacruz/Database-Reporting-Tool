@@ -40,13 +40,14 @@ include_once 'config/config.php';
                         </label>
                     </div>
                     <div class="table-collapse collapse" id="table-join-collapse">
-
-                        <?php // TODO: Implement new join ui ?>
                         <div id="join-details-container">
-                            <!-- TODO: display current join or placeholder -->
+                            <span class="text-muted" id="join-details-placeholder">
+                                No tables selected.
+                            </span>
+                            <span id="join-details-container"></span>
                         </div>
-                        <button type="button" class="btn btn-block btn-info" id="join-modal-button" data-toggle="modal" data-target="#join-modal">
-                            Join Tables
+                        <button type="button" class="btn btn-block btn-default" id="join-modal-button" data-toggle="modal" data-target="#join-modal">
+                            <span class="text-primary">Select Tables to Join</span>
                         </button>
                         <div class="modal multi-step fade" id="join-modal" role="dialog" data-backdrop="static" data-keyboard="false">
                             <div class="modal-dialog modal-lg">
@@ -71,7 +72,6 @@ include_once 'config/config.php';
                                     </div>
                                     <div class="modal-body step step-3" data-step="3">
                                         <fieldset>
-                                            <!-- TODO: implement (and come up with a more eloquent title?) -->
                                             <legend>3. Select Fields to Join On</legend>
                                             <label class="control-label">Select the fields to join on and join types:</label>
                                             <div class="panel panel-default join-table-panel">

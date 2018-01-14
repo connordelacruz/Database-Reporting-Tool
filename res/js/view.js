@@ -122,7 +122,14 @@ function updateJoinTable(tables) {
 }
 
 
-// TODO: document
+/**
+ * Generates markup for join table row
+ * @param joinIndex The index of this table join (for form name attribute)
+ * @param {string} table Name of the table being joined in this row
+ * @param {string} tableColumnOptions Markup for select options for this table's columns
+ * @param {string} joinedTableColumnOptions Markup for select options of previously joined tables' columns
+ * @returns {*|jQuery|HTMLElement} Markup for the join table row
+ */
 function buildJoinTableRow(joinIndex, table, tableColumnOptions, joinedTableColumnOptions) {
 
     // Name attributes start with join[joinIndex]
@@ -143,8 +150,6 @@ function buildJoinTableRow(joinIndex, table, tableColumnOptions, joinedTableColu
         '</td>'
     ].join('');
     row.append(joinCell);
-
-    // TODO: add ids for form elements
 
     // Table being joined
     var tableCell = [
@@ -207,6 +212,31 @@ function buildInitialJoinTableRow(table) {
             '</td>',
         '</tr>'
     ].join('');
+}
+
+
+/**
+ * Update the list of tables selected to join
+ * @param tables List of TableDataObjects getting joined
+ */
+function updateJoinTableDetails(tables) {
+    var detailsString = 'Joining ';
+    $.each(tables, function (i, table) {
+        detailsString += table.name;
+        if (i < tables.length - 1)
+            detailsString += ', ';
+    });
+    $('#join-details-container').html(detailsString);
+    showJoinDetailsPlaceholder(false);
+}
+
+
+/**
+ * Toggle visibility of join details placeholder text
+ * @param {boolean} visible If true, show placeholder text. If false, hide it
+ */
+function showJoinDetailsPlaceholder(visible) {
+    $('#join-details-placeholder').toggleClass('hidden', !visible);
 }
 
 
