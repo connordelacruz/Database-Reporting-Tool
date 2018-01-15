@@ -29,13 +29,6 @@ try {
             break;
 
         case ('getColumns'):
-            $table = $_POST['table'];
-            // return column names and total number of rows
-            $data['columns'] = $conn->getColumns($table);
-            $data['rowCount'] = $conn->countRows($table);
-            break;
-
-        case ('getColumnsBatch'):
             $tables = $_POST['tables'];
             // return column names and total number of rows
             foreach ($tables as $table) {

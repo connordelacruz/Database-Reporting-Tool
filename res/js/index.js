@@ -167,9 +167,9 @@ function getColumns(callbackFunction) {
             clearColumnList(false);
         }
         else {
-            selectedTable.columns = data['columns'];
+            selectedTable.columns = data[selectedTable.name]['columns'];
             // get the total number of rows and set #row-limit max
-            selectedTable.rowCount = data['rowCount'];
+            selectedTable.rowCount = data[selectedTable.name]['rowCount'];
 
             // Execute callback function if defined
             if (callbackFunction !== undefined)
@@ -183,7 +183,7 @@ function getColumns(callbackFunction) {
         clearColumnList(false);
     };
 
-    getColumnsAjax(table, callbacks);
+    getColumnsAjax([table], callbacks);
 }
 
 
@@ -222,7 +222,7 @@ function getColumnsBatch(callbackFunction) {
         displayError(jqXHR.responseText, true);
     };
 
-    getColumnsBatchAjax(tableNames, callbacks);
+    getColumnsAjax(tableNames, callbacks);
 }
 
 
