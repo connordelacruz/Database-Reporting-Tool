@@ -60,7 +60,7 @@ function getTables() {
             tableLoaderDiv.html('');
         }
         else {
-            tables = data.text;
+            tables = data['tables'];
             // Display these tables on the page
             populateTableSelects();
         }
@@ -167,7 +167,7 @@ function getColumns(callbackFunction) {
             clearColumnList(false);
         }
         else {
-            selectedTable.columns = data.text;
+            selectedTable.columns = data['columns'];
             // get the total number of rows and set #row-limit max
             selectedTable.rowCount = data['rowCount'];
 
@@ -333,13 +333,6 @@ $(function () {
                 $('input[name="select-type"]').prop('disabled', false);
             }
         );
-
-    // TODO: style <select>s differently if placeholder option is selected
-    /*$('select').each(function () {
-        // Set the placeholder class on selects where the currently selected value is an empty string
-        $(this).toggleClass('placeholder', $(this).find(':selected').val() === '');
-        // TODO: add listener to remove placeholder class on change
-    });*/
 
     // Add listeners to multi-step modal buttons
     var joinModal = $('#join-modal');

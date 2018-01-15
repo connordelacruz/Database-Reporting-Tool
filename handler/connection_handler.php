@@ -23,17 +23,15 @@ try {
     // Determine what function to perform based on query
     switch ($function) {
 
-        // TODO: make ['text'] more informative for each case
-
         case ('getTables'):
             // Retrieve list of tables
-            $data['text'] = $conn->getTables();
+            $data['tables'] = $conn->getTables();
             break;
 
         case ('getColumns'):
             $table = $_POST['table'];
             // return column names and total number of rows
-            $data['text'] = $conn->getColumns($table);
+            $data['columns'] = $conn->getColumns($table);
             $data['rowCount'] = $conn->countRows($table);
             break;
 

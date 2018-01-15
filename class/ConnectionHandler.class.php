@@ -194,7 +194,7 @@ class ConnectionHandler {
      * @return int The number of rows in $table
      * @throws Exception
      */
-    function countRows($table) {
+    public function countRows($table) {
         // the count to return
         $row_count = 0;
         // check whitelist for $table
@@ -219,7 +219,7 @@ class ConnectionHandler {
      * @return string Formatted join string
      * @throws Exception
      */
-    function joinString($join_type, $table0, $column0, $table1, $column1) {
+    private function joinString($join_type, $table0, $column0, $table1, $column1) {
         // Validate $join_type
         // TODO: throw exception instead?
         $join_type_string = array_key_exists($join_type, ConnectionHandler::JOIN_TYPES) ?
@@ -272,7 +272,6 @@ class ConnectionHandler {
         // Table(s) to select from
         $from_string = $quoted_tables[0];
         // Append join string if applicable
-        // TODO: extract to function and iterate through $join_data
         if ($join_data) {
             // Iterate through joins
             $join_string = ' ';
@@ -284,7 +283,7 @@ class ConnectionHandler {
                     $join[1]['table'], $join[1]['column'])
                 . ' ';
             }
-            $from_string .= ' ' . $join_string;
+            $from_string .= $join_string;
         }
         // Build SQL query string
         $sql = "SELECT $columns_string FROM $from_string";
