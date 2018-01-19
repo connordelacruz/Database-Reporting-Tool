@@ -79,7 +79,7 @@ function getTables() {
 
 
 /**
- * Populates #table-select with options containing table names.
+ * Populates #single-table-select with options containing table names.
  * This function is called on success of getTables().
  */
 function populateTableSelects() {
@@ -91,14 +91,14 @@ function populateTableSelects() {
     tableSelectInputs.append(optionsString);
 
     // Add listener to single table select
-    $('#table-select').change(singleTableSelectListener);
+    $('#single-table-select').change(singleTableSelectListener);
 
     // Refresh dual listbox for joins
     $('#join-table-duallist').bootstrapDualListbox('refresh');
 
     // Enable radio buttons and select single table as default
     $('input[name="select-type"]').prop('disabled', false);
-    $('#select-table-radio').prop('checked', true).change();
+    $('#single-table-radio').prop('checked', true).change();
 }
 
 
@@ -289,7 +289,7 @@ function setSelectType(type) {
     var isJoin = !isSelect;
 
     // Toggle collapsed state of select container and disabled state of its form elements
-    $('#table-select-collapse').collapse(isSelect ? 'show' : 'hide')
+    $('#single-table-collapse').collapse(isSelect ? 'show' : 'hide')
         .find(':input').prop('disabled', !isSelect);
     $('#table-join-collapse').collapse(isJoin ? 'show' : 'hide')
         .find(':input').prop('disabled', !isJoin);

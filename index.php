@@ -17,21 +17,23 @@ include_once 'config/config.php';
             <fieldset id="table-fieldset">
                 <legend>Table</legend>
                 <div id="table-loader-div"></div>
-                <!-- TODO: rename table-select* to single-table* for clarity -->
-                <div class="form-group" id="table-select-div">
+                <?php // Single table select ?>
+                <div class="form-group" id="single-table-div">
                     <div class="radio">
-                        <label class="control-label radio-label" id="table-select-label">
-                            <input type="radio" id="select-table-radio" name="select-type" value="single">
+                        <label class="control-label radio-label" id="single-table-label">
+                            <input type="radio" id="single-table-radio" name="select-type" value="single">
                             Single Table<span class="toggle--on">:</span>
                         </label>
                     </div>
-                    <div class="table-collapse collapse" id="table-select-collapse">
-                        <label class="sr-only" for="table-select">Select a Table:</label>
-                        <select class="form-control table-select-input" id="table-select" name="table-select" required>
+                    <div class="table-collapse collapse" id="single-table-collapse">
+                        <label class="sr-only" for="single-table-select">Select a Table:</label>
+                        <select class="form-control table-select-input" id="single-table-select" name="single-table-select" required>
                             <option class="placeholder" value="" disabled selected>Select a table</option>
                         </select>
                     </div>
                 </div>
+                <?php // Join table select ?>
+                <!-- TODO: rename table-join* and join-* to join-table* for consistency -->
                 <div class="form-group" id="table-join-div">
                     <div class="radio">
                         <label class="control-label radio-label" id="table-join-label">
@@ -49,6 +51,7 @@ include_once 'config/config.php';
                         <button type="button" class="btn btn-block btn-default" id="join-modal-button" data-toggle="modal" data-target="#join-modal">
                             <span class="text-primary">Select Tables to Join</span>
                         </button>
+                        <?php // Join table modal ?>
                         <div class="modal multi-step fade" id="join-modal" role="dialog" data-backdrop="static" data-keyboard="false">
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">

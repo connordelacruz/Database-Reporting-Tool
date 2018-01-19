@@ -23,7 +23,7 @@ try {
     $join_data = array_key_exists('join', $_POST) ? $_POST['join'] : false;
 
     // Use table name as page title for single selects, otherwise use generic title
-    $title = ($single_select && array_key_exists('table-select', $_POST)) ? $_POST['table-select'] : 'Report';
+    $title = ($single_select && array_key_exists('single-table-select', $_POST)) ? $_POST['single-table-select'] : 'Report';
 
     // Advanced options (set to a default if not toggled or set)
     $row_count = (isset($_POST['toggle-row-limit']) && isset($_POST['row-limit'])) ? intval($_POST['row-limit']) : 0;

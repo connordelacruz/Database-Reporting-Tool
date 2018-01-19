@@ -257,7 +257,7 @@ function buildInitialJoinTableRow(table) {
  * @param tables List of TableDataObjects getting joined
  */
 function updateJoinTableDetails(tables) {
-    var detailsString = 'Joining ';
+    var detailsString = '<b>Selected Tables:</b> ';
     $.each(tables, function (i, table) {
         detailsString += table.name;
         if (i < tables.length - 1)
