@@ -2462,7 +2462,7 @@ table.join-table tbody tr td b { font-size: 16px; }
 .bootstrap-duallistbox-container .btn-group .btn { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
 
 .bootstrap-duallistbox-container select, .bootstrap-duallistbox-container select[multiple], .bootstrap-duallistbox-container select.form-control, .bootstrap-duallistbox-container select[multiple].form-control { font-size: 16px; background: #fff none; border: none; border-radius: 2px; -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3); box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3); }
-.bootstrap-duallistbox-container select option, .bootstrap-duallistbox-container select[multiple] option, .bootstrap-duallistbox-container select.form-control option, .bootstrap-duallistbox-container select[multiple].form-control option { cursor: pointer; -moz-transition: background-color 0.2s, color 0.2s; -o-transition: background-color 0.2s, color 0.2s; -webkit-transition: background-color 0.2s, color 0.2s; transition: background-color 0.2s, color 0.2s; }
+.bootstrap-duallistbox-container select option, .bootstrap-duallistbox-container select[multiple] option, .bootstrap-duallistbox-container select.form-control option, .bootstrap-duallistbox-container select[multiple].form-control option { padding: 5px 10px; cursor: pointer; -moz-transition: background-color 0.2s, color 0.2s; -o-transition: background-color 0.2s, color 0.2s; -webkit-transition: background-color 0.2s, color 0.2s; transition: background-color 0.2s, color 0.2s; }
 
 .bootstrap-duallistbox-container .moveall, .bootstrap-duallistbox-container .removeall { width: 40%; }
 
