@@ -62,11 +62,48 @@ function disableJoinModalSubmit(setDisabled) {
  * @returns {string} Markup for join table order list
  */
 function buildJoinTableOrderList(tables) {
+    var reorderButtonGroupString = buildReorderButtonGroup();
     var listItemsString = '';
     $.each(tables, function (i, table) {
-        listItemsString += '<li class="list-group-item table-order-item" data-table="' + table + '">' + table + '</li>';
+        listItemsString += '<li class="list-group-item table-order-item clearfix" data-table="' + table + '">' + table + reorderButtonGroupString + '</li>';
     });
     return listItemsString;
+}
+
+
+/**
+ * Generate markup for order list reordering button group
+ * @returns {string} Markup for up/down reorder button group
+ */
+function buildReorderButtonGroup() {
+    return [
+        '<div class="pull-right">',
+        '<div class="btn-group btn-group-sm">',
+            '<button class="btn btn-default reorder-up" type="button">',
+                '<span class="glyphicon glyphicon-triangle-top"></span>',
+            '</button>',
+            '<button class="btn btn-default reorder-down" type="button">',
+                '<span class="glyphicon glyphicon-triangle-bottom"></span>',
+            '</button>',
+        '</div>',
+        '</div>'
+    ].join('');
+}
+
+
+/**
+ * Click event listener for .reorder-up and .reorder-down buttons
+ */
+function reorderButtonListener() {
+    // Determine if this is an up or down button
+    var isReorderUp = $(this).is('reorder-up');
+    // Parent li element
+    var current = $(this).closest('li');
+    // Previous/next li element
+    var target = isReorderUp ? current.prev('li') : current.next('li');
+    // If current is not already at the top/bottom
+    if (target.length)
+        isReorderUp ? current.insertBefore(target) : current.insertAfter(target);
 }
 
 
