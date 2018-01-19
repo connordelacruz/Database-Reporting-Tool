@@ -96,14 +96,15 @@ function buildReorderButtonGroup() {
  */
 function reorderButtonListener() {
     // Determine if this is an up or down button
-    var isReorderUp = $(this).is('reorder-up');
+    var isReorderUp = $(this).is('.reorder-up');
     // Parent li element
     var current = $(this).closest('li');
     // Previous/next li element
     var target = isReorderUp ? current.prev('li') : current.next('li');
     // If current is not already at the top/bottom
-    if (target.length)
+    if (target.length) {
         isReorderUp ? current.insertBefore(target) : current.insertAfter(target);
+    }
 }
 
 
@@ -114,6 +115,8 @@ function reorderButtonListener() {
 function updateJoinTableOrderList(tables) {
     var listItems = buildJoinTableOrderList(tables);
     $('#join-table-order').html(listItems);
+    // Add click listeners to up/down reorder buttons
+    $('button[class*=reorder-]').click(reorderButtonListener);
     // Refresh sortable
     sortable('#join-table-order');
 }

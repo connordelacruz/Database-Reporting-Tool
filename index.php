@@ -63,7 +63,7 @@ include_once 'config/config.php';
                                         <fieldset>
                                             <legend>2. Order Tables</legend>
                                             <label class="control-label" for="join-table-order">
-                                                Click and drag the tables or use the up and down buttons to arrange them in the order they'll be joined:
+                                                Click and drag the tables or use the <span class="glyphicon glyphicon-triangle-top"></span> and <span class="glyphicon glyphicon-triangle-bottom"></span> buttons to arrange them in the order they'll be joined:
                                             </label>
                                             <ul class="list-group sortable" id="join-table-order">
                                                 <li class="list-group-item">Select 2 or more tables to continue.</li>
