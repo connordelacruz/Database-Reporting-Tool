@@ -366,7 +366,7 @@ function clearColumnList(showLoader) {
  * Toggle visibility of column select placeholder text
  * @param {boolean} visible If true, show placeholder text. If false, hide it
  */
-function showColumnSelectPlaceholder(visible) {
+function showColumnListPlaceholder(visible) {
     $('#column-list-placeholder').toggleClass('hidden', !visible);
 }
 
@@ -385,7 +385,7 @@ function columnListIsEmpty() {
  * Checks if column list is empty and shows placeholder if true
  */
 function refreshPlaceholderState() {
-    showColumnSelectPlaceholder(columnListIsEmpty());
+    showColumnListPlaceholder(columnListIsEmpty());
 }
 
 

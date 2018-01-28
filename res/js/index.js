@@ -108,7 +108,7 @@ function singleTableSelectListener() {
     if (tableName !== '') {
         // clear any existing options and show loader
         clearColumnList(true);
-        showColumnSelectPlaceholder(false);
+        showColumnListPlaceholder(false);
         // clear any error messages previously displayed
         clearError();
         selectedTable = new TableDataObject(tableName);
@@ -141,7 +141,7 @@ function joinColumnSelectListener() {
     }
     // else show placeholder in column list container
     else {
-        showColumnSelectPlaceholder(true);
+        showColumnListPlaceholder(true);
     }
 }
 
