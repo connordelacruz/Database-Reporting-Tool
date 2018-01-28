@@ -392,8 +392,8 @@ $(function () {
     });
 
     // Add listener to expand/collapse advanced options
-    var advOptLegend = $('#legend-advanced-options');
-    var advOptCollapse = $('#collapse-advanced-options');
+    var advOptLegend = $('#advanced-options-legend');
+    var advOptCollapse = $('#advanced-options-collapse');
 
     advOptLegend.click(function () {
         advOptCollapse.collapse('toggle');

@@ -115,13 +115,12 @@ include_once 'config/config.php';
             </fieldset>
 
             <?php // Column select ?>
-            <?php // TODO: rename column-select* to column-list* for clarity/consistency? ?>
-            <div id="column-select-div">
+            <div id="column-list-div">
                 <fieldset>
                     <legend>Columns</legend>
                     <div class="form-group">
                         <label class="control-label" for="column-list-container">Columns to display:</label>
-                        <div class="text-muted" id="column-select-placeholder">
+                        <div class="text-muted" id="column-list-placeholder">
                             <span class="single-select">Select a table to continue.</span>
                             <span class="join-select hidden">Select tables and columns to continue.</span>
                         </div>
@@ -131,11 +130,13 @@ include_once 'config/config.php';
                         </div>
                     </div>
                 </fieldset>
+
+                <?php // Advanced options ?>
                 <fieldset>
-                    <legend class="collapse-toggle" id="legend-advanced-options">
+                    <legend class="collapse-toggle" id="advanced-options-legend">
                         Advanced Options
                     </legend>
-                    <div class="collapse" id="collapse-advanced-options">
+                    <div class="collapse" id="advanced-options-collapse">
                         <div class="form-group">
                             <input type="checkbox" class="switch-input"
                                    id="toggle-row-limit" name="toggle-row-limit" value="row-limit">
@@ -149,6 +150,8 @@ include_once 'config/config.php';
                         </div>
                     </div>
                 </fieldset>
+
+                <?php // Form submit buttons ?>
                 <fieldset>
                     <div class="form-group">
                         <div id="generate-report-div">
