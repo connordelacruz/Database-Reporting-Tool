@@ -33,26 +33,25 @@ include_once 'config/config.php';
                     </div>
                 </div>
                 <?php // Join table select ?>
-                <!-- TODO: rename table-join* and join-* to join-table* for consistency -->
-                <div class="form-group" id="table-join-div">
+                <div class="form-group" id="join-table-div">
                     <div class="radio">
-                        <label class="control-label radio-label" id="table-join-label">
-                            <input type="radio" id="table-join-radio" name="select-type" value="join">
+                        <label class="control-label radio-label" id="join-table-label">
+                            <input type="radio" id="join-table-radio" name="select-type" value="join">
                             Join Tables<span class="toggle--on">:</span>
                         </label>
                     </div>
-                    <div class="table-collapse collapse" id="table-join-collapse">
-                        <div id="join-details-container">
-                            <span class="text-muted" id="join-details-placeholder">
+                    <div class="table-collapse collapse" id="join-table-collapse">
+                        <div>
+                            <span class="text-muted" id="join-table-details-placeholder">
                                 No tables selected.
                             </span>
-                            <span id="join-details-container"></span>
+                            <span id="join-table-details-container"></span>
                         </div>
-                        <button type="button" class="btn btn-block btn-default" id="join-modal-button" data-toggle="modal" data-target="#join-modal">
+                        <button type="button" class="btn btn-block btn-default" id="join-table-modal-button" data-toggle="modal" data-target="#join-table-modal">
                             <span class="text-primary">Select Tables to Join</span>
                         </button>
                         <?php // Join table modal ?>
-                        <div class="modal multi-step fade" id="join-modal" role="dialog" data-backdrop="static" data-keyboard="false">
+                        <div class="modal multi-step fade" id="join-table-modal" role="dialog" data-backdrop="static" data-keyboard="false">
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
                                     <div class="modal-body step step-1" data-step="1">
@@ -68,9 +67,7 @@ include_once 'config/config.php';
                                             <label class="control-label" for="join-table-order">
                                                 Click and drag the tables or use the <span class="glyphicon glyphicon-triangle-top"></span> and <span class="glyphicon glyphicon-triangle-bottom"></span> buttons to arrange them in the order they'll be joined:
                                             </label>
-                                            <ul class="list-group sortable" id="join-table-order">
-                                                <li class="list-group-item">Select 2 or more tables to continue.</li>
-                                            </ul>
+                                            <ul class="list-group sortable" id="join-table-order"></ul>
                                         </fieldset>
                                     </div>
                                     <div class="modal-body step step-3" data-step="3">
@@ -80,64 +77,33 @@ include_once 'config/config.php';
                                             <div class="panel panel-default join-table-panel">
                                                 <div class="panel-body">
                                                     <table class="table table-condensed join-table">
-                                                        <tbody id="join-table-body">
-                                                        <tr>
-                                                            <td class="form-group" colspan="6">
-                                                                <input type="text" class="form-control" name="join[0][0][table]" value="table0" readonly required/>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="form-group">
-                                                                <select class="form-control" id="join-type-select" name="join[0][type]" required>
-                                                                    <option value="inner" selected>Inner Join</option>
-                                                                    <option value="left">Left Join</option>
-                                                                    <option value="right">Right Join</option>
-                                                                    <option value="outer">Outer Join</option>
-                                                                </select>
-                                                            </td>
-                                                            <td class="form-group">
-                                                                <input type="text" class="form-control" name="join[0][1][table]" value="table1" readonly required/>
-                                                            </td>
-                                                            <td class="text-center"><b>ON</b></td>
-                                                            <td class="form-group">
-                                                                <select class="form-control join-column-select" name="join[0][0][column]" required>
-                                                                    <option class="placeholder" value="" disabled selected>Select a column</option>
-                                                                </select>
-                                                            </td>
-                                                            <td class="text-center"><b>=</b></td>
-                                                            <td class="form-group">
-                                                                <select class="form-control join-column-select" name="join[0][1][column]" required>
-                                                                    <option class="placeholder" value="" disabled selected>Select a column</option>
-                                                                </select>
-                                                            </td>
-                                                        </tr>
-                                                        </tbody>
+                                                        <tbody id="join-table-body"></tbody>
                                                     </table>
                                                 </div>
                                             </div>
                                         </fieldset>
                                     </div>
-                                    <div class="modal-footer" id="join-modal-footer">
-                                        <!-- TODO: add listener that reverts changes -->
-                                        <button type="button" class="btn btn-default pull-left" id="join-modal-cancel" data-dismiss="modal">
+                                    <div class="modal-footer" id="join-table-modal-footer">
+                                        <!-- TODO: add listener that reverts changes? -->
+                                        <button type="button" class="btn btn-default pull-left" id="join-table-modal-cancel" data-dismiss="modal">
                                             <span class="glyphicon glyphicon-remove"></span> Cancel
                                         </button>
                                         <?php // Step 1 ?>
-                                        <button type="button" class="btn btn-primary step step-1" id="join-modal-next-1" data-step="2">
+                                        <button type="button" class="btn btn-primary step step-1" id="join-table-modal-next-1" data-step="2">
                                             Next <span class="glyphicon glyphicon-menu-right"></span>
                                         </button>
                                         <?php // Step 2 ?>
-                                        <button type="button" class="btn btn-default step step-2" id="join-modal-back-2" data-step="1">
+                                        <button type="button" class="btn btn-default step step-2" id="join-table-modal-back-2" data-step="1">
                                             <span class="glyphicon glyphicon-menu-left"></span> Back
                                         </button>
-                                        <button type="button" class="btn btn-primary step step-2" id="join-modal-next-2" data-step="3">
+                                        <button type="button" class="btn btn-primary step step-2" id="join-table-modal-next-2" data-step="3">
                                             Next <span class="glyphicon glyphicon-menu-right"></span>
                                         </button>
                                         <?php // Step 3 ?>
-                                        <button type="button" class="btn btn-default step step-3" id="join-modal-back-3" data-step="2">
+                                        <button type="button" class="btn btn-default step step-3" id="join-table-modal-back-3" data-step="2">
                                             <span class="glyphicon glyphicon-menu-left"></span> Back
                                         </button>
-                                        <button type="button" class="btn btn-success step step-3" id="join-modal-submit">
+                                        <button type="button" class="btn btn-success step step-3" id="join-table-modal-submit">
                                             Submit <span class="glyphicon glyphicon-ok"></span>
                                         </button>
                                     </div>
@@ -148,6 +114,8 @@ include_once 'config/config.php';
                 </div>
             </fieldset>
 
+            <?php // Column select ?>
+            <?php // TODO: rename column-select* to column-list* for clarity/consistency? ?>
             <div id="column-select-div">
                 <fieldset>
                     <legend>Columns</legend>

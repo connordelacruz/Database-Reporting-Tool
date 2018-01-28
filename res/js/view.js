@@ -40,7 +40,7 @@ function modalStep(modalId, step) {
  * @param {boolean} setDisabled Value to set the disabled property to
  */
 function disableJoinModalButtons(setDisabled) {
-    $('#join-modal-footer').find('button').prop('disabled', setDisabled);
+    $('#join-table-modal-footer').find('button').prop('disabled', setDisabled);
 }
 
 
@@ -49,7 +49,7 @@ function disableJoinModalButtons(setDisabled) {
  * @param {boolean} setDisabled Value to set the disabled property to
  */
 function disableJoinModalSubmit(setDisabled) {
-    $('#join-modal-submit').prop('disabled', setDisabled);
+    $('#join-table-modal-submit').prop('disabled', setDisabled);
 }
 
 
@@ -263,7 +263,7 @@ function updateJoinTableDetails(tables) {
         if (i < tables.length - 1)
             detailsString += ', ';
     });
-    $('#join-details-container').html(detailsString);
+    $('#join-table-details-container').html(detailsString);
     showJoinDetailsPlaceholder(false);
 }
 
@@ -273,7 +273,7 @@ function updateJoinTableDetails(tables) {
  * @param {boolean} visible If true, show placeholder text. If false, hide it
  */
 function showJoinDetailsPlaceholder(visible) {
-    $('#join-details-placeholder').toggleClass('hidden', !visible);
+    $('#join-table-details-placeholder').toggleClass('hidden', !visible);
 }
 
 
@@ -357,7 +357,6 @@ function buildColumnList(table, tableJoin) {
 function clearColumnList(showLoader) {
     disableSubmit(true);
     // clear column options and display loading icon
-    // TODO: view functions shouldn't need to know about selectType, make param?
     var containerId = '#' + selectType + '-column-list-container';
     $(containerId).html(showLoader ? loader : '');
 }
@@ -377,7 +376,6 @@ function showColumnSelectPlaceholder(visible) {
  * @returns {boolean} True if no columns are present
  */
 function columnListIsEmpty() {
-    // TODO: view functions shouldn't need to know about selectType, make param?
     var containerId = '#' + selectType + '-column-list-container';
     return !$.trim($(containerId).html()).length;
 }

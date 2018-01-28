@@ -289,7 +289,7 @@ function setSelectType(type) {
     // Toggle collapsed state of select container and disabled state of its form elements
     $('#single-table-collapse').collapse(isSelect ? 'show' : 'hide')
         .find(':input').prop('disabled', !isSelect);
-    $('#table-join-collapse').collapse(isJoin ? 'show' : 'hide')
+    $('#join-table-collapse').collapse(isJoin ? 'show' : 'hide')
         .find(':input').prop('disabled', !isJoin);
 
     // Toggle visibility of elements specific to radio state
@@ -333,7 +333,7 @@ $(function () {
         );
 
     // Add listeners to multi-step modal buttons
-    var joinModal = $('#join-modal');
+    var joinModal = $('#join-table-modal');
     joinModal.find('button.step').each(function () {
         $(this).click(function () {
             modalStep(joinModal, $(this).data('step'));
@@ -341,7 +341,7 @@ $(function () {
     });
     joinModal.on('show.bs.modal', function () {
         // Refresh disabled state of step 1 next button
-        $('#join-modal-next-1').prop('disabled', $('#join-table-duallist').change());
+        $('#join-table-modal-next-1').prop('disabled', $('#join-table-duallist').change());
     });
 
     // Initialize dual listbox
@@ -353,7 +353,7 @@ $(function () {
         infoText: '',
         infoTextEmpty: ''
     }).change(function () {
-        $('#join-modal-next-1').prop('disabled', $(this).val().length < 2);
+        $('#join-table-modal-next-1').prop('disabled', $(this).val().length < 2);
     });
 
     // Initialize sortable
@@ -364,11 +364,11 @@ $(function () {
 
     // Add listeners and initial configurations to join modal buttons
     // First Next button
-    $('#join-modal-next-1').click(function () {
+    $('#join-table-modal-next-1').click(function () {
         updateJoinTableOrderList($('#join-table-duallist').val());
     });
     // Second Next button
-    $('#join-modal-next-2').click(function () {
+    $('#join-table-modal-next-2').click(function () {
         event.preventDefault();
         disableJoinModalButtons(true);
         // Update global variable with table order and get columns
@@ -379,13 +379,13 @@ $(function () {
             disableJoinModalButtons(false);
             // Fields will need to be filled after this, so submit should be disabled
             disableJoinModalSubmit(true);
-            modalStep('#join-modal', 3);
+            modalStep('#join-table-modal', 3);
         };
         getColumnsBatch(getColumnsBatchCallback);
     });
     // Submit button
-    $('#join-modal-submit').click(function () {
-        $('#join-modal').modal('hide');
+    $('#join-table-modal-submit').click(function () {
+        $('#join-table-modal').modal('hide');
         updateJoinTableDetails(joinTables);
 
         populateTableJoinColumnList();
