@@ -284,7 +284,6 @@ function showJoinDetailsPlaceholder(visible) {
  */
 function buildColumnOptions(table) {
     var columnOptionsString = '<optgroup label="'+ table.name + '" data-table="'+ table.name + '">';
-    columnOptionsString += '<option class="placeholder" value="" disabled selected>Select a column</option>';
     $.each(table.columns, function (i, column) {
         columnOptionsString += '<option value="' + column + '">' + column + '</option>';
     });

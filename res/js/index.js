@@ -22,16 +22,14 @@ function TableDataObject(name, columns, rowCount) {
 // Array of table names from the database
 var tables;
 
+// Current select-type (single or join)
+var selectType;
+
 // TableDataObject for currently selected table
 var selectedTable;
 
 // Array of TableDataObjects for the currently selected tables to be joined
 var joinTables = {};
-
-// TODO: organize state variables (object prototype?)
-
-// Current select-type (single or join)
-var selectType;
 
 // For storing and restoring state when switching between select types
 var maxRowCount = {
@@ -389,7 +387,7 @@ $(function () {
     $('#join-modal-submit').click(function () {
         $('#join-modal').modal('hide');
         updateJoinTableDetails(joinTables);
-        // TODO: show loader
+
         populateTableJoinColumnList();
     });
 

@@ -10,8 +10,7 @@ select, select.form-control {
   font-size: $font-size-base;
 
   // style differently when a placeholder option is selected
-  // NOTE: requires JavaScript to add the class when placeholder is selected
-  &.placeholder {
+  &:invalid {
     color: $text-muted;
     // keep option elements their normal color
     option {

@@ -55,6 +55,7 @@
     option {
       padding: $padding-small-vertical $padding-small-horizontal;
       cursor: pointer;
+      user-select: none;
       @include transition(background-color 0.2s, color 0.2s);
       &:hover {
         @extend .bg-primary;
