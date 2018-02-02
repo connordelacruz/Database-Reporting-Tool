@@ -177,7 +177,7 @@ function buildJoinTableRow(joinIndex, table, tableColumnOptions, joinedTableColu
     // Join type select
     var joinCell = [
         '<td class="form-group">',
-            '<label>Join Type:</label>',
+            '<label>Join Type: <a class="text-muted" href="https://www.w3schools.com/sql/sql_join.asp" target="_blank"><span class="glyphicon glyphicon-question-sign"></span></a></label>',
             '<select class="form-control" name="' + namePrefix + '[type]" required>',
                 '<option value="inner" selected>Inner Join</option>',
                 '<option value="left">Left Join</option>',
