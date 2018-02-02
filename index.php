@@ -84,7 +84,6 @@ include_once 'config/config.php';
                                         </fieldset>
                                     </div>
                                     <div class="modal-footer" id="join-table-modal-footer">
-                                        <!-- TODO: add listener that reverts changes? -->
                                         <button type="button" class="btn btn-default pull-left" id="join-table-modal-cancel" data-dismiss="modal">
                                             <span class="glyphicon glyphicon-remove"></span> Cancel
                                         </button>
