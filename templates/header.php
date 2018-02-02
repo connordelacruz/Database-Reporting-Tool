@@ -13,6 +13,8 @@
 <head>
     <meta charset="UTF-8">
     <?php
+    // Get query string suffix for cache busting
+    $cache_query = '?v=02.02.2018';
     /* Omitting viewport tag enables horizontal scrolling, which is good in the event that a generated report is wider
      * than the screen. */
     if (!isset($disableViewport) || $disableViewport === false)
@@ -31,20 +33,20 @@
 
     <title><?php echo isset($pageTitle) ? $pageTitle : 'Report Generator' ?></title>
 
-    <link rel="stylesheet" href="res/css/global.css">
+    <link rel="stylesheet" href="res/css/global.css<?php echo $cache_query ?>">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-    <script src="res/js/ajax.js"></script>
-    <script src="res/js/view.js"></script>
+    <script src="res/js/ajax.js<?php echo $cache_query ?>"></script>
+    <script src="res/js/view.js<?php echo $cache_query ?>"></script>
 
     <?php
     // If there is a .js file for this page, include it
     $pageName = basename($_SERVER['SCRIPT_NAME'], '.php');
     $pageScript = "res/js/$pageName.js";
     if (file_exists($pageScript))
-        echo "<script src='$pageScript'></script>";
+        echo "<script src='$pageScript$cache_query'></script>";
     ?>
 
 </head>
