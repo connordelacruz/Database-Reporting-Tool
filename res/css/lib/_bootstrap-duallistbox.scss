@@ -43,7 +43,7 @@
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
-.bootstrap-duallistbox-container{
+.bootstrap-duallistbox-container {
   select, select[multiple],
   select.form-control, select[multiple].form-control {
     font-size: 16px;
@@ -51,16 +51,48 @@
     border: none;
     border-radius: 2px;
     @include box-shadow(0 1px 4px rgba(0,0,0,.3));
+
     // duallist options
     option {
       padding: $padding-small-vertical $padding-small-horizontal;
       cursor: pointer;
       user-select: none;
       @include transition(background-color 0.2s, color 0.2s);
+      // for +/- signs
+      &:before {
+        position: relative;
+        top: 1px;
+        display: inline-block;
+        margin-right: 5px;
+        font-family: 'Glyphicons Halflings';
+        font-size: 13px;
+        font-style: normal;
+        font-weight: normal;
+        line-height: 1;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        // Hide when not hovering
+        visibility: hidden;
+        opacity: 0;
+      }
       &:hover {
         @extend .bg-primary;
+        // Show +/- on hover
+        &:before {
+          visibility: visible;
+          opacity: 1;
+        }
       }
     }
+  }
+
+  // Unselected list options + sign
+  .box1 option:before {
+    content: "\e081";
+  }
+  // Selected list options - sign
+  .box2 option:before {
+    content: "\e082";
   }
 }
 

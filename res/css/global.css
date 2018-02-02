@@ -2463,6 +2463,10 @@ table.join-table tbody tr td b { font-size: 16px; }
 
 .bootstrap-duallistbox-container select, .bootstrap-duallistbox-container select[multiple], .bootstrap-duallistbox-container select.form-control, .bootstrap-duallistbox-container select[multiple].form-control { font-size: 16px; background: #fff none; border: none; border-radius: 2px; -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3); box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3); }
 .bootstrap-duallistbox-container select option, .bootstrap-duallistbox-container select[multiple] option, .bootstrap-duallistbox-container select.form-control option, .bootstrap-duallistbox-container select[multiple].form-control option { padding: 5px 10px; cursor: pointer; user-select: none; -moz-transition: background-color 0.2s, color 0.2s; -o-transition: background-color 0.2s, color 0.2s; -webkit-transition: background-color 0.2s, color 0.2s; transition: background-color 0.2s, color 0.2s; }
+.bootstrap-duallistbox-container select option:before, .bootstrap-duallistbox-container select[multiple] option:before, .bootstrap-duallistbox-container select.form-control option:before, .bootstrap-duallistbox-container select[multiple].form-control option:before { position: relative; top: 1px; display: inline-block; margin-right: 5px; font-family: 'Glyphicons Halflings'; font-size: 13px; font-style: normal; font-weight: normal; line-height: 1; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; visibility: hidden; opacity: 0; }
+.bootstrap-duallistbox-container select option:hover:before, .bootstrap-duallistbox-container select[multiple] option:hover:before, .bootstrap-duallistbox-container select.form-control option:hover:before, .bootstrap-duallistbox-container select[multiple].form-control option:hover:before { visibility: visible; opacity: 1; }
+.bootstrap-duallistbox-container .box1 option:before { content: "\e081"; }
+.bootstrap-duallistbox-container .box2 option:before { content: "\e082"; }
 
 .bootstrap-duallistbox-container .moveall, .bootstrap-duallistbox-container .removeall { width: 40%; }
 
