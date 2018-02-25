@@ -4,6 +4,17 @@ A simple tool for generating HTML or CSV reports on MySQL databases.
 ![Index page screenshot](res/img/screenshots/index-sample.png)  
 ![Report page screenshot](res/img/screenshots/report-sample.png)  
 
+
+<!-- vim-markdown-toc GFM -->
+
+* [Requirements](#requirements)
+* [Setup](#setup)
+* [Usage](#usage)
+    * [Single Table](#single-table)
+    * [Joining Tables](#joining-tables)
+
+<!-- vim-markdown-toc -->
+
 ## Requirements
 PHP 7  
 PDO PHP Extension  
