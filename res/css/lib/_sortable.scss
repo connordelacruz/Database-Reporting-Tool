@@ -1,0 +1,31 @@
+/* Styling for .sortable elements */
+
+$sortable-list-group-margin: 10px 0;
+$sortable-list-group-placeholder-bg: transparentize($list-group-active-bg,0.5);
+$sortable-list-group-placeholder-border: $list-group-active-border;
+
+.list-group.sortable {
+  .list-group-item:hover {
+    color: $list-group-link-hover-color;
+    background-color: $list-group-hover-bg;
+    cursor: grab;
+    cursor: -webkit-grab;
+    cursor: -moz-grab;
+  }
+}
+
+// List group placeholder item
+.list-group-item.sortable-placeholder {
+  background-color: $sortable-list-group-placeholder-bg;
+  border-color: $sortable-list-group-placeholder-border;
+  margin: $sortable-list-group-margin;
+}
+
+// For table order sortable
+.table-order-item {
+  border: none;
+  border-radius: 2px;
+  @include box-shadow(0 1px 4px rgba(0,0,0,.3));
+  // Add margin between items for smoother drag and drop
+  margin: $sortable-list-group-margin;
+}

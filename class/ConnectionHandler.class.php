@@ -12,6 +12,19 @@ class ConnectionHandler {
     // When dbConnect is called to initialize the database, it sets this variable to an array of table names in
     private $table_whitelist = array();
 
+    // List of valid select types
+    const SELECT_TYPES = [
+        'single',
+        'join'
+    ];
+    
+    // List of valid join types mapped to the correct SQL syntax
+    const JOIN_TYPES = [
+        'inner' => 'INNER JOIN',
+        'left' => 'LEFT JOIN',
+        'right' => 'RIGHT JOIN',
+        'outer' => 'FULL OUTER JOIN'
+    ];
 
     /**
      * ConnectionHandler constructor.
@@ -94,6 +107,7 @@ class ConnectionHandler {
      * @param string $table The table to check
      * @param array $columns Column selection to validate
      * @return array Valid column names
+     * @throws Exception
      */
     public function validateColumns($table, $columns) {
         // Get all valid column names (table is validated in getColumns)
@@ -105,15 +119,47 @@ class ConnectionHandler {
 
 
     /**
+     * Validate a single column
+     * @param string $table The table to check
+     * @param string $column The column to check for
+     * @return string|bool The column name if valid, false if not
+     * @throws Exception
+     */
+    public function validateColumn($table, $column) {
+        // Get all valid column names (table is validated in getColumns)
+        $valid_columns = $this->getColumns($table);
+        // Return column if it's in $valid_columns
+        return in_array($column, $valid_columns) ? $column : false;
+    }
+
+
+    /**
      * Takes an array of column names and puts quotation marks around them
+     * @param string $table Whitelisted (and thus quoted) table name
      * @param array $columns Whitelisted column names
      * @return array The contents of $columns surrounded by quotes
      */
-    public function quoteColumns($columns) {
+    public function quoteColumns($table, $columns) {
+        // Array to return
+        $quoted_columns = [];
         foreach ($columns as $index => $column) {
-            $columns[$index] = "`" . str_replace("`", "``", $column) . "`";
+            $quoted_columns[] = $this->quoteColumn($table, $column);
         }
-        return $columns;
+        return $quoted_columns;
+    }
+
+
+    /**
+     * Takes a whitelisted column and a whitelisted table and returns the quoted column prefixed by the table
+     * @param string $table Whitelisted (and thus quoted) table name
+     * @param string $column Whitelisted column name
+     * @return string String with properly quoted column prefixed by "$table."
+     */
+    public function quoteColumn($table, $column) {
+        // Prefix with quoted table name followed by a .
+        $table_prefix = $table . '.';
+        $quoted_column = "`" . str_replace("`", "``", $column) . "`";
+        return $table_prefix . $quoted_column;
     }
 
 
@@ -121,6 +167,7 @@ class ConnectionHandler {
      * Get the column names for the specified table after ensuring it's whitelisted
      * @param string $table The table to check for in the whitelist and retrieve column names
      * @return array The names of the columns for the specified table
+     * @throws Exception
      */
     public function getColumns($table) {
         // check whitelist for $table
@@ -145,8 +192,9 @@ class ConnectionHandler {
      * Counts the rows in a given table (after ensuring it's whitelisted)
      * @param string $table Name of the table to check
      * @return int The number of rows in $table
+     * @throws Exception
      */
-    function countRows($table) {
+    public function countRows($table) {
         // the count to return
         $row_count = 0;
         // check whitelist for $table
@@ -161,30 +209,84 @@ class ConnectionHandler {
 
 
     /**
+     * Returns a string in the format 'JOIN table1 ON table0.column0 = table1.column1'
+     * @param string $join_type A valid index into JOIN_TYPES. Defaults to JOIN if it's not a valid key
+     * @param string $table0 The name of the table that is getting joined.
+     * @param string $column0 The column from table0 to join on
+     * @param string $table1 The name of the table with the column table0 is getting joined on. This table should have been
+     * previously joined in this statement and is simply needed for identifying the column.
+     * @param string $column1 The column from table1 to join on
+     * @return string Formatted join string
+     * @throws Exception
+     */
+    private function joinString($join_type, $table0, $column0, $table1, $column1) {
+        // Validate $join_type
+        // TODO: throw exception instead?
+        $join_type_string = array_key_exists($join_type, ConnectionHandler::JOIN_TYPES) ?
+            ConnectionHandler::JOIN_TYPES[$join_type] : 'JOIN';
+        // Validate tables
+        $quoted_table0 = $this->validateTable($table0);
+        $quoted_table1 = $this->validateTable($table1);
+        // Validate and quote columns
+        $quoted_column0 = $this->quoteColumn($quoted_table0, $this->validateColumn($table0, $column0));
+        $quoted_column1 = $this->quoteColumn($quoted_table1, $this->validateColumn($table1, $column1));
+        // Build string
+        $join_string = "$join_type_string $quoted_table0 ON $quoted_column1 = $quoted_column0";
+        return $join_string;
+    }
+
+
+    /**
      * Given a table name and an array of columns, returns all selected rows from table
-     * @param string $table Table name (will be validated)
-     * @param array $columns Columns (will be validated)
+     * @param array $tables Array of columns indexed by the name of the table containing them
+     * @param array|boolean $join_data (Optional) Array of join statement data or false if only a single table is being
+     * selected. Defaults to false if unspecified.
      * @param int $row_count (Optional) the number of rows to display
      * @return array The resulting table selection
+     * @throws Exception
      */
-    function getRows($table, $columns, $row_count = 0) {
-        // validate table
-        $whitelisted_table = $this->validateTable($table);
-        // Validate column names
-        $whitelisted_columns = $this->validateColumns($table, $columns);
+    public function getRows($tables, $join_data = false, $row_count = 0) {
+
+        // validate tables and columns
+        $quoted_columns = [];
+        $quoted_tables = [];
+        $column_headers = [];
+        foreach ($tables as $table => $columns) {
+            $whitelisted_table = $this->validateTable($table);
+            $whitelisted_columns = $this->validateColumns($table, $columns);
+            // Add list of unquoted column names to $column_headers
+            $column_headers = array_merge($column_headers, $whitelisted_columns);
+            // Quote columns and prefix them by quoted table name
+            $whitelisted_columns = $this->quoteColumns($whitelisted_table, $whitelisted_columns);
+            // Add validated table name and columns to their respective arrays
+            $quoted_tables[] = $whitelisted_table;
+            $quoted_columns = array_merge($quoted_columns, $whitelisted_columns);
+        }
 
         // array of rows where $rows[0] contains an array of column headers
         $rows = [];
-        // field headers
-        $rows[0] = $whitelisted_columns;
+        $rows[0] = $column_headers;
 
-        // Handle quotation marks
-        $whitelisted_columns = $this->quoteColumns($whitelisted_columns);
         // String of column names to select separated by commas
-        $to_select = implode(',', $whitelisted_columns);
-
+        $columns_string = implode(',', $quoted_columns);
+        // Table(s) to select from
+        $from_string = $quoted_tables[0];
+        // Append join string if applicable
+        if ($join_data) {
+            // Iterate through joins
+            $join_string = ' ';
+            foreach ($join_data as $join) {
+            $join_string .=
+                $this->joinString(
+                    $join['type'],
+                    $join[0]['table'], $join[0]['column'],
+                    $join[1]['table'], $join[1]['column'])
+                . ' ';
+            }
+            $from_string .= $join_string;
+        }
         // Build SQL query string
-        $sql = "SELECT $to_select FROM $whitelisted_table";
+        $sql = "SELECT $columns_string FROM $from_string";
 
         // If $row_count is 1 or greater, using it in a limit statement is valid.
         // If $row_count is greater than the total number of rows, it just returns all rows
@@ -204,4 +306,5 @@ class ConnectionHandler {
 
         return $rows;
     }
+
 }

@@ -5,17 +5,57 @@
 
 /* Select */
 
+select, select.form-control {
+  // Reduce size of text
+  font-size: $font-size-base;
+
+  // style differently when a placeholder option is selected
+  &:invalid {
+    color: $text-muted;
+    // keep option elements their normal color
+    option {
+      color: $input-color;
+    }
+  }
+}
+
 // For placeholder text in select
-option[value=""]:disabled {
+option.placeholder {
   display: none;
+}
+
+/* Text Input */
+.join-table-panel input[type="text"] {
+  font-size: $font-size-base;
 }
 
 /* Checkbox */
 
 // prevent checkbox label text from getting highlighted if rapidly clicking
-div.checkbox {
+div.checkbox, div.radio {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+/* Radio Toggle */
+
+.radio-label input[type=radio] {
+  // hide .toggle--on and show .toggle--off when unchecked
+  + .toggle--on {
+    display: none;
+  }
+  + .toggle--off {
+    display: inline-block;
+  }
+  // show .toggle--on and hide .toggle--off when checked
+  &:checked {
+    + .toggle--on {
+      display: inline-block;
+    }
+    + .toggle--off {
+      display: none;
+    }
+  }
 }

@@ -1,219 +1,309 @@
 /**
- * Various ajax queries used to communicate with the database
+ * JavaScript for index page
  * @author Connor de la Cruz
  */
+
+/* Objects */
+
+/**
+ * Object representing table data
+ * @param name Name of the table
+ * @param columns List of columns
+ * @param rowCount Number of rows
+ */
+function TableDataObject(name, columns, rowCount) {
+    this.name = name;
+    this.columns = columns;
+    this.rowCount = rowCount;
+}
 
 /* Variables */
 
 // Array of table names from the database
 var tables;
-// Currently selected table
-var currentTable;
-// Columns in currently selected table
-var columns;
-// Number of rows in the currently selected table
-var rowCount;
 
-// Spinning icon to display while loading
-var loader = '<div class="loader"><svg class="circular" viewBox="25 25 50 50"><circle id="loader-circle" class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="10"/></svg></div>';
+// Current select-type (single or join)
+var selectType;
+
+// TableDataObject for currently selected table
+var selectedTable;
+
+// Array of TableDataObjects for the currently selected tables to be joined
+var joinTables = {};
+
+// For storing and restoring state when switching between select types
+var maxRowCount = {
+    'single' : 0,
+    'join' : 0
+};
 
 
 /* Functions */
 
 /**
- * Gets a list of accessible tables from database and calls populateTableSelect() on success
+ * Gets a list of accessible tables from database and calls populateTableSelects() on success
  */
 function getTables() {
-    // display loading icon while table select is populated
-    var tableSelectDiv = $('#table-select-div');
-    tableSelectDiv.html(loader);
-    $.ajax({
-        type: "POST",
-        url: "handler/connection_handler.php",
-        data: {'function' : 'getTables'},
-        dataType: "json",
-        success: function (data) {
-            // Check if a server-side error was thrown and stop execution if so
-            if(data.error !== undefined) {
-                displayError(data.error, true);
-                tableSelectDiv.html('');
-            }
-            else {
-                tables = data.text;
-                // Display these tables on the page
-                populateTableSelect();
-            }
-        },
-        error: function (jqXHR) {
-            // If an error occurred before the server could respond, display message and stop execution
-            displayError(jqXHR.responseText, true);
-            tableSelectDiv.html('');
+    // disable table inputs and show loader
+    $('#table-fieldset').find(':input').prop('disabled', true);
+    var tableLoaderDiv = $('#table-loader-div');
+    tableLoaderDiv.html(loader);
+
+    // Callback functions for ajax
+    var callbacks = new AjaxCallbacks();
+    callbacks.success = function (data) {
+        // Check if a server-side error was thrown and stop execution if so
+        if(data.error !== undefined) {
+            displayError(data.error, true);
+            tableLoaderDiv.html('');
         }
-    });
+        else {
+            tables = data['tables'];
+            // Display these tables on the page
+            populateTableSelects();
+        }
+    };
+    callbacks.error = function (jqXHR) {
+        // If an error occurred before the server could respond, display message and stop execution
+        displayError(jqXHR.responseText, true);
+    };
+    callbacks.complete = function () {
+        // Hide loader
+        tableLoaderDiv.html('');
+    };
+
+    getTablesAjax(callbacks);
 }
 
 
 /**
- * Populates #table-select with options containing table names.
+ * Populates #single-table-select with options containing table names.
  * This function is called on success of getTables().
  */
-function populateTableSelect() {
-    // The div where all of these will be inserted
-    var tableSelectDiv = $('#table-select-div');
-    // the label for #table-select
-    var tableSelectLabel = '<label class="control-label" for="table-select">Table:</label>';
-    // The table select element
-    var tableSelect = $('<select class="form-control" id="table-select" name="table-select" required></select>');
+function populateTableSelects() {
+    // The table select elements
+    var tableSelectInputs = $('.table-select-input');
 
-    // add placeholder text
-    tableSelect.append('<option id="placeholder" value="" disabled selected>Select a table</option>');
+    // Add tables to select inputs
+    var optionsString = buildTableOptions(tables);
+    tableSelectInputs.append(optionsString);
 
-    for (var i = 0; i < tables.length; i++) {
-        var option = "<option name='table' value='" + tables[i] + "'>" + tables[i] + "</option>";
-        tableSelect.append(option);
-    }
-    // Add listener to table select
-    tableSelect.change(function () {
-        // expand column select div
-        $('#column-select-div').collapse('show');
+    // Add listener to single table select
+    $('#single-table-select').change(singleTableSelectListener);
+
+    // Refresh dual listbox for joins
+    $('#join-table-duallist').bootstrapDualListbox('refresh');
+
+    // Enable radio buttons and select single table as default
+    $('input[name="select-type"]').prop('disabled', false);
+    $('#single-table-radio').prop('checked', true).change();
+}
+
+
+/**
+ * onchange event listener function for the single table select
+ */
+function singleTableSelectListener() {
+    var tableName = $(this).find(':selected').val();
+    if (tableName !== '') {
         // clear any existing options and show loader
-        clearColumnSelect();
+        clearColumnList(true);
+        showColumnListPlaceholder(false);
         // clear any error messages previously displayed
         clearError();
-        currentTable = $(this).find(':selected').val();
-        getColumns(currentTable);
-    });
+        selectedTable = new TableDataObject(tableName);
 
-    // Add the elements to the page
-    tableSelectDiv.html(tableSelectLabel);
-    tableSelectDiv.append(tableSelect);
+        // Populate column list once columns are retrieved
+        var getColumnsCallback = function () {
+            populateColumnList();
+        };
+        getColumns(getColumnsCallback);
+    }
 }
 
 
 /**
- * Gets a list of columns from the table and calls populateColumnSelect() on success.
- * If the table is not valid, then connection_handler.php sets data.error. If data.error is defined, then an error
- * message is displayed and populateColumnSelect() is not called.
- * @param table The table to get columns from
+ * onchange listener function for join column selects.
+ * Checks to see if all required fields for a join are filled. If they are,
+ * populate column list
  */
-function getColumns(table) {
-    $.ajax({
-        type: "POST",
-        url: "handler/connection_handler.php",
-        data: {
-            'table': table,
-            'function': 'getColumns'
-        },
-        dataType: "json",
-        success: function (data) {
-            // if data.err is set, then display something in #error-div
-            if (data.error !== undefined) {
-                displayError(data.error);
-                // clear loader from #column-select
-                $('#column-select').html('');
-            }
-            else {
-                columns = data.text;
-                // get the total number of rows and set #row-limit max
-                rowCount = data['rowCount'];
-                $('#row-limit').attr({
-                    'max': rowCount,
-                    'placeholder': 'Number of rows to display (max ' + rowCount + ')'
-                });
-                // display columns on the page
-                populateColumnSelect();
-            }
-        },
-        error: function (jqXHR) {
-            // If an error occurred before the server could respond, display message and stop execution
-            displayError(jqXHR.responseText, true);
-            // clear loader from #column-select
-            $('#column-select').html('');
+function joinColumnSelectListener() {
+    // If all required fields for join are filled, populate column list
+    var joinFields = $('#join-table-body').find('select:required');
+    var fieldsValidated = true;
+    joinFields.each(function () {
+        if ($(this).find(':selected').val() === '') {
+            return fieldsValidated = false;
         }
     });
+    if (fieldsValidated) {
+        disableJoinModalSubmit(false);
+    }
+    // else show placeholder in column list container
+    else {
+        showColumnListPlaceholder(true);
+    }
 }
 
 
 /**
- * Populates #column-select with checkboxes containing column names.
+ * Gets a list of columns from the table and calls callbackFunction on success.
+ * If the table is not valid, then connection_handler.php sets data.error. If data.error is defined, then an error
+ * message is displayed and populateColumnList() is not called.
+ * @param callbackFunction Function to call on success (i.e. function to populate column list)
+ */
+function getColumns(callbackFunction) {
+    var table = selectedTable.name;
+
+    // Callback functions for ajax
+    var callbacks = new AjaxCallbacks();
+    callbacks.success = function (data) {
+        // if data.err is set, then display something in #error-div
+        if (data.error !== undefined) {
+            displayError(data.error);
+            // clear loader from column list container
+            clearColumnList(false);
+        }
+        else {
+            selectedTable.columns = data[selectedTable.name]['columns'];
+            // get the total number of rows and set #row-limit max
+            selectedTable.rowCount = data[selectedTable.name]['rowCount'];
+
+            // Execute callback function if defined
+            if (callbackFunction !== undefined)
+                callbackFunction();
+        }
+    };
+    callbacks.error = function (jqXHR) {
+        // If an error occurred before the server could respond, display message and stop execution
+        displayError(jqXHR.responseText, true);
+        // clear loader from column list container
+        clearColumnList(false);
+    };
+
+    getColumnsAjax([table], callbacks);
+}
+
+
+
+
+/**
+ * Gets a list of columns and row counts for each table in joinTables and calls callbackFunction on success
+ * @param callbackFunction Function to call on success (i.e. function to populate column list)
+ */
+function getColumnsBatch(callbackFunction) {
+    var tableNames = [];
+    $.each(joinTables, function (i, table) {
+        tableNames[i] = table.name;
+    });
+
+    // Callback functions for ajax
+    var callbacks = new AjaxCallbacks();
+    callbacks.success = function (data) {
+        // if data.err is set, then display something in #error-div
+        if (data.error !== undefined) {
+            displayError(data.error);
+        }
+        else {
+            $.each(joinTables, function (i, table) {
+                joinTables[i].columns = data[table.name]['columns'];
+                joinTables[i].rowCount = data[table.name]['rowCount'];
+            });
+
+            // Execute callback function if defined
+            if (callbackFunction !== undefined)
+                callbackFunction();
+        }
+    };
+    callbacks.error = function (jqXHR) {
+        // If an error occurred before the server could respond, display message and stop execution
+        displayError(jqXHR.responseText, true);
+    };
+
+    getColumnsAjax(tableNames, callbacks);
+}
+
+
+/**
+ * Set the max value for the row limit input and update maxRowCount
+ * @param maxRows Max number of rows for the row limit field. If maxRows < 1 evaluates to true, remove the max
+ * attribute and set a generic placeholder.
+ */
+function setRowLimitMax(maxRows) {
+    // Update input
+    setRowLimitInputMax(maxRows);
+    // Set global variable for restoring state
+    maxRowCount[selectType] = maxRows;
+}
+
+
+/**
+ * Populates column list container with checkboxes containing column names. Additionally, sets the max row limit to the
+ * row count of the selected table.
  * This function is called on success of getColumns().
  */
-function populateColumnSelect() {
-    // For each column, add an option to #column-select
-    var columnSelect = $('#column-select');
-    // Add select all button and clear out column names from previous table
-    columnSelect.html('<div class="checkbox"><label><input type="checkbox" id="column-select-all" checked><b>Select All</b></label></div>');
-    for(var i = 0; i < columns.length; i++) {
-        var option = '<div class="checkbox"><label><input type="checkbox" name="columns[]" class="column-option" value="' + columns[i] + '" checked>' + columns[i] + '</label></div>';
-        columnSelect.append(option);
-    }
-    // Add listener to column-select-all
-    $('#column-select-all').change(function () {
-        // set all options to match the check property of the select all button
-        $('.column-option').prop('checked', $(this).prop('checked'));
-        // if nothing is checked, submit buttons should be disabled
-        $('button[type=submit]').prop('disabled', !$(this).prop('checked'));
+function populateColumnList() {
+    var columnListContainer = buildColumnList(selectedTable);
+    $('#single-column-list-container').html(columnListContainer);
+
+    setRowLimitMax(selectedTable.rowCount);
+
+    refreshFormState();
+}
+
+
+/**
+ * Populate column list container with checkboxes containing columns for each table in the join. Additionally, keeps
+ * track of the row count of the joined table with the greatest row count and sets the max row limit accordingly.
+ */
+function populateTableJoinColumnList() {
+    // For each table select index, build a column list
+    var columnListContainer = $('<div></div>');
+    // Keep track of the row limit
+    var joinMaxRows = 0;
+    $.each(joinTables, function (i, table) {
+        if (table.rowCount > joinMaxRows)
+            joinMaxRows = table.rowCount;
+        var columnList = buildColumnList(table, true);
+        columnListContainer.append(columnList);
     });
+    $('#join-column-list-container').html(columnListContainer);
+    setRowLimitMax(joinMaxRows);
 
-    // Add listeners to all .column-option checkboxes to uncheck #column-select-all if one of them is changed
-    $('.column-option').change(function () {
-        // uncheck select all if this gets unchecked
-        if ($(this).prop('checked') == false) {
-            $('#column-select-all').prop('checked', false);
-            // Disable submit buttons if nothing is checked
-            if ($('.column-option:checked').length == 0) {
-                $('button[type=submit]').prop('disabled', true);
-            }
-        }
-        // if this was checked, re-enable submit buttons
-        else {
-            $('button[type=submit]').prop('disabled', false);
-            // if everything else is checked, then set select all to checked
-            if ($('.column-option:checked').length == $('.column-option').length) {
-                $('#column-select-all').prop('checked', true);
-            }
-        }
-    });
-
-    // re-enable generate and export buttons
-    $('#generate-report').prop('disabled', false);
-    $('#export-csv').prop('disabled',false);
+    refreshFormState();
 }
 
 
 /**
- * Removed column select options, display loader, and disables #generate-report. Used when a new table is selected
+ * Set the selectType global variable and update UI accordingly
+ * @param {string} type The select type to set it to (i.e. value of the radio button)
  */
-function clearColumnSelect() {
-    // disable report generator button
-    $('#generate-report').prop('disabled', true);
-    $('#export-csv').prop('disabled',true);
-    // clear column options and display loading icon
-    $('#column-select').html(loader);
-}
+function setSelectType(type) {
+    // Update global variable
+    selectType = type;
 
+    var isSelect = selectType === 'single';
+    // (don't need this variable, but using it for readability's sake)
+    var isJoin = !isSelect;
 
-/**
- * Displays an alert in #error-div
- * @param message The message to display
- * @param isUndismissable Optional boolean. If true, no dismiss button will be appended to error. This is for instances
- *         where no action can be taken by the user (e.g. can't populate table list).
- */
-function displayError(message, isUndismissable) {
-    var alertDiv = $('<div class="alert alert-danger alert-dismissable fade in"></div>');
-    if (!isUndismissable) {
-        alertDiv.append('<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>');
-    }
-    alertDiv.append(message);
-    $('#error-div').html(alertDiv);
-}
+    // Toggle collapsed state of select container and disabled state of its form elements
+    $('#single-table-collapse').collapse(isSelect ? 'show' : 'hide')
+        .find(':input').prop('disabled', !isSelect);
+    $('#join-table-collapse').collapse(isJoin ? 'show' : 'hide')
+        .find(':input').prop('disabled', !isJoin);
 
+    // Toggle visibility of elements specific to radio state
+    $('.join-select').toggleClass('hidden', !isJoin)
+        .find(':input').prop('disabled', !isJoin);
+    $('.single-select').toggleClass('hidden', !isSelect)
+        .find(':input').prop('disabled', !isSelect);
 
-/**
- * clears out #error-div
- */
-function clearError() {
-    $('#error-div').html('');
+    // Update state of form elements
+    refreshPlaceholderState();
+    refreshSubmitButtonState();
+
+    // Set row limit max
+    setRowLimitMax(maxRowCount[selectType]);
 }
 
 
@@ -221,9 +311,89 @@ function clearError() {
 
 $(function () {
 
+    // Add listener that toggles collapse state depending on which radio is selected
+    $('input[name="select-type"]').change(
+        function () {
+            // Set select type to
+            setSelectType($('input[name="select-type"]:checked').val());
+        });
+
+    // Disable radio buttons while collapsing
+    $('.table-collapse')
+        .on('show.bs.collapse hide.bs.collapse',
+            function (e) {
+                e.stopPropagation();
+                $('input[name="select-type"]').prop('disabled', true);
+            }
+        )
+        .on('shown.bs.collapse hidden.bs.collapse',
+            function () {
+                $('input[name="select-type"]').prop('disabled', false);
+            }
+        );
+
+    // Add listeners to multi-step modal buttons
+    var joinModal = $('#join-table-modal');
+    joinModal.find('button.step').each(function () {
+        $(this).click(function () {
+            modalStep(joinModal, $(this).data('step'));
+        });
+    });
+    joinModal.on('show.bs.modal', function () {
+        // Refresh disabled state of step 1 next button
+        $('#join-table-modal-next-1').prop('disabled', $('#join-table-duallist').change());
+    });
+
+    // Initialize dual listbox
+    $('#join-table-duallist').bootstrapDualListbox({
+        selectedListLabel: 'Selected:',
+        nonSelectedListLabel: 'Table List:',
+        hideMoveAll: true,
+        selectorMinimalHeight: 200,
+        infoText: '',
+        infoTextEmpty: ''
+    }).change(function () {
+        $('#join-table-modal-next-1').prop('disabled', $(this).val().length < 2);
+    });
+
+    // Initialize sortable
+    sortable('#join-table-order', {
+        placeholder: '<li class="list-group-item sortable-placeholder"></li>',
+        forcePlaceholderSize: true
+    });
+
+    // Add listeners and initial configurations to join modal buttons
+    // First Next button
+    $('#join-table-modal-next-1').click(function () {
+        updateJoinTableOrderList($('#join-table-duallist').val());
+    });
+    // Second Next button
+    $('#join-table-modal-next-2').click(function () {
+        event.preventDefault();
+        disableJoinModalButtons(true);
+        // Update global variable with table order and get columns
+        joinTables = getJoinTableOrder();
+        // Update join table on success
+        var getColumnsBatchCallback = function () {
+            updateJoinTable(joinTables);
+            disableJoinModalButtons(false);
+            // Fields will need to be filled after this, so submit should be disabled
+            disableJoinModalSubmit(true);
+            modalStep('#join-table-modal', 3);
+        };
+        getColumnsBatch(getColumnsBatchCallback);
+    });
+    // Submit button
+    $('#join-table-modal-submit').click(function () {
+        $('#join-table-modal').modal('hide');
+        updateJoinTableDetails(joinTables);
+
+        populateTableJoinColumnList();
+    });
+
     // Add listener to expand/collapse advanced options
-    var advOptLegend = $('#legend-advanced-options');
-    var advOptCollapse = $('#collapse-advanced-options');
+    var advOptLegend = $('#advanced-options-legend');
+    var advOptCollapse = $('#advanced-options-collapse');
 
     advOptLegend.click(function () {
         advOptCollapse.collapse('toggle');
@@ -255,6 +425,5 @@ $(function () {
         rowToggle.prop('disabled', false);
     });
 
-    // retrieve the table names and add them to #table-select
     getTables();
 });
